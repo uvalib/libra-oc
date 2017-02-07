@@ -21,3 +21,5 @@ test:
 
 production:
   # Add roles for users here.
+  archivist:
+    - naw4t@virginia.edu
