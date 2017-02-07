@@ -12,4 +12,4 @@ production:
   user: fedoraAdmin
   password: fedoraAdmin
   url: http://docker1.lib.virginia.edu:<%= ENV['FCREPO_DEVELOPMENT_PORT'] || 8055 %>/rest
-  base_path: /libra-oc
+  base_path: /libra-oc-prod

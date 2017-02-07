@@ -81,7 +81,7 @@ GEM
       activesupport (>= 3.0.0)
       rdf (~> 2.0, >= 2.0.2)
       rdf-vocab
-    active_attr (0.9.0)
+    active_attr (0.10.0)
       activemodel (>= 3.0.2, < 5.1)
       activesupport (>= 3.0.2, < 5.1)
     active_fedora-noid (2.0.1)
