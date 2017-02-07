@@ -1,0 +1,29 @@
+version: '2'
+services:
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - /shareddockerfs/libra-oc:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+
+  web:
+    build: .
+    command: bin/rails server --port 3000 --binding 0.0.0.0
+    environment:
+      - RAILS_ENV=production
+    env_file:
+      libra_oc_env.ksh
+    ports:
+      - "3000:3000"
+    links:
+      - redis
+      - mysql
