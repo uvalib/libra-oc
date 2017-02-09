@@ -47,7 +47,7 @@ group :development do
 end
 
 # Sufia Related
-gem 'sufia', github: 'projecthydra/sufia', ref: '047c7090'
+gem 'sufia', '~> 7.3.0.rc1'
 gem 'curation_concerns'
 gem 'flipflop', github: 'jcoyne/flipflop', branch: 'hydra'
 gem 'blacklight_advanced_search'
