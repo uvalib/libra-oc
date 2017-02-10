@@ -9,4 +9,9 @@ class LibraWork < ActiveFedora::Base
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
+  validates :abstract, presence: { message: 'Your work must have an abstract.' }
+
+  property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
+    index.as :stored_searchable
+  end
 end
