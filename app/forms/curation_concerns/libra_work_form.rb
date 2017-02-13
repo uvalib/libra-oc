@@ -3,8 +3,9 @@
 module CurationConcerns
   class LibraWorkForm < Sufia::Forms::WorkForm
     self.model_class = ::LibraWork
+    self.required_fields += [:author]
     self.required_fields -= [:creator]
-    self.terms += [:resource_type, :abstract]
+    self.terms += [:resource_type, :abstract, :author]
     self.terms -= [:description, :creator, :subject]
 
     def self.multiple?(field)
@@ -41,6 +42,19 @@ module CurationConcerns
 
     def source
       super.first || ""
+    end
+
+    protected
+
+    def self.build_permitted_params
+      permitted = super
+      permitted << [:rights]
+      permitted << { authors: permitted_authors_params }
+      permitted
+    end
+
+    def self.permitted_authors_params
+      [ :id, :_destroy, :first_name, :last_name ]
     end
 
   end
