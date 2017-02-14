@@ -10,8 +10,8 @@ class User < ApplicationRecord
   include Sufia::User
   include Sufia::UserUsageStats
 
-
-
+  # helpers, etc for libraoc users
+  include Libraoc::UserAttributes
 
   if Blacklight::Utils.needs_attr_accessible?
     attr_accessible :email, :password, :password_confirmation
