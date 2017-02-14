@@ -1,0 +1,197 @@
+#
+#
+#
+
+#require 'oga'
+require_dependency 'libraoc/helpers/service_helpers'
+include Helpers
+
+module TaskHelpers
+
+  # general definitions
+  DEFAULT_USER = 'dpg3k'
+  DEFAULT_DOMAIN = 'virginia.edu'
+
+  #
+  # the default user for various admin activities
+  #
+  def default_user_email
+    return default_email( DEFAULT_USER )
+  end
+
+  #
+  # construct a default email address given a computing Id
+  #
+  def default_email( cid )
+    return "#{cid}@#{DEFAULT_DOMAIN}"
+  end
+
+  #
+  # get a work by the specified ID
+  #
+  def get_work_by_id( work_id )
+
+     begin
+       return GenericWork.find( work_id )
+     rescue => e
+     end
+
+     return nil
+  end
+
+  #
+  # download a random cat image
+  #
+  def get_random_image( )
+
+    print "getting image... "
+
+    dest_file = "#{File::SEPARATOR}tmp#{File::SEPARATOR}#{SecureRandom.hex( 5 )}.jpg"
+    Net::HTTP.start( "lorempixel.com" ) do |http|
+      resp = http.get("/640/480/cats/")
+      open( dest_file, "wb" ) do |file|
+        file.write( resp.body )
+      end
+    end
+    puts "done"
+    return dest_file
+
+  end
+
+  #
+  # get user information from an email address
+  #
+  def user_info_by_email( email )
+    id = User.cid_from_email( email )
+    return user_info_by_cid( id )
+  end
+
+  #
+  # get user information from a computing id
+  #
+  def user_info_by_cid( id )
+
+    print "Looking up user details for #{id}..."
+
+    # lookup the user by computing id
+    user_info = Helpers.lookup_user( id )
+    if user_info.nil?
+      puts "not found"
+      return nil
+    end
+
+    puts "done"
+    return user_info
+  end
+
+  #
+  # batch process a group of SOLR works
+  #
+  def batched_process_solr_works( solr_works, &f )
+
+    solr_works.each do |gw_solr|
+      begin
+        gw = GenericWork.find( gw_solr['id'] )
+        f.call( gw )
+      rescue => e
+        puts e
+      end
+    end
+
+  end
+
+  #
+  # show full details of a generic work
+  #
+  def show_generic_work( work )
+
+    return if work.nil?
+    j = JSON.parse( work.to_json )
+    j.keys.sort.each do |k|
+      val = j[ k ]
+      if k.end_with?( "_id" ) == false
+        show_field( k, val )
+      end
+    end
+
+#    show_field( 'visibility', work.visibility )
+    #show_field( 'embargo_end_date', work.embargo_end_date )
+    #show_field( 'embargo_release_date', work.embargo_end_date )
+#    show_field( 'registrar_computing_id', work.registrar_computing_id )
+#    show_field( 'sis_id', work.sis_id )
+#    show_field( 'sis_entry', work.sis_entry )
+
+    if work.file_sets
+      file_number = 1
+      work.file_sets.each do |file_set|
+        puts " file #{file_number} => #{file_set.label}/#{file_set.title[0]} (/downloads/#{file_set.id})"
+        file_number += 1
+      end
+    end
+
+    puts '*' * 40
+
+  end
+
+  #
+  # show a field if it is not empty
+  #
+  def show_field( name, val )
+    return if val.nil?
+    return if val.respond_to?( :empty? ) && val.empty?
+    puts " #{name} => #{val}"
+  end
+
+  #
+  # get a list of assets in the specified directory that match the supplied pattern
+  #
+  def get_directory_list( dirname, pattern )
+    res = []
+    begin
+      Dir.foreach( dirname ) do |f|
+        if pattern.match( f )
+          res << f
+        end
+      end
+    rescue => e
+    end
+
+    return res.sort { |x, y| directory_sort_order( x, y ) }
+  end
+
+  #
+  # so we can process the directories in numerical order
+  #
+  def directory_sort_order( f1, f2 )
+    n1 = File.extname( f1 ).gsub( '.', '' ).to_i
+    n2 = File.extname( f2 ).gsub( '.', '' ).to_i
+    return -1 if n1 < n2
+    return 1 if n1 > n2
+    return 0
+  end
+
+  #
+  # load a file containing json data and return a hash
+  #
+  def load_json_doc( filename )
+    File.open( filename, 'r') do |file|
+      json_str = file.read( )
+      doc = JSON.parse json_str
+      return doc
+    end
+  end
+
+  #
+  # load a file containing xml data and return an oga document
+  #
+  #def load_xml_doc( filename )
+  #  File.open( filename, 'r') do |file|
+  #    return Oga.parse_xml( file )
+  #  end
+  #end
+
+end
+
+#
+# end of file
+#
