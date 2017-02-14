@@ -16,8 +16,11 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-libra_oc_env.ksh
-
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# development stuff
+libra_oc_env.ksh
+env.*
+.idea
