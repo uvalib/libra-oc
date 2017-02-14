@@ -59,3 +59,5 @@ gem 'devise-guests', '~> 0.5'
 
 gem 'sentry-raven'
 
+gem 'rest-client'
+
