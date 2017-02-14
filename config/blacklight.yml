@@ -1,10 +1,13 @@
+default: &default
+  adapter: solr
+  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
+
 development:
-  adapter: solr
-  url: <%= "http://docker1.lib.virginia.edu:#{ENV['SOLR_TEST_PORT'] || 8054}/solr/libra2" %>
-test: &test
-  adapter: solr
-  url: http://localhost:<%= ENV['SOLR_TEST_PORT'] || 8985 %>/solr/hydra-test
+  <<: *default
+
+test:
+  <<: *default
+
 production:
-  adapter: solr
-  url: <%= ENV['SOLR_URL'] %>/libra2
+  <<: *default
 

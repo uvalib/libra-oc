@@ -1,15 +1,17 @@
+default: &default
+  user: <%= ENV['FEDORA_USER'] %>
+  password: <%= ENV['FEDORA_PASSWD'] %>
+  url: <%= ENV['FEDORA_URL'] %>
+
 development:
-  user: fedoraAdmin
-  password: fedoraAdmin
-  url: http://docker1.lib.virginia.edu:<%= ENV['FCREPO_DEVELOPMENT_PORT'] || 8055 %>/rest
-  base_path: /libra-oc-dev
+  <<: *default
+  base_path: /libra-oc/dev
+
 test:
-  user: fedoraAdmin
-  password: fedoraAdmin
-  url: http://127.0.0.1:<%= ENV['FCREPO_TEST_PORT'] || 8986 %>/rest
-  base_path: /test
+  <<: *default
+  base_path: /libraoc/test
+
 production:
-  user: fedoraAdmin
-  password: fedoraAdmin
-  url: http://docker1.lib.virginia.edu:<%= ENV['FCREPO_DEVELOPMENT_PORT'] || 8055 %>/rest
-  base_path: /libra-oc-prod
+  <<: *default
+  base_path: /libra-oc/prod
+
