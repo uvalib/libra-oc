@@ -54,7 +54,7 @@ module CurationConcerns
     end
 
     def self.permitted_authors_params
-      [ :id, :_destroy, :first_name, :last_name ]
+      [ :id, :_destroy, :first_name, :last_name, :computing_id, :institution, :department ]
     end
 
   end
