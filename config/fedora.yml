@@ -5,13 +5,13 @@ default: &default
 
 development:
   <<: *default
-  base_path: /libra-oc/dev
+  base_path: /libraopen/dev
 
 test:
   <<: *default
-  base_path: /libraoc/test
+  base_path: /libraopen/test
 
 production:
   <<: *default
-  base_path: /libra-oc/prod
+  base_path: /libraopen/prod
 
