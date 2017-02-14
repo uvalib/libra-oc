@@ -41,11 +41,12 @@ module Pubcookie
 
     def authorized_user?
       user = request.env[pubcookie_user]
-      if Rails.env.development?
-        request.env[pubcookie_user] = 'dev'
+
+      # Checking for valid LDAP should go below
+      # possibly returning the user instead of a boolean
+      if user.present?
         true
-      elsif user.present?
-        Rails.configuration.authorized_users.include? user
+
       else
         fail!
         false

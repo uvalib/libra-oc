@@ -4,15 +4,14 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
-    if authorized_user?
-      create
-    else
-      render :new
-    end
+    create
   end
 
   # POST /resource/sign_in
   def create
+    if Rails.env.development?
+      request.env['HTTP_REMOTE_USER'] = ENV['DEV_USER']
+    end
     self.resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)
@@ -34,17 +33,6 @@ class Users::SessionsController < Devise::SessionsController
 
   private
 
-  def authorized_user?
-    user = request.env['HTTP_REMOTE_USER']
-    if user.present?
-      Rails.configuration.authorized_users.include? user
-    elsif Rails.env.development?
-      request.env['HTTP_REMOTE_USER'] = 'dev'
-      true
-    else
-      false
-    end
-  end
 
   # Overwriting the sign_out redirect path method
   def after_sign_out_path_for(resource_or_scope)
