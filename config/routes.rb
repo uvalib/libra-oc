@@ -26,7 +26,19 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
-  devise_for :users
+  devise_scope :user do
+    get "/users/sign_up", to: redirect('/404')
+    post "/users", to: redirect('/404')
+
+    get "/login" => "users/sessions#new"
+
+    # used only to prevent errors in development.
+    # netbadge will catch this path in prod
+    get "/logout", to: "users/sessions#new"
+  end
+
+  devise_for :users, controllers: { sessions: 'users/sessions' }
+
 
   mount CurationConcerns::Engine, at: '/'
   resources :welcome, only: 'index'
