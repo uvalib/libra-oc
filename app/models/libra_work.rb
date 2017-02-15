@@ -6,7 +6,9 @@ class LibraWork < ActiveFedora::Base
   include Sufia::WorkBehavior
   self.human_readable_type = 'Work'
 
-  has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator
+  has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
+    class_name: 'Author', inverse_of: :libra_works
+  accepts_nested_attributes_for :authors
 
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []

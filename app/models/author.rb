@@ -1,7 +1,7 @@
 class Author < ActiveFedora::Base
   type ::RDF::Vocab::FOAF.Person
 
-  has_many :libra_works, inverse_of: :authors
+  has_many :libra_works, inverse_of: :authors, class_name: 'LibraWork'
 
   property :first_name, predicate: ::RDF::Vocab::FOAF.firstName, multiple: false do |index|
     index.as :stored_searchable
@@ -11,15 +11,15 @@ class Author < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :computing_id, predicate: ::RDF::URI('http://example.org/terms/work_type'), multiple: false do |index|
+  property :computing_id, predicate: ::RDF::URI('http://example.org/terms/computing_id'), multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :department, predicate: ::RDF::URI('http://example.org/terms/work_type'), multiple: false do |index|
+  property :department, predicate: ::RDF::URI('http://example.org/terms/department'), multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :institution, predicate: ::RDF::URI('http://example.org/terms/work_type'), multiple: false do |index|
+  property :institution, predicate: ::RDF::URI('http://example.org/terms/institution'), multiple: false do |index|
     index.as :stored_searchable
   end
 
