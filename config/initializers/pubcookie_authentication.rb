@@ -22,10 +22,14 @@ module Pubcookie
       klass = mapping.to
 
       if authorized_user?
-        email = "#{request.env[pubcookie_user]}@virginia.edu"
-        user = klass.find_or_initialize_by(email: email)
-
-        success! user
+        email = klass.email_from_cid( request.env[pubcookie_user] )
+        user = klass.find_by( email: email )
+        user = klass.create_user( email ) unless user
+        if user.present?
+          success! user
+        else
+          fail!
+        end
       else
         fail!
       end

@@ -48,7 +48,7 @@ end
 
 # Sufia Related
 gem 'sufia', '~> 7.3.0.rc1'
-gem 'curation_concerns'
+gem 'curation_concerns', '1.7.4', github: 'uvalib/curation_concerns', branch: 'redis-password-patch'
 gem 'flipflop', github: 'jcoyne/flipflop', branch: 'hydra'
 gem 'blacklight_advanced_search'
 
@@ -58,4 +58,6 @@ gem 'devise'
 gem 'devise-guests', '~> 0.5'
 
 gem 'sentry-raven'
+
+gem 'rest-client'
 

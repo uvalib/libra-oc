@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170207163915) do
 
-  create_table "bookmarks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "bookmarks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_id",                     null: false
     t.string   "user_type"
     t.string   "document_id"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_bookmarks_on_user_id", using: :btree
   end
 
-  create_table "checksum_audit_logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "checksum_audit_logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "file_set_id"
     t.string   "file_id"
     t.string   "version"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["file_set_id", "file_id"], name: "by_file_set_id_and_file_id", using: :btree
   end
 
-  create_table "content_blocks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "content_blocks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name"
     t.text     "value",        limit: 65535
     t.datetime "created_at",                 null: false
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.string   "external_key"
   end
 
-  create_table "curation_concerns_operations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "curation_concerns_operations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "status"
     t.string   "operation_type"
     t.string   "job_class"
@@ -65,20 +65,20 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_curation_concerns_operations_on_user_id", using: :btree
   end
 
-  create_table "domain_terms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "domain_terms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "model"
     t.string "term"
     t.index ["model", "term"], name: "terms_by_model_and_term", using: :btree
   end
 
-  create_table "domain_terms_local_authorities", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "domain_terms_local_authorities", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "domain_term_id"
     t.integer "local_authority_id"
     t.index ["domain_term_id", "local_authority_id"], name: "dtla_by_ids2", using: :btree
     t.index ["local_authority_id", "domain_term_id"], name: "dtla_by_ids1", using: :btree
   end
 
-  create_table "featured_works", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "featured_works", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "order",      default: 5
     t.string   "work_id"
     t.datetime "created_at",             null: false
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["work_id"], name: "index_featured_works_on_work_id", using: :btree
   end
 
-  create_table "file_download_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "file_download_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.datetime "date"
     t.integer  "downloads"
     t.string   "file_id"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_file_download_stats_on_user_id", using: :btree
   end
 
-  create_table "file_view_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "file_view_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.datetime "date"
     t.integer  "views"
     t.string   "file_id"
@@ -109,11 +109,11 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_file_view_stats_on_user_id", using: :btree
   end
 
-  create_table "local_authorities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "local_authorities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
   end
 
-  create_table "local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "local_authority_id"
     t.string  "label"
     t.string  "uri"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["local_authority_id", "uri"], name: "entries_by_term_and_uri", using: :btree
   end
 
-  create_table "mailboxer_conversation_opt_outs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "mailboxer_conversation_opt_outs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string  "unsubscriber_type"
     t.integer "unsubscriber_id"
     t.integer "conversation_id"
@@ -129,13 +129,13 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type", using: :btree
   end
 
-  create_table "mailboxer_conversations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "mailboxer_conversations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "subject",    default: ""
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
-  create_table "mailboxer_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "mailboxer_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "type"
     t.text     "body",                 limit: 65535
     t.string   "subject",                            default: ""
@@ -157,7 +157,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["type"], name: "index_mailboxer_notifications_on_type", using: :btree
   end
 
-  create_table "mailboxer_receipts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "mailboxer_receipts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "receiver_type"
     t.integer  "receiver_id"
     t.integer  "notification_id",                            null: false
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
   end
 
-  create_table "permission_template_accesses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "permission_template_accesses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "permission_template_id"
     t.string   "agent_type"
     t.string   "agent_id"
@@ -184,7 +184,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["permission_template_id"], name: "fk_rails_9c1ccdc6d5", using: :btree
   end
 
-  create_table "permission_templates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "permission_templates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "admin_set_id"
     t.string   "visibility"
     t.string   "workflow_name"
@@ -195,7 +195,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["admin_set_id"], name: "index_permission_templates_on_admin_set_id", using: :btree
   end
 
-  create_table "proxy_deposit_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "proxy_deposit_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "work_id",                                             null: false
     t.integer  "sending_user_id",                                     null: false
     t.integer  "receiving_user_id",                                   null: false
@@ -209,7 +209,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["sending_user_id"], name: "index_proxy_deposit_requests_on_sending_user_id", using: :btree
   end
 
-  create_table "proxy_deposit_rights", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "proxy_deposit_rights", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "grantor_id"
     t.integer  "grantee_id"
     t.datetime "created_at", null: false
@@ -218,14 +218,14 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["grantor_id"], name: "index_proxy_deposit_rights_on_grantor_id", using: :btree
   end
 
-  create_table "qa_local_authorities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "qa_local_authorities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_qa_local_authorities_on_name", unique: true, using: :btree
   end
 
-  create_table "qa_local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "qa_local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "local_authority_id"
     t.string   "label"
     t.string   "uri"
@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["uri"], name: "index_qa_local_authority_entries_on_uri", unique: true, using: :btree
   end
 
-  create_table "searches", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "searches", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.binary   "query_params", limit: 65535
     t.integer  "user_id"
     t.string   "user_type"
@@ -244,7 +244,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_searches_on_user_id", using: :btree
   end
 
-  create_table "single_use_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "single_use_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "downloadKey"
     t.string   "path"
     t.string   "itemId"
@@ -253,7 +253,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "sipity_agents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_agents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "proxy_for_id",   null: false
     t.string   "proxy_for_type", null: false
     t.datetime "created_at",     null: false
@@ -261,7 +261,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["proxy_for_id", "proxy_for_type"], name: "sipity_agents_proxy_for", unique: true, using: :btree
   end
 
-  create_table "sipity_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "entity_id",                null: false
     t.integer  "agent_id",                 null: false
     t.text     "comment",    limit: 65535
@@ -272,7 +272,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["entity_id"], name: "index_sipity_comments_on_entity_id", using: :btree
   end
 
-  create_table "sipity_entities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_entities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "proxy_for_global_id", null: false
     t.integer  "workflow_id",         null: false
     t.integer  "workflow_state_id"
@@ -283,7 +283,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_state_id"], name: "index_sipity_entities_on_workflow_state_id", using: :btree
   end
 
-  create_table "sipity_entity_specific_responsibilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_entity_specific_responsibilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "workflow_role_id", null: false
     t.string   "entity_id",        null: false
     t.integer  "agent_id",         null: false
@@ -295,7 +295,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_role_id"], name: "sipity_entity_specific_responsibilities_role", using: :btree
   end
 
-  create_table "sipity_notifiable_contexts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_notifiable_contexts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "scope_for_notification_id",   null: false
     t.string   "scope_for_notification_type", null: false
     t.string   "reason_for_notification",     null: false
@@ -308,7 +308,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["scope_for_notification_id", "scope_for_notification_type"], name: "sipity_notifiable_contexts_concern", using: :btree
   end
 
-  create_table "sipity_notification_recipients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_notification_recipients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "notification_id",    null: false
     t.integer  "role_id",            null: false
     t.string   "recipient_strategy", null: false
@@ -320,7 +320,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["role_id"], name: "sipity_notification_recipients_role", using: :btree
   end
 
-  create_table "sipity_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name",              null: false
     t.string   "notification_type", null: false
     t.datetime "created_at",        null: false
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["notification_type"], name: "index_sipity_notifications_on_notification_type", using: :btree
   end
 
-  create_table "sipity_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name",                      null: false
     t.text     "description", limit: 65535
     t.datetime "created_at",                null: false
@@ -337,7 +337,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["name"], name: "index_sipity_roles_on_name", unique: true, using: :btree
   end
 
-  create_table "sipity_workflow_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "workflow_id",                 null: false
     t.integer  "resulting_workflow_state_id"
     t.string   "name",                        null: false
@@ -348,7 +348,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_id"], name: "sipity_workflow_actions_workflow", using: :btree
   end
 
-  create_table "sipity_workflow_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "service_name",       null: false
     t.integer  "weight",             null: false
     t.integer  "workflow_action_id", null: false
@@ -357,7 +357,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_action_id"], name: "index_sipity_workflow_methods_on_workflow_action_id", using: :btree
   end
 
-  create_table "sipity_workflow_responsibilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_responsibilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "agent_id",         null: false
     t.integer  "workflow_role_id", null: false
     t.datetime "created_at",       null: false
@@ -365,7 +365,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["agent_id", "workflow_role_id"], name: "sipity_workflow_responsibilities_aggregate", unique: true, using: :btree
   end
 
-  create_table "sipity_workflow_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "workflow_id", null: false
     t.integer  "role_id",     null: false
     t.datetime "created_at",  null: false
@@ -373,7 +373,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_id", "role_id"], name: "sipity_workflow_roles_aggregate", unique: true, using: :btree
   end
 
-  create_table "sipity_workflow_state_action_permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_state_action_permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "workflow_role_id",         null: false
     t.integer  "workflow_state_action_id", null: false
     t.datetime "created_at",               null: false
@@ -381,7 +381,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_role_id", "workflow_state_action_id"], name: "sipity_workflow_state_action_permissions_aggregate", unique: true, using: :btree
   end
 
-  create_table "sipity_workflow_state_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_state_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "originating_workflow_state_id", null: false
     t.integer  "workflow_action_id",            null: false
     t.datetime "created_at",                    null: false
@@ -389,7 +389,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["originating_workflow_state_id", "workflow_action_id"], name: "sipity_workflow_state_actions_aggregate", unique: true, using: :btree
   end
 
-  create_table "sipity_workflow_states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflow_states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "workflow_id", null: false
     t.string   "name",        null: false
     t.datetime "created_at",  null: false
@@ -398,7 +398,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["workflow_id", "name"], name: "sipity_type_state_aggregate", unique: true, using: :btree
   end
 
-  create_table "sipity_workflows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sipity_workflows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name",                      null: false
     t.string   "label"
     t.text     "description", limit: 65535
@@ -407,34 +407,34 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["name"], name: "index_sipity_workflows_on_name", unique: true, using: :btree
   end
 
-  create_table "subject_local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "subject_local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "label"
     t.string "lowerLabel"
     t.string "url"
     t.index ["lowerLabel"], name: "entries_by_lower_label", using: :btree
   end
 
-  create_table "sufia_features", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sufia_features", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "key",                        null: false
     t.boolean  "enabled",    default: false, null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
 
-  create_table "tinymce_assets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "tinymce_assets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "file"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "trophies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "trophies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_id"
     t.string   "work_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "uploaded_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "uploaded_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "file"
     t.integer  "user_id"
     t.string   "file_set_uri"
@@ -444,7 +444,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_uploaded_files_on_user_id", using: :btree
   end
 
-  create_table "user_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_id"
     t.datetime "date"
     t.integer  "file_views"
@@ -455,7 +455,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["user_id"], name: "index_user_stats_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "email",                                default: "",    null: false
     t.string   "encrypted_password",                   default: "",    null: false
     t.string   "reset_password_token"
@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  create_table "version_committers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "version_committers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "obj_id"
     t.string   "datastream_id"
     t.string   "version_id"
@@ -505,7 +505,7 @@ ActiveRecord::Schema.define(version: 20170207163915) do
     t.datetime "updated_at",      null: false
   end
 
-  create_table "work_view_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "work_view_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.datetime "date"
     t.integer  "work_views"
     t.string   "work_id"

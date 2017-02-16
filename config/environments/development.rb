@@ -52,5 +52,5 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  ENV.replace(eval(`sh -c 'source libra_oc_env.ksh && ruby -e "p ENV"'`) || {})
+  ENV.update(eval(`sh -c 'source libra_oc_env.ksh && ruby -e "p ENV"'`) || {})
 end

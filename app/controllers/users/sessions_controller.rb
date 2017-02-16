@@ -1,6 +1,5 @@
 # Overridden Devise::SessionsController
 class Users::SessionsController < Devise::SessionsController
-  # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
   def new
@@ -12,11 +11,7 @@ class Users::SessionsController < Devise::SessionsController
     if Rails.env.development?
       request.env['HTTP_REMOTE_USER'] = ENV['DEV_USER']
     end
-    self.resource = warden.authenticate!(auth_options)
-    set_flash_message(:notice, :signed_in) if is_flashing_format?
-    sign_in(resource_name, resource)
-    yield resource if block_given?
-    redirect_to after_sign_in_path_for(resource)
+    super
   end
 
   # DELETE /resource/sign_out
