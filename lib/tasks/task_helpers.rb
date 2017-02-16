@@ -32,7 +32,7 @@ module TaskHelpers
   def get_work_by_id( work_id )
 
      begin
-       return GenericWork.find( work_id )
+       return LibraWork.find( work_id )
      rescue => e
      end
 
@@ -91,7 +91,7 @@ module TaskHelpers
 
     solr_works.each do |gw_solr|
       begin
-        gw = GenericWork.find( gw_solr['id'] )
+        gw = LibraWork.find( gw_solr['id'] )
         f.call( gw )
       rescue => e
         puts e
@@ -101,9 +101,9 @@ module TaskHelpers
   end
 
   #
-  # show full details of a generic work
+  # show full details of a libra work
   #
-  def show_generic_work( work )
+  def show_libra_work( work )
 
     return if work.nil?
     j = JSON.parse( work.to_json )
@@ -140,6 +140,26 @@ module TaskHelpers
     return if val.nil?
     return if val.respond_to?( :empty? ) && val.empty?
     puts " #{name} => #{val}"
+  end
+
+  #
+  # upload the specified file to the specified work on behalf of the specified user
+  #
+  def upload_file( user, work, filename, title, visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC )
+
+    print "uploading #{filename}... "
+
+    fileset = ::FileSet.new
+    fileset.title << title unless title.nil?
+    file_actor = ::CurationConcerns::Actors::FileSetActor.new( fileset, user )
+    file_actor.create_metadata( work )
+    file_actor.create_content( File.open( filename ) )
+    fileset.visibility = visibility
+    fileset.save!
+
+    puts "done"
+    return fileset
+
   end
 
   #
