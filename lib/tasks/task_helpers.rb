@@ -9,7 +9,7 @@ include Helpers
 module TaskHelpers
 
   # general definitions
-  DEFAULT_USER = 'dpg3k'
+  DEFAULT_USER = 'naw4t'
   DEFAULT_DOMAIN = 'virginia.edu'
 
   #

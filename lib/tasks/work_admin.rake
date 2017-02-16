@@ -133,8 +133,9 @@ namespace :work do
     id = Time.now.to_i
     title = "Example libra work title (#{id})"
     description = "Example libra work description (#{id})"
+    author = Author.new first_name: 'author first', last_name: 'author last' , computing_id: 'abc123', department: 'Library' , institution: 'UVA'
 
-    work = create_work( user, title, description )
+    work = create_work( user, title, description, author )
 
     filename = TaskHelpers.get_random_image( )
     TaskHelpers.upload_file( user, work, filename, File.basename( filename ) )
@@ -162,11 +163,11 @@ namespace :work do
     work.destroy
   end
 
-  def create_work( user, title, description )
-     return( create_libra_work( user, title, description ) )
+  def create_work( user, title, description, author )
+     return( create_libra_work( user, title, description, author ) )
   end
 
-  def create_libra_work( user, title, description )
+  def create_libra_work( user, title, description, author )
 
     # look up user details
     #user_info = user_info_by_email( user.email )
@@ -175,6 +176,7 @@ namespace :work do
     #  user_info = Helpers::UserInfo.create(
     #      "{'first_name': 'First name', 'last_name': 'Last name'}".to_json )
     #end
+
 
     work = LibraWork.create!(title: [ title ] ) do |w|
 
@@ -186,6 +188,8 @@ namespace :work do
       #w.author_last_name = user_info.last_name
       #w.author_institution = LibraWork::DEFAULT_INSTITUTION
 
+      w.authors = [author]
+
       w.date_uploaded = CurationConcerns::TimeService.time_in_utc
       #w.date_created = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d" )
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
@@ -194,6 +198,8 @@ namespace :work do
       w.description = [ description ]
       #w.work_type = work_type
       #w.draft = work_type == LibraWork::WORK_TYPE_THESIS ? 'true' : 'false'
+
+      w.abstract = ["hello abstract"]
 
       #w.publisher = LibraWork::DEFAULT_PUBLISHER
       #w.department = 'Placeholder department'
