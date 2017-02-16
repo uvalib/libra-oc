@@ -2,7 +2,7 @@
 #  `rails generate curation_concerns:work LibraWork`
 class LibraWork < ActiveFedora::Base
   include ::CurationConcerns::WorkBehavior
-  include ::CurationConcerns::BasicMetadata
+  include Libraoc::BasicMetadata
   include Sufia::WorkBehavior
   self.human_readable_type = 'Work'
 
@@ -18,4 +18,5 @@ class LibraWork < ActiveFedora::Base
   property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
     index.as :stored_searchable
   end
+
 end

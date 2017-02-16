@@ -7,9 +7,11 @@ module CurationConcerns
     self.required_fields -= [:creator]
     self.terms += [:resource_type, :abstract, :authors]
     self.terms -= [:description, :creator, :subject]
+    delegate :authors, to: :model
 
     def self.multiple?(field)
-      if [:title, :description, :publisher, :rights, :source].include? field.to_sym
+
+      if [:title, :description, :publisher, :source].include? field.to_sym
         false
       else
         super
@@ -21,6 +23,7 @@ module CurationConcerns
       attrs[:title] = Array(attrs[:title]) if attrs[:title]
       attrs[:description] = Array(attrs[:description]) if attrs[:description]
       attrs[:publisher] = Array(attrs[:publisher]) if attrs[:publisher]
+      attrs[:source] = Array(attrs[:source]) if attrs[:source]
       attrs
     end
 
@@ -33,10 +36,6 @@ module CurationConcerns
     end
 
     def publisher
-      super.first || ""
-    end
-
-    def rights
       super.first || ""
     end
 
@@ -56,9 +55,9 @@ module CurationConcerns
 
     def self.build_permitted_params
       permitted = super
-      permitted << [:rights]
       permitted.delete( {authors: []} )
       permitted << { authors_attributes: permitted_authors_params }
+      permitted << :rights
       permitted
     end
 

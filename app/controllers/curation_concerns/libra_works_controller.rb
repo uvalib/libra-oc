@@ -7,5 +7,9 @@ module CurationConcerns
     include Sufia::WorksControllerBehavior
 
     self.curation_concern_type = LibraWork
+
+    def save
+      super
+    end
   end
 end
