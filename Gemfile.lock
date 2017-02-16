@@ -6,6 +6,38 @@ GIT
     flipflop (2.2.1)
       activesupport (>= 4.0)
 
+PATH
+  remote: vendor/gems/curation_concerns-1.7.4
+  specs:
+    curation_concerns (1.7.4)
+      active-fedora (>= 10.3.0.rc1)
+      active_attr
+      active_fedora-noid (~> 2.0.0.beta5)
+      awesome_nested_set (~> 3.0)
+      blacklight (~> 6.3)
+      breadcrumbs_on_rails (>= 3.0.1, < 4)
+      browse-everything (~> 0.10, >= 0.10.5)
+      clipboard-rails (~> 1.5)
+      dry-equalizer (~> 0.2)
+      dry-struct (~> 0.1)
+      dry-validation (~> 0.9)
+      flot-rails (~> 0.0.7)
+      highcharts-rails
+      hydra-editor (>= 2, < 4)
+      hydra-head (>= 10.3.0, < 11)
+      hydra-works (>= 0.14.0)
+      jquery-ui-rails (~> 5.0.5)
+      kaminari_route_prefix (~> 0.0.1)
+      power_converter (~> 0.1, >= 0.1.2)
+      qa (~> 0.5)
+      rails_autolink
+      rdf (>= 1.99)
+      rdf-vocab (>= 0.8)
+      redlock (~> 0.1.2)
+      simple_form (~> 3.1)
+      solrizer (~> 3.4)
+      sprockets-es6
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -148,34 +180,6 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.4)
-    curation_concerns (1.7.4)
-      active-fedora (>= 10.3.0.rc1)
-      active_attr
-      active_fedora-noid (~> 2.0.0.beta5)
-      awesome_nested_set (~> 3.0)
-      blacklight (~> 6.3)
-      breadcrumbs_on_rails (>= 3.0.1, < 4)
-      browse-everything (~> 0.10, >= 0.10.5)
-      clipboard-rails (~> 1.5)
-      dry-equalizer (~> 0.2)
-      dry-struct (~> 0.1)
-      dry-validation (~> 0.9)
-      flot-rails (~> 0.0.7)
-      highcharts-rails
-      hydra-editor (>= 2, < 4)
-      hydra-head (>= 10.3.0, < 11)
-      hydra-works (>= 0.14.0)
-      jquery-ui-rails (~> 5.0.5)
-      kaminari_route_prefix (~> 0.0.1)
-      power_converter (~> 0.1, >= 0.1.2)
-      qa (~> 0.5)
-      rails_autolink
-      rdf (>= 1.99)
-      rdf-vocab (>= 0.8)
-      redlock (~> 0.1.2)
-      simple_form (~> 3.1)
-      solrizer (~> 3.4)
-      sprockets-es6
     daemons (1.2.4)
     debug_inspector (0.0.2)
     deprecation (1.0.0)
@@ -655,7 +659,7 @@ DEPENDENCIES
   blacklight_advanced_search
   byebug
   coffee-rails (~> 4.2)
-  curation_concerns
+  curation_concerns (= 1.7.4)!
   devise
   devise-guests (~> 0.5)
   fcrepo_wrapper

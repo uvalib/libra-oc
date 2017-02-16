@@ -48,7 +48,7 @@ end
 
 # Sufia Related
 gem 'sufia', '~> 7.3.0.rc1'
-gem 'curation_concerns'
+gem 'curation_concerns', '1.7.4', :path => 'vendor/gems/curation_concerns-1.7.4'
 gem 'flipflop', github: 'jcoyne/flipflop', branch: 'hydra'
 gem 'blacklight_advanced_search'
 
