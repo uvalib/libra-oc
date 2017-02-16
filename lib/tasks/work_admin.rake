@@ -211,7 +211,7 @@ namespace :work do
       #contributor << TaskHelpers.contributor_fields_from_cid( 2, 'naw4t' )
       #w.contributor = contributor
 
-      w.rights << 'Determine your rights assignments here'
+      w.rights << 'http://creativecommons.org/licenses/by/3.0/us/'
       #w.license = LibraWork::DEFAULT_LICENSE
 
       #print "getting DOI..."
