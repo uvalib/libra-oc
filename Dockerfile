@@ -15,6 +15,7 @@ RUN gem install bundler --no-ri --no-rdoc
 WORKDIR /tmp
 ADD Gemfile Gemfile
 ADD Gemfile.lock Gemfile.lock
+ADD vendor/gems vendor/gems
 RUN bundle install
 
 # create work directory
