@@ -17,9 +17,9 @@ module Libraoc::BasicMetadata
     property :creator, predicate: ::RDF::Vocab::DC11.creator do |index|
       index.as :stored_searchable, :facetable
     end
-    property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
-      index.as :stored_searchable, :facetable
-    end
+#   property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
+#     index.as :stored_searchable, :facetable
+#   end
     property :description, predicate: ::RDF::Vocab::DC11.description do |index|
       index.type :text
       index.as :stored_searchable
@@ -51,12 +51,14 @@ module Libraoc::BasicMetadata
     property :language, predicate: ::RDF::Vocab::DC11.language do |index|
       index.as :stored_searchable, :facetable
     end
+
     property :identifier, predicate: ::RDF::Vocab::DC.identifier do |index|
       index.as :stored_searchable
     end
-    property :based_near, predicate: ::RDF::Vocab::FOAF.based_near do |index|
-      index.as :stored_searchable, :facetable
-    end
+
+#   property :based_near, predicate: ::RDF::Vocab::FOAF.based_near do |index|
+#     index.as :stored_searchable, :facetable
+#   end
     property :related_url, predicate: ::RDF::RDFS.seeAlso do |index|
       index.as :stored_searchable
     end
