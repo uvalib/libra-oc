@@ -6,7 +6,7 @@ module CurationConcerns
     self.required_fields += [:authors]
     self.required_fields -= [:creator]
     self.terms += [:resource_type, :abstract, :authors]
-    self.terms -= [:description, :creator, :subject]
+    self.terms -= [:description, :creator, :subject, :based_near]
     delegate :authors, to: :model
 
     def self.multiple?(field)
@@ -24,6 +24,7 @@ module CurationConcerns
       attrs[:description] = Array(attrs[:description]) if attrs[:description]
       attrs[:publisher] = Array(attrs[:publisher]) if attrs[:publisher]
       attrs[:source] = Array(attrs[:source]) if attrs[:source]
+      attrs[:abstract] = Array(attrs[:abstract]) if attrs[:abstract]
       attrs
     end
 
@@ -32,6 +33,10 @@ module CurationConcerns
     end
 
     def description
+      super.first || ""
+    end
+
+    def abstract
       super.first || ""
     end
 
