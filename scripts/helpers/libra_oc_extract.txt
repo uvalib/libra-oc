@@ -1,0 +1,17 @@
+The extract process assumes you have a locally hosted endpoint that can talk to the production instance of SOLR and Fedora. Configured for
+localhost:9000. You can create a local tunnel as follows:
+
+# host we are tunneling from
+export REMOTE_SERVER=libraprod.lib.virginia.edu
+
+# port or service we are tunneling
+export REMOTE_PORT=8983
+
+# where we want the local tunnel to be
+export LOCAL_PORT=9000
+
+ssh -v -nNT -L $LOCAL_PORT:localhost:$REMOTE_PORT $REMOTE_SERVER
+
+#
+# end of file
+#
