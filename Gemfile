@@ -61,3 +61,7 @@ gem 'sentry-raven'
 
 gem 'rest-client'
 
+# used for exporting/ingesting Libra content
+gem 'hash_at_path'
+gem 'oga'
+
