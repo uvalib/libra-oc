@@ -2,9 +2,9 @@
 # values to use if these are not specified in the ingest
 #
 rights: 'All rights reserved (no additional license for public reuse)'
-publisher: <%= GenericWork::DEFAULT_PUBLISHER %>
-institution: <%= GenericWork::DEFAULT_INSTITUTION %>
-license: <%= GenericWork::DEFAULT_LICENSE %>
+publisher: <%= LibraWork::DEFAULT_PUBLISHER %>
+institution: <%= LibraWork::DEFAULT_INSTITUTION %>
+license: <%= LibraWork::DEFAULT_LICENSE %>
 
 #
 # append to the notes record for informational purposes
