@@ -159,6 +159,7 @@ module IngestHelpers
     errors << 'missing institution' if payload[ :institution ].nil?
     errors << 'missing source' if payload[ :source ].nil?
     errors << 'missing license' if payload[ :license ].nil?
+    errors << 'missing embargo' if payload[ :embargo_type ].nil?
 
     # check for an abstract that exceeds the maximum size
     if payload[ :abstract ].blank? == false && payload[ :abstract ].length > MAX_ABSTRACT_LENGTH
@@ -175,15 +176,14 @@ module IngestHelpers
     #
 
     # author(s)
-    warnings << 'missing title' if payload[ :authors ].empty?
+    warnings << 'missing author(s)' if payload[ :authors ].empty?
 
-    # advisor(s)
-    warnings << 'missing advisor(s)' if payload[ :advisors ].empty?
+    # contributor(s)
+    warnings << 'missing contributor(s)' if payload[ :contributors ].empty?
 
     warnings << 'missing issued date' if payload[ :issued ].nil?
     warnings << 'missing abstract' if payload[ :abstract ].nil?
     warnings << 'missing keywords' if payload[ :keywords ].nil?
-    #warnings << 'missing degree' if payload[ :degree ].nil?
     warnings << 'missing create date' if payload[ :create_date ].nil?
     warnings << 'missing modified date' if payload[ :modified_date ].nil?
     warnings << 'missing language' if payload[ :language ].nil?
@@ -216,7 +216,7 @@ module IngestHelpers
       end
 
       # advisors
-      payload[:advisors].each do |a|
+      payload[:contributors].each do |a|
         w.contributors << Contributor.new( computing_id: a[:computing_id],
                                            first_name: a[:first_name],
                                            last_name: a[:last_name],
@@ -234,13 +234,10 @@ module IngestHelpers
       w.published_date = payload[ :issued ] if payload[ :issued ]
 
       # embargo attributes
-      w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
-      #w.embargo_state = IngestHelpers.set_embargo_for_type( payload[:embargo_type ] )
-      #w.visibility_during_embargo = IngestHelpers.set_embargo_for_type( payload[:embargo_type ] )
+      w.visibility = visibility_lookup( payload[ :embargo_type ] )
       #w.embargo_end_date = payload[ :embargo_release_date ] if payload[ :embargo_release_date ]
-      #w.embargo_period = payload[ :embargo_period ] if payload[ :embargo_period ]
 
-      #w.publisher = payload[ :publisher ] if payload[ :publisher ]
+      w.publisher = [ payload[ :publisher ] ] if payload[ :publisher ]
 
       w.language = [ payload[ :language ] ] if payload[ :language ]
 
@@ -251,6 +248,7 @@ module IngestHelpers
       w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
       w.work_source = payload[ :source ] if payload[ :source ]
 
+      w.resource_type = [ payload[ :resource_type ] ] if payload[ :resource_type ]
     end
 
     return ok, work
@@ -444,44 +442,12 @@ module IngestHelpers
   #
   # add the specified number of years to the specified date
   #
-  def calculate_embargo_release_date( date, embargo_period )
+  def calculate_embargo_release_date( from_date )
 
-    normalized_date = normalize_date( date )
+    normalized_date = normalize_date( from_date )
     dt = Date.parse( normalized_date )
-    case embargo_period
-      when LibraWork::EMBARGO_VALUE_6_MONTH
-        return dt + 6.months
-      when LibraWork::EMBARGO_VALUE_1_YEAR
-        return dt + 1.year
-      when LibraWork::EMBARGO_VALUE_2_YEAR
-        return dt + 2.years
-      when LibraWork::EMBARGO_VALUE_5_YEAR
-        return dt + 5.years
-      when LibraWork::EMBARGO_VALUE_FOREVER
-        return dt + 130.years
-    end
-    return dt
-  end
-
-  #
-  # calculate the approx original embargo period given the issued and release dates
-  #
-  def estimate_embargo_period( issued, embargo_release )
-    period = Date.parse( embargo_release ) - Date.parse( issued )
-    case period.to_i
-      when 0
-        return ''
-      when 1..186
-        return LibraWork::EMBARGO_VALUE_6_MONTH
-      when 187..366
-        return LibraWork::EMBARGO_VALUE_1_YEAR
-      when 367..731
-        return LibraWork::EMBARGO_VALUE_2_YEAR
-      when 732..1825
-        return LibraWork::EMBARGO_VALUE_5_YEAR
-      else
-        return LibraWork::EMBARGO_VALUE_FOREVER
-    end
+    # we only support LibraWork::EMBARGO_VALUE_FOREVER
+    return dt + 130.years
   end
 
   #
@@ -504,17 +470,6 @@ module IngestHelpers
     # give up and return what we were provided
     return date
 
-  end
-
-  #
-  # Determine the embargo type from the metadata
-  #
-  def set_embargo_for_type(embargo )
-    return Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC if embargo.blank?
-    return Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED if embargo == 'uva'
-
-    # none of the above
-    return Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
   end
 
   #
@@ -542,6 +497,14 @@ module IngestHelpers
   def department_lookup( department )
     return DEPARTMENT_MAP[ department ] if DEPARTMENT_MAP.key? ( department )
     return department
+  end
+
+  #
+  # maps our concept of visibility to sufias
+  #
+  def visibility_lookup( visibility )
+    return Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED if visibility == 'uva'
+    return Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
   end
 
   #

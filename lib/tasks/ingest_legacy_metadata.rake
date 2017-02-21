@@ -124,6 +124,9 @@ namespace :libraoc do
      # merge in any default attributes
      payload = apply_defaults_for_legacy_item( defaults, payload )
 
+     # calculate embargo release date
+     payload = add_embargo_release_date( payload )
+
      # some fields with embedded quotes need to be escaped; handle this here
      payload = IngestHelpers.escape_fields( payload )
 
@@ -150,7 +153,7 @@ namespace :libraoc do
      # create the work
      ok, work = IngestHelpers.create_new_item( depositor, payload )
      if ok == true
-       puts "New work created; id #{work.id} (#{work.identifier || 'none'})"
+       puts "New work created; id #{work.id} (#{work.identifier[0] || 'none'})"
      else
        #puts " ERROR: creating new generic work for #{File.basename( dirname )} (#{id})"
        #return false
@@ -200,13 +203,13 @@ namespace :libraoc do
        author_number += 1
      end
 
-     # document advisor
-     payload[ :advisors ] = []
-     advisor_number = 1
+     # document contributor
+     payload[ :contributors ] = []
+     contributor_number = 0
      while true
-        added, payload[ :advisors ] = add_advisor( solr_doc, advisor_number, payload[ :advisors ] )
+        added, payload[ :contributors ] = add_contributor( solr_doc, contributor_number, payload[ :contributors ] )
         break unless added
-        advisor_number += 1
+        contributor_number += 1
      end
 
      # issue date
@@ -218,8 +221,6 @@ namespace :libraoc do
      payload[ :embargo_type ] = embargo_type if embargo_type.present?
      release_date = solr_doc.at_path( 'embargo_embargo_release_date_t[0]' )
      payload[ :embargo_release_date ] = release_date if release_date.present?
-     payload[ :embargo_period ] =
-         IngestHelpers.estimate_embargo_period( issued_date, release_date ) if issued_date.present? && release_date.present?
 
      # document source
      payload[ :source ] = solr_doc.at_path( 'id' )
@@ -268,27 +269,23 @@ namespace :libraoc do
   end
 
   #
-  # adds another advisor if we can locate one
+  # adds another contributor if we can locate one
   #
-  def add_advisor( solr_doc, advisor_number, advisors )
+  def add_contributor( solr_doc, contributor_number, contributors )
 
-    #puts "Looking for mods_0_person_#{advisor_number}_role_0_text_t[0]"
+    #
+    # for libra open, the only contributors are book editors
+    #
 
-    role = solr_doc.at_path( "mods_0_person_#{advisor_number}_role_0_text_t[0]" )
-    #puts "FOUND #{role}"
+    fn = solr_doc.at_path( "mods_0_book_0_editor_#{contributor_number}_first_name_t[0]" )
+    ln = solr_doc.at_path( "mods_0_book_0_editor_#{contributor_number}_last_name_t[0]" )
 
-    if role && role.include?( 'advisor' )
-      cid = solr_doc.at_path( "mods_0_person_#{advisor_number}_computing_id_t[0]" )
-      fn = solr_doc.at_path( "mods_0_person_#{advisor_number}_first_name_t[0]" )
-      ln = solr_doc.at_path( "mods_0_person_#{advisor_number}_last_name_t[0]" )
-      dept = solr_doc.at_path( "mods_0_person_#{advisor_number}_description_t[0]" )
-      ins = solr_doc.at_path( "mods_0_person_#{advisor_number}_institution_t[0]" )
-
-      return add_person( advisors, cid, fn, ln, dept, ins )
+    if fn.blank? == false && ln.blank? == false
+      return add_person( contributors, '', fn, ln, '', '' )
     end
 
-    # could not find the next advisor, we are done
-    return false, advisors
+    # could not find the next contributor, we are done
+    return false, contributors
   end
 
   #
@@ -320,6 +317,22 @@ namespace :libraoc do
   end
 
   #
+  # calculate embargo release date
+  #
+  def add_embargo_release_date( payload )
+
+    # handle embargo release date calculation
+    if payload[ :embargo_type ] == 'uva'
+       if payload[ :issued ]
+          payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( payload[ :issued ] )
+       elsif payload[ :create_date ]
+          payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( payload[ :create_date ] )
+       end
+    end
+    return payload
+  end
+
+  #
   # apply any default values and behavior to the standard payload
   #
   def apply_defaults_for_legacy_item( defaults, payload )
@@ -340,14 +353,6 @@ namespace :libraoc do
           time_now = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d %H:%M:%S" )
           new_notes += "#{v.gsub( 'LIBRA1_CREATE_DATE', original_create_date ).gsub( 'CURRENT_DATE', time_now )}"
           payload[ :notes ] = new_notes
-
-        when :force_embargo_period
-          payload[ :embargo_period ] = v
-          if payload[ :issued ]
-             payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( payload[ :issued ], v )
-          else
-             #payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( v )
-          end
 
        else if payload.key?( k ) == false
                payload[ k ] = v

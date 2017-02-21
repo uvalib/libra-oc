@@ -14,10 +14,15 @@ notes: 'Originally deposited on LIBRA1_CREATE_DATE in version 1.28 of Libra. Thi
 #
 # the default embargo type if we cannot determine one
 #
-default_embargo_type: uva
+embargo_type: open
 
 #
-# apply the specified embargo period; should be one of:
-# 6_months, 1_year, 2_year, 5_year, forever (130 years)
+# apply the specified embargo period if we cannot find one
+# forever (130 years)
 #
-force_embargo_period: forever
+embargo_period: forever
+
+#
+# what type of resource is this
+#
+resource_type: Book
