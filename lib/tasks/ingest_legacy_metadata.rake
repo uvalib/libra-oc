@@ -272,10 +272,10 @@ namespace :libraoc do
   #
   def add_advisor( solr_doc, advisor_number, advisors )
 
-    puts "Looking for mods_0_person_#{advisor_number}_role_0_text_t[0]"
+    #puts "Looking for mods_0_person_#{advisor_number}_role_0_text_t[0]"
 
     role = solr_doc.at_path( "mods_0_person_#{advisor_number}_role_0_text_t[0]" )
-    puts "FOUND #{role}"
+    #puts "FOUND #{role}"
 
     if role && role.include?( 'advisor' )
       cid = solr_doc.at_path( "mods_0_person_#{advisor_number}_computing_id_t[0]" )
@@ -296,8 +296,6 @@ namespace :libraoc do
   #
   def add_person( persons, cid, fn, ln, dept, ins )
 
-    puts "==> add_person #{cid}/#{fn}/#{ln}/#{dept}/#{ins}"
-
     computing_id = IngestHelpers.field_supplied( cid ) ? cid : ''
     first_name = IngestHelpers.field_supplied( fn ) ? fn : ''
     last_name = IngestHelpers.field_supplied( ln ) ? ln : ''
@@ -309,7 +307,6 @@ namespace :libraoc do
        last_name.blank? == false ||
        department.blank? == false ||
        institution.blank? == false
-       puts "==> ADDING PERSON #{computing_id}/#{first_name}/#{last_name}/#{department}/#{institution}"
        person = TaskHelpers.make_person( computing_id,
                                          first_name,
                                          last_name,
