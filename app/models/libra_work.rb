@@ -30,7 +30,7 @@ class LibraWork < ActiveFedora::Base
 # validates :license, presence: { message: 'Your work must have a license.' }
 
 
-  property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
+  property :abstract, predicate: ::RDF::Vocab::DC.abstract, multiple: false do |index|
     index.as :stored_searchable
   end
 
