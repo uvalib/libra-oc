@@ -13,6 +13,9 @@ class LibraWork < ActiveFedora::Base
   DEFAULT_LICENSE = 'None'.freeze
   DEFAULT_LANGUAGE = 'English'.freeze
 
+  # embargo periods (only one)
+  EMBARGO_VALUE_FOREVER = 'forever'.freeze
+
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
   accepts_nested_attributes_for :authors
