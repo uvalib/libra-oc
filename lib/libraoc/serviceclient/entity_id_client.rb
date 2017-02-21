@@ -6,7 +6,7 @@ module ServiceClient
    class EntityIdClient < BaseClient
 
      # get the helpers
-     include UrlHelper
+     #include UrlHelper
 
      #
      # configure with the appropriate configuration file
@@ -97,13 +97,13 @@ module ServiceClient
        h = {}
        #h['url'] = fully_qualified_work_url( work.id )
        h['title'] = work.title.join( ' ' ) if work.title
-       h['publisher'] = work.publisher if work.publisher
-       h['creator_firstname'] = work.author_first_name if work.author_first_name
-       h['creator_lastname'] = work.author_last_name if work.author_last_name
-       h['creator_department'] = work.department if work.department
-       h['creator_institution'] = work.author_institution if work.author_institution
-       h['publication_date'] = work.date_published if work.date_published
-       h['publication_milestone'] = work.degree if work.degree
+       #h['publisher'] = work.publisher if work.publisher
+       #h['creator_firstname'] = work.author_first_name if work.author_first_name
+       #h['creator_lastname'] = work.author_last_name if work.author_last_name
+       #h['creator_department'] = work.department if work.department
+       #h['creator_institution'] = work.author_institution if work.author_institution
+       #h['publication_date'] = work.date_published if work.date_published
+       #h['publication_milestone'] = work.degree if work.degree
        h['type'] = 'Text'
        h.to_json
      end

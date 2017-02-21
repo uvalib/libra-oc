@@ -2,14 +2,21 @@
 #
 #
 
-#require 'oga'
+require 'oga'
+
 require_dependency 'libraoc/helpers/service_helpers'
 include Helpers
 
 module TaskHelpers
 
+# used for the extract/ingest processing
+  INGEST_ID_FILE = 'ingest.id'
+  DOCUMENT_FILES_LIST = 'filelist.txt'
+  DOCUMENT_JSON_FILE = 'data.json'
+  DOCUMENT_XML_FILE = 'data.xml'
+
   # general definitions
-  DEFAULT_USER = 'naw4t'
+  DEFAULT_USER = 'dpg3k'
   DEFAULT_DOMAIN = 'virginia.edu'
 
   #
@@ -199,16 +206,22 @@ module TaskHelpers
       doc = JSON.parse json_str
       return doc
     end
+
+    puts "ERROR: locding #{filename}"
+    return nil
   end
 
   #
   # load a file containing xml data and return an oga document
   #
-  #def load_xml_doc( filename )
-  #  File.open( filename, 'r') do |file|
-  #    return Oga.parse_xml( file )
-  #  end
-  #end
+  def load_xml_doc( filename )
+    File.open( filename, 'r') do |file|
+      return Oga.parse_xml( file )
+    end
+
+    puts "ERROR: locding #{filename}"
+    return nil
+  end
 
 end
 

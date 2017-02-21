@@ -9,7 +9,7 @@ include TaskHelpers
 #require_dependency 'libra2/app/helpers/service_helper'
 #include ServiceHelper
 
-#require_dependency 'libra2/lib/serviceclient/entity_id_client'
+require_dependency 'libraoc/serviceclient/entity_id_client'
 
 namespace :libraoc do
 
@@ -224,15 +224,15 @@ namespace :work do
       w.rights << 'http://creativecommons.org/licenses/by/3.0/us/'
       #w.license = LibraWork::DEFAULT_LICENSE
 
-      #print "getting DOI..."
-      #status, id = ServiceClient::EntityIdClient.instance.newid( w )
-      #if ServiceClient::EntityIdClient.instance.ok?( status )
-      #   w.identifier = id
+      print "getting DOI..."
+      status, id = ServiceClient::EntityIdClient.instance.newid( w )
+      if ServiceClient::EntityIdClient.instance.ok?( status )
+         w.identifier = [ id ]
       #   w.permanent_url = LibraWork.doi_url( id )
-      #   puts "done"
-      #else
-      #   puts "error"
-      #end
+         puts "done"
+      else
+         puts "error"
+      end
     end
 
     return work

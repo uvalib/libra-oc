@@ -6,6 +6,13 @@ class LibraWork < ActiveFedora::Base
   include Sufia::WorkBehavior
   self.human_readable_type = 'Work'
 
+
+  # defaults
+  DEFAULT_INSTITUTION = 'University of Virginia'.freeze
+  DEFAULT_PUBLISHER = DEFAULT_INSTITUTION
+  DEFAULT_LICENSE = 'None'.freeze
+  DEFAULT_LANGUAGE = 'English'.freeze
+
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
   accepts_nested_attributes_for :authors
@@ -16,8 +23,8 @@ class LibraWork < ActiveFedora::Base
 
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
-  validates :title, presence: { message: 'Your work must have a title.' }
-  validates :abstract, presence: { message: 'Your work must have an abstract.' }
+#  validates :title, presence: { message: 'Your work must have a title.' }
+#  validates :abstract, presence: { message: 'Your work must have an abstract.' }
 # validates :publisher, presence: { message: 'Your work must have a publisher.' }
 # validates :resource_type, presence: { message: 'Your work must have a Resource Type.' }
 # validates :license, presence: { message: 'Your work must have a license.' }
