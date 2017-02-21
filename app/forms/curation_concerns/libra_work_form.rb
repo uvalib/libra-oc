@@ -5,8 +5,8 @@ module CurationConcerns
     self.model_class = ::LibraWork
     self.required_fields += [:authors]
     self.required_fields -= [:creator]
-    self.terms += [:resource_type, :abstract, :authors]
-    self.terms -= [:description, :creator, :subject, :based_near]
+    self.terms += [:resource_type, :abstract, :authors, :contributors]
+    self.terms -= [:description, :creator, :subject, :based_near, :contributor]
     delegate :authors, to: :model
 
     def self.multiple?(field)
