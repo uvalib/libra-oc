@@ -38,33 +38,20 @@ class LibraWork < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :orcid_id, predicate: ::RDF::URI('http://example.org/terms/orcid_id'), multiple: false do |index|
-    index.as :stored_searchable
-  end
-
-  property :abstract, predicate: ::RDF::Vocab::DC.abstract, multiple: false do |index|
-    index.type :text
-    index.as :stored_searchable
-  end
-
-  property :orcid_id, predicate: ::RDF::URI('http://example.org/terms/orcid_id'), multiple: false do |index|
-    index.as :stored_searchable
-  end
-
   property :published_date, predicate: ::RDF::URI('http://example.org/terms/published_date'), multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :sponsoring_agency, predicate: ::RDF::URI('http://example.org/terms/sponsor') do |index|
+  property :sponsoring_agency, predicate: ::RDF::URI('http://example.org/terms/sponsoring_agency') do |index|
     index.as :stored_searchable
   end
 
-  property :note, predicate: ::RDF::URI('http://example.org/terms/sponsor'), multiple: false do |index|
+  property :notes, predicate: ::RDF::URI('http://example.org/terms/notes'), multiple: false do |index|
     index.type :text
     index.as :stored_searchable
   end
 
-  property :license, predicate: ::RDF::URI('http://example.org/terms/sponsor'), multiple: false do |index|
+  property :license, predicate: ::RDF::URI('http://example.org/terms/license'), multiple: false do |index|
     index.as :stored_searchable
   end
 
@@ -73,6 +60,15 @@ class LibraWork < ActiveFedora::Base
   end
 
   property :libra_id, predicate: ::RDF::URI('http://example.org/terms/libra_id'), multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :work_source, predicate: ::RDF::URI('http://example.org/terms/work_source'), multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes') do |index|
+    index.type :text
     index.as :stored_searchable
   end
 
