@@ -116,9 +116,17 @@ module TaskHelpers
     j = JSON.parse( work.to_json )
     j.keys.sort.each do |k|
       val = j[ k ]
-      if k.end_with?( "_id" ) == false
-        show_field( k, val )
+      if k.end_with?( '_id' ) == false && k.end_with?( '_ids' ) == false
+        show_field( k, val, ' ' )
       end
+    end
+
+    work.authors.each_with_index do |p, ix|
+       show_person( " author #{ix + 1}:", p )
+    end
+
+    work.contributors.each_with_index do |p, ix|
+      show_person( " contributor #{ix + 1}:", p )
     end
 
 #    show_field( 'visibility', work.visibility )
@@ -141,12 +149,25 @@ module TaskHelpers
   end
 
   #
+  # show the contents of a person sub-field
+  #
+  def show_person( title, person )
+
+    puts "#{title}"
+    show_field( 'cid', person.computing_id, '   ' )
+    show_field( 'first_name', person.first_name, '   ' )
+    show_field( 'last_name', person.last_name, '   ' )
+    show_field( 'department', person.department, '   ' )
+    show_field( 'institution', person.institution, '   ' )
+  end
+
+  #
   # show a field if it is not empty
   #
-  def show_field( name, val )
+  def show_field( name, val, indent )
     return if val.nil?
     return if val.respond_to?( :empty? ) && val.empty?
-    puts " #{name} => #{val}"
+    puts "#{indent}#{name} => #{val}"
   end
 
   #

@@ -16,7 +16,6 @@ namespace :libraoc do
   # MAX_COUNT    - Maximum number of items to process
   # DUMP_PAYLOAD - Output the entire document metadata before saving
   # DRY_RUN      - Dont actually create the items
-  # NO_DOI       - Dont assign a DOI to the created items
   #
 
   #
@@ -180,7 +179,7 @@ namespace :libraoc do
 
      # date and time attributes
      create_date = solr_doc.at_path( 'system_create_dt' )
-     payload[ :create_date ] = IngestHelpers.extract_date( create_date ) if create_date.present?
+     payload[ :create_date ] = create_date if create_date.present?
      modified_date = solr_doc.at_path( 'system_modified_dt' )
      payload[ :modified_date ] = modified_date if modified_date.present?
 
@@ -188,24 +187,17 @@ namespace :libraoc do
      title = solr_doc.at_path( 'mods_title_info_t[0]')
      payload[ :title ] = title if title.present?
 
-     # document abstract (use the XML variant as it reflects the formatting better)
-     # this was used for the 4th year theses
-     #ab_node = fedora_doc.css( 'mods abstract' ).last
-     # this was used for the subsequent items
      ab_node = fedora_doc.css( 'mods abstract' ).first
      abstract = ab_node.text if ab_node
      payload[ :abstract ] = abstract if IngestHelpers.field_supplied( abstract )
 
      # document author
-     if solr_doc.at_path( 'mods_0_name_0_role_0_text_t[0]' ) == 'author'
-       dept = solr_doc.at_path( 'mods_0_name_0_description_t[0]' )
-       cid = solr_doc.at_path( 'mods_0_name_0_computing_id_t[0]' )
-       fn = solr_doc.at_path( 'mods_0_name_0_first_name_t[0]' )
-       ln = solr_doc.at_path( 'mods_0_name_0_last_name_t[0]' )
-       payload[ :author_computing_id ] = cid if IngestHelpers.field_supplied( cid )
-       payload[ :author_first_name ] = fn if IngestHelpers.field_supplied( fn )
-       payload[ :author_last_name ] = ln if IngestHelpers.field_supplied( ln )
-       payload[ :department ] = IngestHelpers.department_lookup( dept ) if IngestHelpers.field_supplied( dept )
+     payload[ :authors ] = []
+     author_number = 0
+     while true
+       added, payload[ :authors ] = add_author( solr_doc, author_number, payload[ :authors ] )
+       break unless added
+       author_number += 1
      end
 
      # document advisor
@@ -237,8 +229,8 @@ namespace :libraoc do
      #
 
      # degree program
-     degree = solr_doc.at_path( 'mods_extension_degree_level_t[0]' )
-     payload[ :degree ] = degree if degree.present?
+     #degree = solr_doc.at_path( 'mods_extension_degree_level_t[0]' )
+     #payload[ :degree ] = degree if degree.present?
 
      # keywords
      keywords = solr_doc.at_path( 'subject_topic_t' )
@@ -256,41 +248,78 @@ namespace :libraoc do
   end
 
   #
+  # adds another author if we can locate one
+  #
+  def add_author( solr_doc, author_number, authors )
+
+    role = solr_doc.at_path( "mods_0_name_#{author_number}_role_0_text_t[0]" )
+    if role && role.include?( 'author' )
+      cid = solr_doc.at_path( "mods_0_name_#{author_number}_computing_id_t[0]" )
+      fn = solr_doc.at_path( "mods_0_name_#{author_number}_first_name_t[0]" )
+      ln = solr_doc.at_path( "mods_0_name_#{author_number}_last_name_t[0]" )
+      dept = solr_doc.at_path( "mods_0_name_#{author_number}_description_t[0]" )
+      ins = solr_doc.at_path( "mods_0_name_#{author_number}_institution_t[0]" )
+
+      return add_person( authors, cid, fn, ln, dept, ins )
+    end
+
+    # could not find the next author, we are done
+    return false, authors
+  end
+
+  #
   # adds another advisor if we can locate one
   #
   def add_advisor( solr_doc, advisor_number, advisors )
 
-    if solr_doc.at_path( "mods_0_person_#{advisor_number}_role_0_text_t[0]" ) == 'advisor'
+    puts "Looking for mods_0_person_#{advisor_number}_role_0_text_t[0]"
+
+    role = solr_doc.at_path( "mods_0_person_#{advisor_number}_role_0_text_t[0]" )
+    puts "FOUND #{role}"
+
+    if role && role.include?( 'advisor' )
       cid = solr_doc.at_path( "mods_0_person_#{advisor_number}_computing_id_t[0]" )
       fn = solr_doc.at_path( "mods_0_person_#{advisor_number}_first_name_t[0]" )
       ln = solr_doc.at_path( "mods_0_person_#{advisor_number}_last_name_t[0]" )
       dept = solr_doc.at_path( "mods_0_person_#{advisor_number}_description_t[0]" )
       ins = solr_doc.at_path( "mods_0_person_#{advisor_number}_institution_t[0]" )
 
-      advisor_computing_id = IngestHelpers.field_supplied( cid ) ? cid : ''
-      advisor_first_name = IngestHelpers.field_supplied( fn ) ? fn : ''
-      advisor_last_name = IngestHelpers.field_supplied( ln ) ? ln : ''
-      advisor_department = IngestHelpers.field_supplied( dept ) ? IngestHelpers.department_lookup( dept ) : ''
-      advisor_institution = IngestHelpers.field_supplied( ins ) ? ins : ''
-
-      if advisor_computing_id.blank? == false ||
-         advisor_first_name.blank? == false ||
-         advisor_last_name.blank? == false ||
-         advisor_department.blank? == false ||
-         advisor_institution.blank? == false
-         adv = TaskHelpers.contributor_fields( advisor_number - 1,
-                                               advisor_computing_id,
-                                               advisor_first_name,
-                                               advisor_last_name,
-                                               advisor_department,
-                                               advisor_institution )
-
-         return true, advisors << adv
-      end
+      return add_person( advisors, cid, fn, ln, dept, ins )
     end
 
     # could not find the next advisor, we are done
     return false, advisors
+  end
+
+  #
+  # adds another person to the person list if we have one
+  #
+  def add_person( persons, cid, fn, ln, dept, ins )
+
+    puts "==> add_person #{cid}/#{fn}/#{ln}/#{dept}/#{ins}"
+
+    computing_id = IngestHelpers.field_supplied( cid ) ? cid : ''
+    first_name = IngestHelpers.field_supplied( fn ) ? fn : ''
+    last_name = IngestHelpers.field_supplied( ln ) ? ln : ''
+    department = IngestHelpers.field_supplied( dept ) ? IngestHelpers.department_lookup( dept ) : ''
+    institution = IngestHelpers.field_supplied( ins ) ? ins : ''
+
+    if computing_id.blank? == false ||
+       first_name.blank? == false ||
+       last_name.blank? == false ||
+       department.blank? == false ||
+       institution.blank? == false
+       puts "==> ADDING PERSON #{computing_id}/#{first_name}/#{last_name}/#{department}/#{institution}"
+       person = TaskHelpers.make_person( computing_id,
+                                         first_name,
+                                         last_name,
+                                         department,
+                                         institution
+                                       )
+
+      return true, persons << person
+    end
+    return false, persons
   end
 
   #

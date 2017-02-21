@@ -153,10 +153,6 @@ module IngestHelpers
     # document title
     errors << 'missing title' if payload[ :title ].nil?
 
-    # author attributes
-    #errors << 'missing author first name' if payload[ :author_first_name ].nil?
-    #errors << 'missing author last name' if payload[ :author_last_name ].nil?
-
     # other required attributes
     errors << 'missing rights' if payload[ :rights ].nil?
     errors << 'missing publisher' if payload[ :publisher ].nil?
@@ -178,22 +174,21 @@ module IngestHelpers
     # then warn about optional fields
     #
 
-    # author attributes
-    warnings << 'missing author first name' if payload[ :author_first_name ].nil?
-    warnings << 'missing author last name' if payload[ :author_last_name ].nil?
-    warnings << 'missing author computing id' if payload[ :author_computing_id ].nil?
+    # author(s)
+    warnings << 'missing title' if payload[ :authors ].empty?
 
-    warnings << 'missing advisor(s)' if payload[ :advisors ].blank?
+    # advisor(s)
+    warnings << 'missing advisor(s)' if payload[ :advisors ].empty?
 
     warnings << 'missing issued date' if payload[ :issued ].nil?
     warnings << 'missing abstract' if payload[ :abstract ].nil?
     warnings << 'missing keywords' if payload[ :keywords ].nil?
-    warnings << 'missing degree' if payload[ :degree ].nil?
+    #warnings << 'missing degree' if payload[ :degree ].nil?
     warnings << 'missing create date' if payload[ :create_date ].nil?
     warnings << 'missing modified date' if payload[ :modified_date ].nil?
     warnings << 'missing language' if payload[ :language ].nil?
     warnings << 'missing notes' if payload[ :notes ].nil?
-    #warnings << 'missing admin notes' if payload[ :admin_notes ].nil?
+    warnings << 'missing admin notes' if payload[ :admin_notes ].nil?
 
     return errors, warnings
   end
@@ -206,22 +201,37 @@ module IngestHelpers
     ok = true
     work = LibraWork.create!( title: [ payload[ :title ] ] ) do |w|
 
-      # generic work attributes
+      # basic work attributes
       w.apply_depositor_metadata( depositor )
       w.creator = [depositor.email]
 
-      #w.author_email = TaskHelpers.default_email( payload[ :author_computing_id ] ) if payload[ :author_computing_id ]
-      #w.author_first_name = payload[ :author_first_name ] if payload[ :author_first_name ]
-      #w.author_last_name = payload[ :author_last_name ] if payload[ :author_last_name ]
-      #w.author_institution = payload[ :institution ] if payload[ :institution ]
-      #w.contributor = payload[ :advisors ]
-      #w.description = payload[ :abstract ]
-      #w.keyword = payload[ :keywords ] if payload[ :keywords ]
+      # authors
+      payload[:authors].each do |a|
+        w.authors << Author.new( computing_id: a[:computing_id],
+                                 first_name: a[:first_name],
+                                 last_name: a[:last_name],
+                                 department: a[:department],
+                                 institution: a[:institution] )
+
+      end
+
+      # advisors
+      payload[:advisors].each do |a|
+        w.contributors << Contributor.new( computing_id: a[:computing_id],
+                                           first_name: a[:first_name],
+                                           last_name: a[:last_name],
+                                           department: a[:department],
+                                           institution: a[:institution] )
+
+      end
+
+      w.abstract = payload[ :abstract ]
+      w.keyword = payload[ :keywords ] if payload[ :keywords ]
 
       # date attributes
-      #w.date_created = payload[ :create_date ] if payload[ :create_date ]
-      #w.date_modified = DateTime.parse( payload[ :modified_date ] ) if payload[ :modified_date ]
-      #w.date_published = payload[ :issued ] if payload[ :issued ]
+      w.date_created = [ payload[ :create_date ] ] if payload[ :create_date ]
+      w.date_modified = DateTime.parse( payload[ :modified_date ] ) if payload[ :modified_date ]
+      w.published_date = payload[ :issued ] if payload[ :issued ]
 
       # embargo attributes
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
@@ -230,43 +240,18 @@ module IngestHelpers
       #w.embargo_end_date = payload[ :embargo_release_date ] if payload[ :embargo_release_date ]
       #w.embargo_period = payload[ :embargo_period ] if payload[ :embargo_period ]
 
-      # assume standard and published work type
-      #w.work_type = LibraWork::WORK_TYPE_THESIS
-      #w.draft = 'false'
-
       #w.publisher = payload[ :publisher ] if payload[ :publisher ]
-      #w.department = payload[ :department ] if payload[ :department ]
-      #w.degree = payload[ :degree ] if payload[ :degree ]
-      #w.language = payload[ :language ] if payload[ :language ]
 
-      #w.notes = payload[ :notes ] if payload[ :notes ]
-      #w.rights = [ payload[ :rights ] ] if payload[ :rights ]
-      #w.license = LibraWork::DEFAULT_LICENSE
+      w.language = [ payload[ :language ] ] if payload[ :language ]
 
-      #w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
-      #w.work_source = payload[ :source ] if payload[ :source ]
+      w.notes = payload[ :notes ] if payload[ :notes ]
+      w.rights = [ payload[ :rights ] ] if payload[ :rights ]
+      w.license = LibraWork::DEFAULT_LICENSE
 
-      # mint and assign the DOI
-      #if ENV[ 'NO_DOI' ].blank?
-      #   status, id = ServiceClient::EntityIdClient.instance.newid( w )
-      #   if ServiceClient::EntityIdClient.instance.ok?( status )
-      #      w.identifier = id
-      #      w.permanent_url = GenericWork.doi_url( id )
-      #   else
-      #      puts "ERROR: cannot mint DOI (#{status})"
-      #      ok = false
-      #   end
-      #end
+      w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
+      w.work_source = payload[ :source ] if payload[ :source ]
+
     end
-
-    # update the DOI metadata if necessary
-    #if ENV[ 'NO_DOI' ].blank?
-    #  if ok && work.is_draft? == false
-    #    ok = update_doi_metadata( work )
-    #  end
-    #else
-    #  puts "INFO: no DOI assigned..."
-    #end
 
     return ok, work
   end
@@ -426,13 +411,24 @@ module IngestHelpers
   end
 
   #
+  # make a person struct from person attributes
+  #
+  def make_person( computing_id, first_name, last_name, department, institution )
+    return { :computing_id => computing_id,
+             :first_name   => first_name,
+             :last_name    => last_name,
+             :department   => department,
+             :institution  => institution
+           }
+  end
+  #
   # extract a date from a fully specified date/time
   #
-  def extract_date( date )
-    matches = /^(\d{4}-\d{2}-\d{2})/.match( date )
-    return matches[ 1 ] if matches
-    return date
-  end
+  #def extract_date( date )
+  #  matches = /^(\d{4}-\d{2}-\d{2})/.match( date )
+  #  return matches[ 1 ] if matches
+  #  return date
+  #end
 
   #
   # simple payload dump for debugging
