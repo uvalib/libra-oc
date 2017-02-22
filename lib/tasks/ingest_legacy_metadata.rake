@@ -119,7 +119,7 @@ namespace :libraoc do
      puts "Ingesting #{File.basename( dirname )} (#{id})..."
 
      # create a payload from the document
-     payload = create_legacy_ingest_payload( solr_doc, fedora_doc )
+     payload = create_legacy_ingest_payload(solr_doc, fedora_doc )
 
      # merge in any default attributes
      payload = apply_defaults_for_legacy_item( defaults, payload )
@@ -186,15 +186,15 @@ namespace :libraoc do
      modified_date = solr_doc.at_path( 'system_modified_dt' )
      payload[ :modified_date ] = modified_date if modified_date.present?
 
-     # document title
-     title = solr_doc.at_path( 'mods_title_info_t[0]')
+     # title
+     title = extract_title( solr_doc, fedora_doc )
      payload[ :title ] = title if title.present?
 
-     ab_node = fedora_doc.css( 'mods abstract' ).first
-     abstract = ab_node.text if ab_node
-     payload[ :abstract ] = abstract if IngestHelpers.field_supplied( abstract )
+     # abstract
+     abstract = extract_abstract( solr_doc, fedora_doc )
+     payload[ :abstract ] = abstract if abstract.present?
 
-     # document author
+     # author
      payload[ :authors ] = []
      author_number = 0
      while true
@@ -213,13 +213,13 @@ namespace :libraoc do
      end
 
      # issue date
-     issued_date = solr_doc.at_path( 'origin_info_date_issued_t[0]' )
+     issued_date = extract_issued_date( solr_doc, fedora_doc )
      payload[ :issued ] = issued_date if issued_date.present?
 
      # embargo attributes
-     embargo_type = solr_doc.at_path( 'release_to_t[0]' )
+     embargo_type = IngestHelpers.solr_first_field_extract(solr_doc, 'release_to_t' )
      payload[ :embargo_type ] = embargo_type if embargo_type.present?
-     release_date = solr_doc.at_path( 'embargo_embargo_release_date_t[0]' )
+     release_date = IngestHelpers.solr_first_field_extract(solr_doc, 'embargo_embargo_release_date_t' )
      payload[ :embargo_release_date ] = release_date if release_date.present?
 
      # document source
@@ -238,14 +238,66 @@ namespace :libraoc do
      payload[ :keywords ] = keywords if keywords.present?
 
      # language
-     language = solr_doc.at_path( 'language_lang_code_t[0]' )
+     language = IngestHelpers.solr_first_field_extract(solr_doc, 'language_lang_code_t' )
      payload[ :language ] = IngestHelpers.language_code_lookup( language ) if language.present?
 
      # notes
-     notes = solr_doc.at_path( 'note_t[0]' )
+     notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
      payload[ :notes ] = notes if notes.present?
 
      return payload
+  end
+
+  #
+  # Attempt to extract the title
+  #
+  def extract_title( solr_doc, fedora_doc )
+
+    # general approach
+    title = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_title_info_t')
+    return title if title.present?
+
+    return nil
+  end
+
+  #
+  # Attempt to extract the abstract
+  #
+  def extract_abstract( solr_doc, fedora_doc )
+
+    # general approach
+    abstract = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_abstract_t' )
+    return abstract if IngestHelpers.field_supplied( abstract )
+
+    abstract = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods abstract' )
+    return abstract if IngestHelpers.field_supplied( abstract )
+
+    return nil
+  end
+
+  #
+  # Attempt to extract issue/publication date
+  #
+  def extract_issued_date( solr_doc, fedora_doc )
+
+    # general approach
+    issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'origin_info_date_issued_t' )
+    return issued_date if issued_date.present?
+
+    issued_date = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods dateIssued' )
+    return issued_date if issued_date.present?
+
+    # try for books
+    issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'origin_info_year_issued_t' )
+    return issued_date if issued_date.present?
+    issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'book_origin_info_year_issued_t' )
+    return issued_date if issued_date.present?
+
+    # try for conference papers
+    issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'conference_date_t' )
+    return issued_date if issued_date.present?
+
+    return nil
   end
 
   #
