@@ -62,22 +62,7 @@ module PublicViewHelper
   def display_contributors(contributors)
     # special case, we want to show the advisor field as blank
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Contributors:", '').render ) if contributors.none?
-
-    # advisers are tagged with a numeric index so sorting them ensures they are presented in the correct order
-#   contributors = work.contributors
-
-#   contributors.each { |contributor|
-#     arr = contributor.split("\n")
-#     arr.push('') if arr.length == 4 # if the last item is empty, the split command will miss it.
-#     arr.push('') if arr.length == 5 # if the last item is empty, the split command will miss it.
-#     # arr should be an array of [ index, computing_id, first_name, last_name, department, institution ]
-#     if arr.length == 6
-#       advisors.push( construct_advisor_line( arr ) )
-#     else
-#       advisors.push(contributor) # this shouldn't happen, but perhaps it will if old data gets in there.
-#     end
-#   }
-    concat CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Contributors:", raw( contributors.join( '<br>' ) ) ).render
+    concat CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Contributor:", raw( contributors.join( '<br>' ) ) ).render
   end
 
   def display_description( description )

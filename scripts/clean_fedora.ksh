@@ -18,7 +18,7 @@ fi
 
 echo "Cleaning $FEDORA_URL ..."
 
-for i in libra-oc dev; do
+for i in libraopen; do
 
    url=$FEDORA_URL/$i
    echo -n "$url ..."
