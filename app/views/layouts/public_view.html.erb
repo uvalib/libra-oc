@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="keywords" content="<%= construct_keywords( @work ) %>" />
+    <title><%= raw( display_title( @work ) ) %></title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <style>
+
+    </style>
+  </head>
+  <body class="public">
+    <div id="libra_container">
+      <%= render "shared/masthead" %>
+
+      <div class="document-background"></div>
+      <%= yield %>
+      <%= render "/shared/footer" %>
+    </div>
+  </body>
+</html>
+

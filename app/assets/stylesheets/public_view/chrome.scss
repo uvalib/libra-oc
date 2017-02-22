@@ -1,0 +1,13 @@
+body.public {
+	font-family: 'Open Sans', sans-serif;
+
+	.document-background {
+		background: image-url("header-bg.jpg") center center no-repeat;
+		height: 305px;
+		background-size: cover;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 85px;
+	}
+}

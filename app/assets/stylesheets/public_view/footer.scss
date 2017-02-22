@@ -1,0 +1,85 @@
+.donate-btn {
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.copyright {
+  padding-top: 10px;
+  color: #fff;
+}
+
+.copyright,
+.centered-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px;
+}
+
+.footer {
+  background-color: #002359;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 80px;
+  width: 100%;
+
+  a {
+    color: #fff;
+    margin-bottom: 5px;
+  }
+
+  .centered-img {
+    padding-top: 25%;
+  }
+}
+
+.footer_wrap {
+  padding: 25px 0;
+
+  h4 {
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      color: #fff;
+      padding: 5px 0;
+    }
+  }
+}
+
+.footer-extended {
+  background-color: #002F6C;
+  display: block;
+  width: 100%;
+  height: 60px;
+  bottom: 0;
+}
+
+.footer-extended-left {
+  margin-left: 40px;
+  float: left;
+  padding-top: 20px;
+  color: #fff;
+}
+
+.footer-extended-right {
+  margin-right: 40px;
+  float: right;
+  margin-top: 15px;
+
+  img {
+    width: 50px;
+  }
+}
+
+.build-version {
+  color: #9DB0CE;
+  padding-right: 20px;
+}

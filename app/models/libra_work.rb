@@ -76,4 +76,5 @@ class LibraWork < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+
 end
