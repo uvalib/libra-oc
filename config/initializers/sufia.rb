@@ -45,7 +45,7 @@ Sufia.config do |config|
   # config.noid_template = ".reeddeeddk"
 
   # Store identifier minter's state in a file for later replayability
-  # config.minter_statefile = '/tmp/minter-state'
+  config.minter_statefile = File.join( Rails.root, 'hostfs', 'state', 'minter-state' )
 
   # Specify the prefix for Redis keys:
   # config.redis_namespace = "sufia"
@@ -96,7 +96,7 @@ Sufia.config do |config|
 
   # Temporary path to hold uploads before they are ingested into FCrepo.
   # This must be a lambda that returns a Pathname
-  #  config.upload_path = ->() { Rails.root + 'tmp' + 'uploads' }
+  config.upload_path = ->() { Rails.root + 'hostfs' + 'uploads' + 'tmp' }
 
   # Location on local file system where derivatives will be stored.
   # If you use a multi-server architecture, this MUST be a shared volume.
