@@ -153,7 +153,7 @@ module TaskHelpers
   #
   def show_person( title, person )
 
-    puts "#{title}"
+    puts "#{title} #{person}"
     show_field( 'cid', person.computing_id, '   ' )
     show_field( 'first_name', person.first_name, '   ' )
     show_field( 'last_name', person.last_name, '   ' )
