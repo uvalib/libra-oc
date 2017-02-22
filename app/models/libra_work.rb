@@ -13,6 +13,9 @@ class LibraWork < ActiveFedora::Base
   DEFAULT_LICENSE = 'None'.freeze
   DEFAULT_LANGUAGE = 'English'.freeze
 
+  # embargo periods (only one)
+  EMBARGO_VALUE_FOREVER = 'forever'.freeze
+
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
   accepts_nested_attributes_for :authors
@@ -30,20 +33,7 @@ class LibraWork < ActiveFedora::Base
 # validates :license, presence: { message: 'Your work must have a license.' }
 
 
-  property :abstract, predicate: ::RDF::Vocab::DC.abstract do |index|
-    index.as :stored_searchable
-  end
-
-  property :orcid_id, predicate: ::RDF::URI('http://example.org/terms/orcid_id'), multiple: false do |index|
-    index.as :stored_searchable
-  end
-
-  property :orcid_id, predicate: ::RDF::URI('http://example.org/terms/orcid_id'), multiple: false do |index|
-    index.as :stored_searchable
-  end
-
   property :abstract, predicate: ::RDF::Vocab::DC.abstract, multiple: false do |index|
-    index.type :text
     index.as :stored_searchable
   end
 
@@ -55,16 +45,16 @@ class LibraWork < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :sponsoring_agency, predicate: ::RDF::URI('http://example.org/terms/sponsor') do |index|
+  property :sponsoring_agency, predicate: ::RDF::URI('http://example.org/terms/sponsoring_agency') do |index|
     index.as :stored_searchable
   end
 
-  property :note, predicate: ::RDF::URI('http://example.org/terms/sponsor'), multiple: false do |index|
+  property :notes, predicate: ::RDF::URI('http://example.org/terms/notes'), multiple: false do |index|
     index.type :text
     index.as :stored_searchable
   end
 
-  property :license, predicate: ::RDF::URI('http://example.org/terms/sponsor'), multiple: false do |index|
+  property :license, predicate: ::RDF::URI('http://example.org/terms/license'), multiple: false do |index|
     index.as :stored_searchable
   end
 
@@ -73,6 +63,15 @@ class LibraWork < ActiveFedora::Base
   end
 
   property :libra_id, predicate: ::RDF::URI('http://example.org/terms/libra_id'), multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :work_source, predicate: ::RDF::URI('http://example.org/terms/work_source'), multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes') do |index|
+    index.type :text
     index.as :stored_searchable
   end
 

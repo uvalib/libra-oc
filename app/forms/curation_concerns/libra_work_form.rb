@@ -11,7 +11,7 @@ module CurationConcerns
 
     def self.multiple?(field)
 
-      if [:title, :description, :publisher, :source].include? field.to_sym
+      if [:title, :description, :publisher, :source, :abstract].include? field.to_sym
         false
       else
         super
@@ -24,7 +24,7 @@ module CurationConcerns
       attrs[:description] = Array(attrs[:description]) if attrs[:description]
       attrs[:publisher] = Array(attrs[:publisher]) if attrs[:publisher]
       attrs[:source] = Array(attrs[:source]) if attrs[:source]
-      attrs[:abstract] = Array(attrs[:abstract]) if attrs[:abstract]
+      #attrs[:abstract] = Array(attrs[:abstract]) if attrs[:abstract]
       attrs
     end
 
@@ -36,9 +36,9 @@ module CurationConcerns
       super.first || ""
     end
 
-    def abstract
-      super.first || ""
-    end
+    #def abstract
+    #  super.first || ""
+    #end
 
     def publisher
       super.first || ""

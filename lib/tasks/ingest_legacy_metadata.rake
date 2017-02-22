@@ -16,7 +16,6 @@ namespace :libraoc do
   # MAX_COUNT    - Maximum number of items to process
   # DUMP_PAYLOAD - Output the entire document metadata before saving
   # DRY_RUN      - Dont actually create the items
-  # NO_DOI       - Dont assign a DOI to the created items
   #
 
   #
@@ -125,6 +124,9 @@ namespace :libraoc do
      # merge in any default attributes
      payload = apply_defaults_for_legacy_item( defaults, payload )
 
+     # calculate embargo release date
+     payload = add_embargo_release_date( payload )
+
      # some fields with embedded quotes need to be escaped; handle this here
      payload = IngestHelpers.escape_fields( payload )
 
@@ -151,7 +153,7 @@ namespace :libraoc do
      # create the work
      ok, work = IngestHelpers.create_new_item( depositor, payload )
      if ok == true
-       puts "New work created; id #{work.id} (#{work.identifier || 'none'})"
+       puts "New work created; id #{work.id} (#{work.identifier[0] || 'none'})"
      else
        #puts " ERROR: creating new generic work for #{File.basename( dirname )} (#{id})"
        #return false
@@ -180,7 +182,7 @@ namespace :libraoc do
 
      # date and time attributes
      create_date = solr_doc.at_path( 'system_create_dt' )
-     payload[ :create_date ] = IngestHelpers.extract_date( create_date ) if create_date.present?
+     payload[ :create_date ] = create_date if create_date.present?
      modified_date = solr_doc.at_path( 'system_modified_dt' )
      payload[ :modified_date ] = modified_date if modified_date.present?
 
@@ -188,33 +190,26 @@ namespace :libraoc do
      title = solr_doc.at_path( 'mods_title_info_t[0]')
      payload[ :title ] = title if title.present?
 
-     # document abstract (use the XML variant as it reflects the formatting better)
-     # this was used for the 4th year theses
-     #ab_node = fedora_doc.css( 'mods abstract' ).last
-     # this was used for the subsequent items
      ab_node = fedora_doc.css( 'mods abstract' ).first
      abstract = ab_node.text if ab_node
      payload[ :abstract ] = abstract if IngestHelpers.field_supplied( abstract )
 
      # document author
-     if solr_doc.at_path( 'mods_0_name_0_role_0_text_t[0]' ) == 'author'
-       dept = solr_doc.at_path( 'mods_0_name_0_description_t[0]' )
-       cid = solr_doc.at_path( 'mods_0_name_0_computing_id_t[0]' )
-       fn = solr_doc.at_path( 'mods_0_name_0_first_name_t[0]' )
-       ln = solr_doc.at_path( 'mods_0_name_0_last_name_t[0]' )
-       payload[ :author_computing_id ] = cid if IngestHelpers.field_supplied( cid )
-       payload[ :author_first_name ] = fn if IngestHelpers.field_supplied( fn )
-       payload[ :author_last_name ] = ln if IngestHelpers.field_supplied( ln )
-       payload[ :department ] = IngestHelpers.department_lookup( dept ) if IngestHelpers.field_supplied( dept )
+     payload[ :authors ] = []
+     author_number = 0
+     while true
+       added, payload[ :authors ] = add_author( solr_doc, author_number, payload[ :authors ] )
+       break unless added
+       author_number += 1
      end
 
-     # document advisor
-     payload[ :advisors ] = []
-     advisor_number = 1
+     # document contributor
+     payload[ :contributors ] = []
+     contributor_number = 0
      while true
-        added, payload[ :advisors ] = add_advisor( solr_doc, advisor_number, payload[ :advisors ] )
+        added, payload[ :contributors ] = add_contributor( solr_doc, contributor_number, payload[ :contributors ] )
         break unless added
-        advisor_number += 1
+        contributor_number += 1
      end
 
      # issue date
@@ -226,8 +221,6 @@ namespace :libraoc do
      payload[ :embargo_type ] = embargo_type if embargo_type.present?
      release_date = solr_doc.at_path( 'embargo_embargo_release_date_t[0]' )
      payload[ :embargo_release_date ] = release_date if release_date.present?
-     payload[ :embargo_period ] =
-         IngestHelpers.estimate_embargo_period( issued_date, release_date ) if issued_date.present? && release_date.present?
 
      # document source
      payload[ :source ] = solr_doc.at_path( 'id' )
@@ -237,8 +230,8 @@ namespace :libraoc do
      #
 
      # degree program
-     degree = solr_doc.at_path( 'mods_extension_degree_level_t[0]' )
-     payload[ :degree ] = degree if degree.present?
+     #degree = solr_doc.at_path( 'mods_extension_degree_level_t[0]' )
+     #payload[ :degree ] = degree if degree.present?
 
      # keywords
      keywords = solr_doc.at_path( 'subject_topic_t' )
@@ -256,41 +249,87 @@ namespace :libraoc do
   end
 
   #
-  # adds another advisor if we can locate one
+  # adds another author if we can locate one
   #
-  def add_advisor( solr_doc, advisor_number, advisors )
+  def add_author( solr_doc, author_number, authors )
 
-    if solr_doc.at_path( "mods_0_person_#{advisor_number}_role_0_text_t[0]" ) == 'advisor'
-      cid = solr_doc.at_path( "mods_0_person_#{advisor_number}_computing_id_t[0]" )
-      fn = solr_doc.at_path( "mods_0_person_#{advisor_number}_first_name_t[0]" )
-      ln = solr_doc.at_path( "mods_0_person_#{advisor_number}_last_name_t[0]" )
-      dept = solr_doc.at_path( "mods_0_person_#{advisor_number}_description_t[0]" )
-      ins = solr_doc.at_path( "mods_0_person_#{advisor_number}_institution_t[0]" )
+    role = solr_doc.at_path( "mods_0_name_#{author_number}_role_0_text_t[0]" )
+    if role && role.include?( 'author' )
+      cid = solr_doc.at_path( "mods_0_name_#{author_number}_computing_id_t[0]" )
+      fn = solr_doc.at_path( "mods_0_name_#{author_number}_first_name_t[0]" )
+      ln = solr_doc.at_path( "mods_0_name_#{author_number}_last_name_t[0]" )
+      dept = solr_doc.at_path( "mods_0_name_#{author_number}_description_t[0]" )
+      ins = solr_doc.at_path( "mods_0_name_#{author_number}_institution_t[0]" )
 
-      advisor_computing_id = IngestHelpers.field_supplied( cid ) ? cid : ''
-      advisor_first_name = IngestHelpers.field_supplied( fn ) ? fn : ''
-      advisor_last_name = IngestHelpers.field_supplied( ln ) ? ln : ''
-      advisor_department = IngestHelpers.field_supplied( dept ) ? IngestHelpers.department_lookup( dept ) : ''
-      advisor_institution = IngestHelpers.field_supplied( ins ) ? ins : ''
-
-      if advisor_computing_id.blank? == false ||
-         advisor_first_name.blank? == false ||
-         advisor_last_name.blank? == false ||
-         advisor_department.blank? == false ||
-         advisor_institution.blank? == false
-         adv = TaskHelpers.contributor_fields( advisor_number - 1,
-                                               advisor_computing_id,
-                                               advisor_first_name,
-                                               advisor_last_name,
-                                               advisor_department,
-                                               advisor_institution )
-
-         return true, advisors << adv
-      end
+      return add_person( authors, cid, fn, ln, dept, ins )
     end
 
-    # could not find the next advisor, we are done
-    return false, advisors
+    # could not find the next author, we are done
+    return false, authors
+  end
+
+  #
+  # adds another contributor if we can locate one
+  #
+  def add_contributor( solr_doc, contributor_number, contributors )
+
+    #
+    # for libra open, the only contributors are book editors
+    #
+
+    fn = solr_doc.at_path( "mods_0_book_0_editor_#{contributor_number}_first_name_t[0]" )
+    ln = solr_doc.at_path( "mods_0_book_0_editor_#{contributor_number}_last_name_t[0]" )
+
+    if fn.blank? == false && ln.blank? == false
+      return add_person( contributors, '', fn, ln, '', '' )
+    end
+
+    # could not find the next contributor, we are done
+    return false, contributors
+  end
+
+  #
+  # adds another person to the person list if we have one
+  #
+  def add_person( persons, cid, fn, ln, dept, ins )
+
+    computing_id = IngestHelpers.field_supplied( cid ) ? cid : ''
+    first_name = IngestHelpers.field_supplied( fn ) ? fn : ''
+    last_name = IngestHelpers.field_supplied( ln ) ? ln : ''
+    department = IngestHelpers.field_supplied( dept ) ? IngestHelpers.department_lookup( dept ) : ''
+    institution = IngestHelpers.field_supplied( ins ) ? ins : ''
+
+    if computing_id.blank? == false ||
+       first_name.blank? == false ||
+       last_name.blank? == false ||
+       department.blank? == false ||
+       institution.blank? == false
+       person = TaskHelpers.make_person( computing_id,
+                                         first_name,
+                                         last_name,
+                                         department,
+                                         institution
+                                       )
+
+      return true, persons << person
+    end
+    return false, persons
+  end
+
+  #
+  # calculate embargo release date
+  #
+  def add_embargo_release_date( payload )
+
+    # handle embargo release date calculation
+    if payload[ :embargo_type ] == 'uva'
+       if payload[ :issued ]
+          payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( payload[ :issued ] )
+       elsif payload[ :create_date ]
+          payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( payload[ :create_date ] )
+       end
+    end
+    return payload
   end
 
   #
@@ -314,14 +353,6 @@ namespace :libraoc do
           time_now = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d %H:%M:%S" )
           new_notes += "#{v.gsub( 'LIBRA1_CREATE_DATE', original_create_date ).gsub( 'CURRENT_DATE', time_now )}"
           payload[ :notes ] = new_notes
-
-        when :force_embargo_period
-          payload[ :embargo_period ] = v
-          if payload[ :issued ]
-             payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( payload[ :issued ], v )
-          else
-             #payload[ :embargo_release_date ] = IngestHelpers.calculate_embargo_release_date( v )
-          end
 
        else if payload.key?( k ) == false
                payload[ k ] = v
