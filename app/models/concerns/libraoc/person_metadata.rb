@@ -25,6 +25,10 @@ module Libraoc::PersonMetadata
       index.as :stored_searchable
     end
 
+    property :orcid_id, predicate: ::RDF::URI('http://example.org/terms/orcid_id'), multiple: false do |index|
+      index.as :stored_searchable
+    end
+
     #
     # helper to allow us to display Person information in a consistent manner
     #
