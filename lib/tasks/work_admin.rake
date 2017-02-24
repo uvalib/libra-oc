@@ -199,7 +199,7 @@ namespace :work do
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       #w.visibility_during_embargo = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       #w.embargo_state = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
-      w.description = [ description ]
+      w.description = description
       #w.work_type = work_type
       #w.draft = work_type == LibraWork::WORK_TYPE_THESIS ? 'true' : 'false'
 

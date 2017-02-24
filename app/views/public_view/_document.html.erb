@@ -1,0 +1,30 @@
+<div class="row">
+   <div id="hd">
+   </div>
+
+   <div id="bd" class="no-search">
+      <div id="main" class="clearfix">
+         <div id="main_content" role="main" class="col-xs-12 col-sm-9 col-sm-push-3">
+            <span class='Z3988' title='rft.btitle=<%= raw( display_title(@work) ) %>'></span>
+            <div id="document">
+               <% if @work.present? %>
+               <h1><%= raw(@work[:title].join(raw("<br>"))) %></h1>
+               <% display_authors( @work.authors ) %>
+               <% display_contributors( @work.contributors ) %>
+               <%= display_description( @work.description ) %>
+               <%= display_keywords( @work ) %>
+               <%= display_related_links( @work.related_url ) %>
+               <%= display_notes( @work.notes ) %>
+               <%= display_language( @work.language ) %>
+               <%= display_rights(@work.rights) %>
+               <%= display_publication_date(@work.published_date) %>
+               <%# display_doi_link( @work ) %>
+               <% end %>
+            </div>
+         </div>
+         <% if @work.present? %>
+         <%= render "side_bar" %>
+         <% end %>
+      </div>
+   </div>
+</div>
