@@ -534,7 +534,28 @@ module IngestHelpers
     return html_escape( field ).gsub( "\\", "\\\\\\" )
   end
 
+  #
+  # solr field extract
+  #
+  def solr_first_field_extract(solr_doc, field_name )
 
+    field = solr_doc.at_path( "#{field_name}[0]" )
+    return field if field.present?
+
+    return nil
+  end
+
+  #
+  # fedora field extract
+  #
+  def fedora_first_field_extract( fedora_doc, selector )
+
+    node = fedora_doc.css( selector ).first
+    field = node.text if node
+    return field if field.present?
+
+    return nil
+  end
 end
 
 #
