@@ -26,4 +26,63 @@ class SolrDocument
   # Do content negotiation for AF models. 
 
   use_extension( Hydra::ContentNegotiation )
+
+  #
+  # Libra OC related below
+  #
+
+  # doesnt work
+  def authors
+    self[Solrizer.solr_name('authors')]
+  end
+
+  def contributors
+    self[Solrizer.solr_name('contributors')]
+  end
+
+  def sponsoring_agency
+    self[Solrizer.solr_name('sponsoring_agency')]
+  end
+
+  def sponsoring_agency
+    self[Solrizer.solr_name('sponsoring_agency')]
+  end
+
+
+  def notes
+    self[Solrizer.solr_name('notes')]
+  end
+
+  def admin_notes
+    self[Solrizer.solr_name('admin_notes')]
+  end
+
+  def license
+    self[Solrizer.solr_name('license')]
+  end
+
+  def doi
+    self[Solrizer.solr_name('doi')]
+  end
+
+  def libra_id
+    self[Solrizer.solr_name('libra_id')]
+  end
+
+  def work_source
+    self[Solrizer.solr_name('work_source')]
+  end
+
+  def published_date
+    self[Solrizer.solr_name('published_date')]
+  end
+
+  def abstract
+    self[Solrizer.solr_name('abstract')]
+  end
+
+
+
+
+
 end

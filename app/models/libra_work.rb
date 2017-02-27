@@ -6,6 +6,10 @@ class LibraWork < ActiveFedora::Base
   include Sufia::WorkBehavior
   self.human_readable_type = 'Work'
 
+    # specify the indexer used to create the SOLR document
+  def self.indexer
+    LibraOcIndexer
+  end
 
   # defaults
   DEFAULT_INSTITUTION = 'University of Virginia'.freeze

@@ -1,0 +1,38 @@
+
+<%= presenter.attribute_to_html(:abstract, render_as: :faceted) %>
+
+<%= presenter.attribute_to_html :authors, render_as: :person  %>
+<%= presenter.attribute_to_html :contributors, render_as: :person  %>
+
+<%= show_line(presenter, :keyword, 'Keyword', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :license, 'License', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :doi, 'doi', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :libra_id, 'Libra ID', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :work_source, 'Work Source', true, include_empty: true, catalog_search_link: false ) %>
+
+<%= show_line(presenter, :source, 'Source', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :publisher, 'Publisher', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :published_date, 'Published Date', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :language, 'Language', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :related_url, 'Related Url', true, include_empty: true, catalog_search_link: false ) %>
+
+<%= show_line(presenter, :sponsoring_agency, 'Sponsoring Agency', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :notes, 'Notes', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :admin_notes, 'Admin Notes', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :resource_type, 'Resource Type', true, include_empty: true, catalog_search_link: false ) %>
+
+
+
+
+
+<%# presenter.attribute_to_html(:creator, render_as: :faceted) %>
+<%# presenter.attribute_to_html(:contributor, render_as: :faceted) %>
+<%# presenter.attribute_to_html(:subject, render_as: :faceted) %>
+<%= presenter.attribute_to_html(:publisher, render_as: :faceted) %>
+<%= presenter.attribute_to_html(:language, render_as: :faceted) %>
+<%= presenter.attribute_to_html(:identifier, render_as: :linked, search_field: 'identifier_tesim') %>
+<%= presenter.attribute_to_html(:keyword, render_as: :faceted) %>
+<%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim') %>
+<%= presenter.attribute_to_html(:related_url, render_as: :external_link) %>
+<%= presenter.attribute_to_html(:resource_type, render_as: :faceted) %>
+<%= presenter.attribute_to_html(:source) %>
