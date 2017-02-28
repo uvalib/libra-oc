@@ -25,3 +25,4 @@ libra_oc_env.ksh
 env.*
 .idea
 hostfs
+!hostfs/*/*.keep
