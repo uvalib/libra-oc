@@ -36,7 +36,8 @@ module Libraoc::PersonMetadata
 
       begin
         email = User.email_from_cid( self.computing_id )
-        "#{self.first_name} #{self.last_name} (#{email})"
+        email = "(#{email})" if email
+        "#{self.first_name} #{self.last_name} #{email}"
       rescue
         'Unknown'
       end
