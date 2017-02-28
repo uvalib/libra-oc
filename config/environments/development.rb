@@ -52,5 +52,8 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  # run jobs inline in development
+  config.active_job.queue_adapter = :inline
+
   ENV.update(eval(`sh -c 'source libra_oc_env.ksh && ruby -e "p ENV"'`) || {})
 end
