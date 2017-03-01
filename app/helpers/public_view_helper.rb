@@ -30,19 +30,34 @@ module PublicViewHelper
     return raw( title )
   end
 
-  def display_authors( authors )
-    return '' if authors.none?
-    authors.each do |author|
-      orcid_data = construct_author( author )
-      orcid_data = content_tag(:span, raw( " #{orcid_data}" ), { style: 'font-weight:normal' }) unless orcid_data.blank?
-      header = raw( "Author:" + orcid_data )
-      concat CurationConcerns::Renderers::CustomPublicAttributeRenderer.new( header, author ).render
+  def display_resource_type work
+    if work.resource_type.present?
+      concat content_tag :span, work.resource_type, class: 'pull-right label label-default'
     end
   end
 
-  def construct_author( author )
-    return '' if author.nil?
-    return "#{author.last_name}, #{author.first_name}, #{author.department}, #{author.institution}"
+  def display_authors( authors )
+    return '' if authors.none?
+    author_label = authors.one? ? "Author:" : "Authors:"
+    concat content_tag(:span, author_label, class: 'document-label')
+    authors.each do |author|
+      author_string = construct_person( author )
+      unless author_string.blank?
+        if author.orcid_id.present?
+          orcid_link = link_to author.orcid_id, target: '_blank' do
+            image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')
+          end
+        else
+          concat content_tag(:p, author_string,
+                             style: 'font-weight:normal', class:'document-value' )
+        end
+      end
+    end
+  end
+
+  def construct_person( person )
+    return '' if person.nil?
+    return "#{person.last_name}, #{person.first_name}, #{person.department}, #{person.institution}"
   end
 
   def construct_author_orcid( author )
@@ -60,9 +75,16 @@ module PublicViewHelper
   end
 
   def display_contributors(contributors)
-    # special case, we want to show the advisor field as blank
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Contributors:", '').render ) if contributors.none?
-    concat CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Contributor:", raw( contributors.join( '<br>' ) ) ).render
+    return '' if contributors.none?
+    contributor_label = contributors.one? ? "Contributor:" : "Contributors:"
+    concat content_tag(:span, contributor_label, class: 'document-label')
+    contributors.each do |contributor|
+      contributor_string = construct_person( contributor )
+      unless contributor_string.blank?
+        concat content_tag(:p, contributor_string,
+                           style: 'font-weight:normal', class:'document-value' )
+      end
+    end
   end
 
   def display_description( description )
@@ -91,7 +113,7 @@ module PublicViewHelper
   def display_sponsoring_agency( sponsoring_agency )
     return '' if sponsoring_agency.blank?
     sa = sponsoring_agency.join( ' ')
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Sponsoring Agency:", sa ).render )
+    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Sponsoring Agency:", sa ).render
   end
 
   def display_related_links( links )
@@ -105,9 +127,9 @@ module PublicViewHelper
   end
 
   def display_doi_link(work)
-    doi = "Persistent link will appear here after submission." if work.is_draft?
-    doi = work.permanent_url unless work.is_draft?
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Persistent Link:", doi ).render )
+    if work.doi
+      CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Persistent Link:", work.doi ).render
+    end
   end
 
   def display_notes(notes)
@@ -132,28 +154,5 @@ module PublicViewHelper
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Issued Date:", date.gsub( '-', '/' ) ).render )
   end
 
-  def display_array(value)
-    if value.kind_of?(Array)
-      value = value.join(", ")
-    end
-    return value
-  end
 
-  def construct_advisor_line( arr )
-    res = ""
-    res = field_append( res, arr[3].strip )
-    res = field_append( res, arr[2].strip )
-    res = field_append( res, arr[4].strip )
-    res = field_append( res, arr[5].strip )
-    return( res )
-  end
-
-  def field_append( current, field )
-    res = current
-    if field.blank? == false
-      res += ", " if res.blank? == false
-      res += field
-    end
-    return res
-  end
 end
