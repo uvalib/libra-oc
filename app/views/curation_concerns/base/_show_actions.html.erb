@@ -1,9 +1,9 @@
 <div class="show-actions">
+  <%= link_to "Public View", Rails.application.routes.url_helpers.public_view_path(presenter.solr_document.id), class: 'btn btn-default' %>
   <% if Sufia.config.analytics %>
     <%= link_to "Analytics", presenter.stats_path, id: 'stats', class: 'btn btn-default' %>
   <% end %>
   <% if presenter.editor? %>
-    <%= link_to "Public View", Rails.application.routes.url_helpers.public_view_path(presenter.solr_document.id), class: 'btn btn-default' %>
     <%= link_to "Edit", edit_polymorphic_path([main_app, presenter]), class: 'btn btn-default' %>
     <%= link_to "Delete", [main_app, presenter], class: 'btn btn-danger', data: { confirm: "Delete this #{presenter.human_readable_type}?" }, method: :delete %>
     <% if presenter.member_presenters.size > 1 %>
