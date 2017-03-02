@@ -1,15 +1,7 @@
 <div id="sidebar" class="col-xs-12 col-sm-3 col-sm-pull-9">
   <h2>Files</h2>
-  <% true || if allow_file_access(@work) %>
-    <% if show_proof_embargo_notice(@work) %>
-      <div class="proof-file-notice">
-        <p class="preview-warning">
-        The files listed below will <b>NOT</b> be available to <%= is_engineering_embargo(@work) ? "anyone" : "the general public" %> until the embargo date has passed.
-        </p>
-      </div>
-    <% end %>
     <div id="uploads">
-      <% @files.each { |file| %>
+      <% @work.files.each { |file| %>
         <div class="file_asset_record">
           <p><%= link_to(file[:title], "#{file[:location]}?filename=#{file[:title]}") %></p>
           <p><span class="file_label">Uploaded:</span><%= file_date_created(file[:date]) %></p>
@@ -17,5 +9,4 @@
       <% } %>
 
     </div>
-  <% end %>
 </div>

@@ -195,22 +195,20 @@ namespace :work do
       w.contributors = [contributor]
 
       w.date_uploaded = CurationConcerns::TimeService.time_in_utc
-      #w.date_created = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d" )
+      w.date_created = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d" )
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
-      #w.visibility_during_embargo = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
-      #w.embargo_state = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       w.description = description
       #w.work_type = work_type
       #w.draft = work_type == LibraWork::WORK_TYPE_THESIS ? 'true' : 'false'
 
       w.abstract = "hello abstract"
 
-      #w.publisher = LibraWork::DEFAULT_PUBLISHER
+      w.publisher = 'UVA'
       #w.department = 'Placeholder department'
-      #w.degree = 'Placeholder degree'
-      #w.notes = 'Placeholder notes'
-      #w.admin_notes << 'Placeholder admin notes'
-      #w.language = LibraWork::DEFAULT_LANGUAGE
+      #w.dddegree = 'Placeholder degree'
+      w.notes = 'Placeholder notes'
+      w.admin_notes << 'Placeholder admin notes'
+      w.language = "English"
 
       # assign some contributors
       # there's something about the way suffia handles contributors that messes up the ordering

@@ -32,7 +32,9 @@ module PublicViewHelper
 
   def display_resource_type work
     if work.resource_type.present?
-      concat content_tag :span, work.resource_type, class: 'pull-right label label-default'
+      work.resource_type.each do |type|
+        concat content_tag :span, type, class: 'pull-right label label-default'
+      end
     end
   end
 
@@ -41,15 +43,19 @@ module PublicViewHelper
     author_label = authors.one? ? "Author:" : "Authors:"
     concat content_tag(:span, author_label, class: 'document-label')
     authors.each do |author|
-      author_string = construct_person( author )
+      
+    author_string =  content_tag :span, "#{author.last_name}, #{author.first_name}"
+    institution = "#{author.department}, #{author.institution}"
+
       unless author_string.blank?
+        concat content_tag(:p, (author_string + institution).html_safe,
+                           style: 'font-weight:normal', class:'document-value' )
+
         if author.orcid_id.present?
           orcid_link = link_to author.orcid_id, target: '_blank' do
             image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')
           end
-        else
-          concat content_tag(:p, author_string,
-                             style: 'font-weight:normal', class:'document-value' )
+          concat orcid_link
         end
       end
     end
@@ -141,6 +147,12 @@ module PublicViewHelper
   def display_language( language )
     return '' if language.blank?
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Language:", language ).render )
+  end
+
+  def display_rights(rights)
+    return '' if rights.blank?
+    rights = rights.join(' ') if rights.kind_of?(Array)
+    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights ).render )
   end
 
   def display_rights(rights)
