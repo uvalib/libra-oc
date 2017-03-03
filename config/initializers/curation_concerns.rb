@@ -67,6 +67,9 @@ CurationConcerns.configure do |config|
   # Location where binaries are exported
   # config.binaries_directory "tmp/binaries"
 
+  # ActiveJob queue to handle ingest-like jobs
+   config.ingest_queue_name = :ingest
+
   # To configure the Administration Dashboard to contain additional
   #  menu items and corresponding actions uncomment the block below
   #  and add in you new actions.

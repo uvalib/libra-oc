@@ -51,17 +51,21 @@ gem 'sufia', '~> 7.3.0.rc1'
 gem 'curation_concerns', '1.7.4', github: 'uvalib/curation_concerns', branch: 'redis-password-patch'
 gem 'flipflop', github: 'jcoyne/flipflop', branch: 'hydra'
 gem 'blacklight_advanced_search'
-
-gem 'rsolr', '~> 1.0'
-
 gem 'devise'
 gem 'devise-guests', '~> 0.5'
 
-gem 'sentry-raven'
+# workers
+gem 'sidekiq'
+
+
+gem 'rsolr', '~> 1.0'
 
 gem 'rest-client'
 
 # used for exporting/ingesting Libra content
 gem 'hash_at_path'
 gem 'oga'
+
+
+gem 'sentry-raven'
 

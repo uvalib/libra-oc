@@ -23,5 +23,7 @@ module LibraOc
     # -- all .rb files in that directory are automatically loaded.
 
     config.eager_load_paths << "#{Rails.root}/lib"
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end
