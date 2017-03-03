@@ -37,7 +37,7 @@ Sufia.config do |config|
   # If you have ffmpeg installed and want to transcode audio and video uncomment this line
   config.enable_ffmpeg = true
 
-  config.ffmpeg_path = "#{Rails.application.root}/tools/ffmpeg-3.1.1-64bit-static/ffmpeg"
+  config.ffmpeg_path = "#{Rails.application.root}/tools/ffmpeg-3.2.3-64bit-static/ffmpeg"
 
   # Sufia uses NOIDs for files and collections instead of Fedora UUIDs
   # where NOID = 10-character string and UUID = 32-character string w/ hyphens
@@ -54,7 +54,7 @@ Sufia.config do |config|
 
   # Specify the path to the file characterization tool:
   # config.fits_path = "fits.sh"
-  config.fits_path = "#{Rails.application.root}/tools/fits-1.0.0/fits.sh"
+  config.fits_path = "#{Rails.application.root}/tools/fits-1.0.5/fits.sh"
 
   # Specify the path to the file derivatives creation tool:
   # config.libreoffice_path = "soffice"
