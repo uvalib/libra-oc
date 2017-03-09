@@ -60,6 +60,11 @@ Rails.application.routes.draw do
       delete 'clear'
     end
   end
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
   mount Sufia::Engine, at: '/'
+
 
 end
