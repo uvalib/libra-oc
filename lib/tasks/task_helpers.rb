@@ -244,6 +244,32 @@ module TaskHelpers
     return nil
   end
 
+  def make_author( cid )
+
+    info = user_info_by_cid( cid )
+    return nil if info.nil?
+
+    person = Author.new( first_name: info.first_name,
+                         last_name: info.last_name,
+                         computing_id: cid,
+                         department: info.department,
+                         institution: LibraWork::DEFAULT_INSTITUTION )
+    return( person )
+  end
+
+  def make_contributor( cid )
+
+    info = user_info_by_cid( cid )
+    return nil if info.nil?
+
+    person = Contributor.new( first_name: info.first_name,
+                              last_name: info.last_name,
+                              computing_id: cid,
+                              department: info.department,
+                              institution: LibraWork::DEFAULT_INSTITUTION )
+    return( person )
+  end
+
 end
 
 #

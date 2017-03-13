@@ -133,12 +133,8 @@ namespace :work do
     id = Time.now.to_i
     title = "Example libra work title (#{id})"
     description = "Example libra work description (#{id})"
-    author = Author.new first_name: 'author first', last_name: 'author last',
-      computing_id: 'abc123', department: 'Library', institution: 'UVA'
 
-    contributor = Contributor.new first_name: 'contributor first', last_name: 'contributor last' , computing_id: 'abc123', department: 'Library' , institution: 'UVA'
-
-    work = create_work( user, title, description, author, contributor )
+    work = create_libra_work( user, title, description )
 
     filename = TaskHelpers.get_random_image( )
     TaskHelpers.upload_file( user, work, filename, File.basename( filename ) )
@@ -166,70 +162,48 @@ namespace :work do
     work.destroy
   end
 
-  def create_work( user, title, description, author, contributor )
-     return( create_libra_work( user, title, description, author, contributor ) )
-  end
-
-  def create_libra_work( user, title, description, author, contributor )
-
-    # look up user details
-    #user_info = user_info_by_email( user.email )
-    #if user_info.nil?
-      # fill in the defaults
-    #  user_info = Helpers::UserInfo.create(
-    #      "{'first_name': 'First name', 'last_name': 'Last name'}".to_json )
-    #end
-
+  def create_libra_work( user, title, description )
 
     work = LibraWork.create!(title: [ title ] ) do |w|
 
       # generic work attributes
       w.apply_depositor_metadata(user)
       w.creator = [ user.email ]
-      #w.author_email = user.email
-      #w.author_first_name = user_info.first_name
-      #w.author_last_name = user_info.last_name
-      #w.author_institution = LibraWork::DEFAULT_INSTITUTION
 
-      w.authors = [author]
-      w.contributors = [contributor]
+      w.authors = []
+      w.authors << TaskHelpers.make_author( User.cid_from_email( user.email ) )
+
+      w.contributors = []
+      w.contributors << TaskHelpers.make_contributor( 'ecr2c' )
+      w.contributors << TaskHelpers.make_contributor( 'naw4t' )
 
       w.date_uploaded = CurationConcerns::TimeService.time_in_utc
       w.date_created = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d" )
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       w.description = description
+
       #w.work_type = work_type
-      #w.draft = work_type == LibraWork::WORK_TYPE_THESIS ? 'true' : 'false'
 
-      w.abstract = "hello abstract"
+      w.abstract = ' Placeholder abstract'
 
-      w.publisher = 'UVA'
+      w.publisher = LibraWork::DEFAULT_INSTITUTION
       #w.department = 'Placeholder department'
       #w.dddegree = 'Placeholder degree'
       w.notes = 'Placeholder notes'
       w.admin_notes << 'Placeholder admin notes'
       w.language << 'English'
 
-      # assign some contributors
-      # there's something about the way suffia handles contributors that messes up the ordering
-      # so be explicit
-      #contributor = []
-      #contributor << TaskHelpers.contributor_fields_from_cid( 0, 'sah' )
-      #contributor << TaskHelpers.contributor_fields_from_cid( 1, 'ecr2c' )
-      #contributor << TaskHelpers.contributor_fields_from_cid( 2, 'naw4t' )
-      #w.contributor = contributor
-
       w.rights << 'http://creativecommons.org/licenses/by/3.0/us/'
       #w.license = LibraWork::DEFAULT_LICENSE
 
-      print "getting DOI..."
+      print 'getting DOI...'
       status, id = ServiceClient::EntityIdClient.instance.newid( w )
       if ServiceClient::EntityIdClient.instance.ok?( status )
          w.identifier = [ id ]
       #   w.permanent_url = LibraWork.doi_url( id )
-         puts "done"
+         puts 'done'
       else
-         puts "error"
+         puts 'error'
       end
     end
 
