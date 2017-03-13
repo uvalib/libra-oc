@@ -38,10 +38,11 @@ module Libraoc::BasicMetadata
       index.as :stored_searchable
     end
 
-    property :publisher, predicate: ::RDF::Vocab::DC11.publisher do |index|
+    property :publisher, predicate: ::RDF::Vocab::DC11.publisher, multiple: false do |index|
       index.as :stored_searchable, :facetable
     end
-    property :date_created, predicate: ::RDF::Vocab::DC.created do |index|
+
+    property :date_created, predicate: ::RDF::Vocab::DC.created, multiple: false do |index|
       index.as :stored_searchable
     end
 
