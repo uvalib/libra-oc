@@ -208,7 +208,7 @@ namespace :work do
       #w.dddegree = 'Placeholder degree'
       w.notes = 'Placeholder notes'
       w.admin_notes << 'Placeholder admin notes'
-      w.language = "English"
+      w.language << 'English'
 
       # assign some contributors
       # there's something about the way suffia handles contributors that messes up the ordering
