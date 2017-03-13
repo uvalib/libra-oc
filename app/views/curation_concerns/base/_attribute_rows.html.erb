@@ -5,6 +5,7 @@
 <%= presenter.attribute_to_html :authors, render_as: :person  %>
 <%= presenter.attribute_to_html :contributors, render_as: :person  %>
 
+
 <%= show_line(presenter, :keyword, 'Keyword', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :license, 'License', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :doi, 'DOI', true, include_empty: true, catalog_search_link: false ) %>

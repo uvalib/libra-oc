@@ -8,6 +8,7 @@ module CurationConcerns
     self.terms += [:resource_type, :abstract, :authors, :contributors]
     self.terms -= [:description, :creator, :subject, :based_near, :contributor]
     delegate :authors, to: :model
+    delegate :contributors, to: :model
 
     def self.multiple?(field)
 
@@ -56,17 +57,27 @@ module CurationConcerns
       model.authors_attributes= attributes
     end
 
+    def contributors
+      model.contributors.any? ? model.contributors : [model.contributors.build]
+    end
+
+    def contributors_attributes= attributes
+      model.contributors_attributes= attributes
+    end
+
     protected
 
     def self.build_permitted_params
       permitted = super
       permitted.delete( {authors: []} )
-      permitted << { authors_attributes: permitted_authors_params }
+      permitted << { authors_attributes: permitted_people_params }
+      permitted.delete( {contributors: []} )
+      permitted << { contributors_attributes: permitted_people_params }
       permitted << :rights
       permitted
     end
 
-    def self.permitted_authors_params
+    def self.permitted_people_params
       [ :id, :_destroy, :first_name, :last_name, :computing_id, :institution, :department ]
     end
 
