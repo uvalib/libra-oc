@@ -1,7 +1,8 @@
 FROM ruby:2.3.3-alpine
 
+run echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
 RUN apk add --update --no-cache bash which tar file git openjdk8-jre imagemagick mysql-client mysql-dev \
-    build-base libxml2-dev libxslt-dev tzdata libmediainfo libzen\
+    build-base libxml2-dev libxslt-dev tzdata libmediainfo\
     && apk add nodejs
 
 # Create the run user and group
