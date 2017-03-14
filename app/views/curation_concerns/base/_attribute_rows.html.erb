@@ -5,6 +5,7 @@
 <%= presenter.attribute_to_html :authors, render_as: :person  %>
 <%= presenter.attribute_to_html :contributors, render_as: :person  %>
 
+
 <%= show_line(presenter, :keyword, 'Keyword', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :license, 'License', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :doi, 'DOI', true, include_empty: true, catalog_search_link: false ) %>
@@ -20,6 +21,8 @@
 <%= show_line(presenter, :sponsoring_agency, 'Sponsoring Agency', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :notes, 'Notes', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :admin_notes, 'Admin Notes', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :date_created, 'Date Created', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :identifier, 'Identifier', true, include_empty: true, catalog_search_link: false ) %>
 
 
 
@@ -28,10 +31,10 @@
 <%# presenter.attribute_to_html(:creator, render_as: :faceted) %>
 <%# presenter.attribute_to_html(:contributor, render_as: :faceted) %>
 <%# presenter.attribute_to_html(:subject, render_as: :faceted) %>
-<%= presenter.attribute_to_html(:publisher, render_as: :faceted) %>
-<%= presenter.attribute_to_html(:language, render_as: :faceted) %>
-<%= presenter.attribute_to_html(:identifier, render_as: :linked, search_field: 'identifier_tesim') %>
-<%= presenter.attribute_to_html(:keyword, render_as: :faceted) %>
-<%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim') %>
-<%= presenter.attribute_to_html(:related_url, render_as: :external_link) %>
-<%= presenter.attribute_to_html(:source) %>
+<%# presenter.attribute_to_html(:publisher, render_as: :faceted) %>
+<%# presenter.attribute_to_html(:language, render_as: :faceted) %>
+<%# presenter.attribute_to_html(:identifier, render_as: :linked, search_field: 'identifier_tesim') %>
+<%# presenter.attribute_to_html(:keyword, render_as: :faceted) %>
+<%# presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim') %>
+<%# presenter.attribute_to_html(:related_url, render_as: :external_link) %>
+<%# presenter.attribute_to_html(:source) %>

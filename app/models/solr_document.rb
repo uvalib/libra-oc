@@ -31,7 +31,6 @@ class SolrDocument
   # Libra OC related below
   #
 
-  # doesnt work
   def authors
     self[Solrizer.solr_name('authors')]
   end
@@ -80,9 +79,5 @@ class SolrDocument
   def abstract
     self[Solrizer.solr_name('abstract')]
   end
-
-
-
-
 
 end

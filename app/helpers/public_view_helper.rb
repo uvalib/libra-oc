@@ -161,9 +161,15 @@ module PublicViewHelper
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights ).render )
   end
 
-  def display_publication_date( date )
-    return '' if date.blank?
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Issued Date:", date.gsub( '-', '/' ) ).render )
+  def display_generic_date(name, date)
+    return '' if date.blank? || date.kind_of(Date)
+    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", date.gsub( '-', '/' ) ).render
+  end
+
+  def display_generic(name, field)
+    return '' if field.blank?
+    field = field.join(' ') if field.kind_of?(Array)
+    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", field ).render
   end
 
 
