@@ -229,7 +229,7 @@ module IngestHelpers
       w.keyword = payload[ :keywords ] if payload[ :keywords ]
 
       # date attributes
-      w.date_created = [ payload[ :create_date ] ] if payload[ :create_date ]
+      w.date_created = payload[ :create_date ] if payload[ :create_date ]
       w.date_modified = DateTime.parse( payload[ :modified_date ] ) if payload[ :modified_date ]
       w.published_date = payload[ :issued ] if payload[ :issued ]
 
@@ -237,7 +237,7 @@ module IngestHelpers
       w.visibility = visibility_lookup( payload[ :embargo_type ] )
       #w.embargo_end_date = payload[ :embargo_release_date ] if payload[ :embargo_release_date ]
 
-      w.publisher = [ payload[ :publisher ] ] if payload[ :publisher ]
+      w.publisher = payload[ :publisher ] if payload[ :publisher ]
 
       w.language = [ payload[ :language ] ] if payload[ :language ]
 
