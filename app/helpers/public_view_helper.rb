@@ -162,7 +162,7 @@ module PublicViewHelper
   end
 
   def display_generic_date(name, date)
-    return '' if date.blank? || date.kind_of(Date)
+    return '' if date.blank? || date.kind_of?(Date)
     CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", date.gsub( '-', '/' ) ).render
   end
 
