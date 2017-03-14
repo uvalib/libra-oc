@@ -10,14 +10,15 @@
                <h1><%= raw(@work[:title].join(raw("<br>"))) %></h1>
                <% display_resource_type @work %>
                <% display_authors( @work.authors ) %>
+               <% display_contributors( @work.contributors ) %>
                <%= display_description( @work.description ) %>
                <%= display_keywords( @work ) %>
                <%= display_rights(@work.rights) %>
-               <% display_contributors( @work.contributors ) %>
+               <%= display_generic("Publisher", @work.publisher) %>
+               <%= display_generic_date("Published Date", @work.published_date) %>
                <%= display_language( @work.language ) %>
-               <%= display_publication_date(@work.published_date) %>
                <%= display_related_links( @work.related_url ) %>
-               <%= display_related_links( @work.sponsoring_agency ) %>
+               <%= display_generic("Sponsoring Agency", @work.sponsoring_agency) %>
 
                <%= display_notes( @work.notes ) %>
                <%= display_doi_link( @work ) %>
