@@ -1,8 +1,7 @@
 FROM ruby:2.3.3-alpine
 
-run echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
 RUN apk add --update --no-cache bash which tar file git openjdk8-jre imagemagick mysql-client mysql-dev \
-    build-base libxml2-dev libxslt-dev tzdata libmediainfo\
+    build-base libxml2-dev libxslt-dev tzdata\
     && apk add nodejs
 
 # Create the run user and group
@@ -28,6 +27,7 @@ ENV APP_HOME /libra-oc
 WORKDIR $APP_HOME
 
 ADD . $APP_HOME
+RUN cp -f tools/mediainfo-alpine/* tools/fits-1.0.5/tools/mediainfo/linux/
 
 RUN rake assets:precompile
 
