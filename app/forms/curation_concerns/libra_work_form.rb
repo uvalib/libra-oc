@@ -23,7 +23,6 @@ module CurationConcerns
       attrs = super
       attrs[:title] = Array(attrs[:title]) if attrs[:title]
       attrs[:description] = Array(attrs[:description]) if attrs[:description]
-      attrs[:publisher] = Array(attrs[:publisher]) if attrs[:publisher]
       attrs[:source] = Array(attrs[:source]) if attrs[:source]
       #attrs[:abstract] = Array(attrs[:abstract]) if attrs[:abstract]
       attrs
@@ -41,9 +40,6 @@ module CurationConcerns
     #  super.first || ""
     #end
 
-    def publisher
-      super.first || ""
-    end
 
     def source
       super.first || ""
