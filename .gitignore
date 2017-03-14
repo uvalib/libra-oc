@@ -26,3 +26,4 @@ env.*
 .idea
 hostfs
 !hostfs/*/*.keep
+fits.log
