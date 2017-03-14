@@ -1,7 +1,7 @@
 FROM ruby:2.3.3-alpine
 
 RUN apk add --update --no-cache bash which tar file git openjdk8-jre imagemagick mysql-client mysql-dev \
-    build-base libxml2-dev libxslt-dev tzdata\
+    build-base libxml2-dev libxslt-dev tzdata libmediainfo libzen\
     && apk add nodejs
 
 # Create the run user and group
@@ -34,7 +34,7 @@ RUN rake assets:precompile
 RUN chown -R webservice $APP_HOME && chgrp -R webservice $APP_HOME
 
 # Specify the user
-USER webservice
+#USER webservice
 
 # Define port and startup script
 EXPOSE 3000
