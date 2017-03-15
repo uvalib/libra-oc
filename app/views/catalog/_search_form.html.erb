@@ -25,7 +25,7 @@
             <%= link_to t("sufia.search.form.option.my_works.label_long"), "#",
                 data: { "search-option" => sufia.dashboard_works_path, "search-label" => t("sufia.search.form.option.my_works.label_short") } %>
           </li>
-          <% if Toggles.config.expose_collections == true %>
+          <% if Toggles.config.expose_collections %>
           <li>
             <%= link_to t("sufia.search.form.option.my_collections.label_long"), "#",
                 data: { "search-option" => sufia.dashboard_collections_path, "search-label" => t("sufia.search.form.option.my_collections.label_short") } %>

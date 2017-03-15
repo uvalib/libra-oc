@@ -1,8 +1,7 @@
 <div class="col-xs-12 heading-row">
   <div class="row">
     <%= render 'create_work_action' if can_ever_create_works? %>
-    <%= puts "==> #{Toggles.config.inspect}" %>
-    <% if Toggles.config.expose_collections == true %>
+    <% if Toggles.config.expose_collections %>
       <% if can?(:create, Collection) %>
           <div class="col-xs-6 col-sm-3 heading-tile">
             <%= link_to new_collection_path, id: "hydra-collection-add" do %>
@@ -18,7 +17,7 @@
           <%= t("sufia.dashboard.view_works") %>
       <% end %>
     </div>
-    <% if Toggles.config.expose_collections == true %>
+    <% if Toggles.config.expose_collections %>
       <div class="col-xs-6 col-sm-3 heading-tile">
         <%= link_to sufia.dashboard_collections_path, id: "hydra-collection-view" do %>
             <span class="glyphicon glyphicon-th"></span>

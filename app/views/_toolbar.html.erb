@@ -60,7 +60,7 @@
       </li>
     <% end %>
 
-    <% if Toggles.config.expose_collections == true %>
+    <% if Toggles.config.expose_collections %>
       <% if can?(:create, Collection) %>
         <li class="dropdown">
           <%= link_to sufia.dashboard_collections_path, role: 'button', data: { toggle: 'dropdown' }, aria: { haspopup: true, expanded: false } do %>
