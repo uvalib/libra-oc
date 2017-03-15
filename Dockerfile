@@ -1,12 +1,11 @@
-FROM ruby:2.3.3-alpine
+FROM ruby:2.3.3
 
-run echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
-RUN apk add --update --no-cache bash which tar file git openjdk8-jre imagemagick mysql-client mysql-dev \
-    build-base libxml2-dev libxslt-dev tzdata libmediainfo\
-    && apk add nodejs
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends bash tar git openjdk-7-jre imagemagick mysql-client \
+    libxml2-dev libxslt-dev tzdata nodejs
 
 # Create the run user and group
-RUN addgroup webservice && adduser webservice -G webservice -D
+RUN useradd -UM webservice
 
 # set the timezone appropriatly
 ENV TZ=UTC
