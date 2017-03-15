@@ -15,14 +15,16 @@
   <li class="<%= "active" if @selected_tab == 'works' %>">
     <%= link_to t('sufia.dashboard.my.works'), sufia.dashboard_works_path %>
   </li>
-  <% if Toggles.config.expose_collections == true %>
+  <% if Toggles.config.expose_collections %>
   <li class="<%= "active" if @selected_tab == 'collections' %>">
     <%= link_to t('sufia.dashboard.my.collections'), sufia.dashboard_collections_path %>
   </li>
   <% end %>
+  <% if Toggles.config.expose_highlights %>
   <li class="<%= "active" if @selected_tab == 'highlighted' %>">
     <%= link_to t('sufia.dashboard.my.highlights'), sufia.dashboard_highlights_path %>
   </li>
+  <% end %>
   <li class="<%= "active" if @selected_tab == 'shared' %>">
     <%= link_to t('sufia.dashboard.my.shares'), sufia.dashboard_shares_path %>
   </li>

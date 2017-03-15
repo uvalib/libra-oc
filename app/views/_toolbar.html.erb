@@ -10,7 +10,9 @@
         <li class="divider"></li>
         <li><%= link_to t("sufia.toolbar.dashboard.transfers"), sufia.transfers_path %></li>
         <li class="divider"></li>
+        <% if Toggles.config.expose_highlights %>
         <li><%= link_to t("sufia.toolbar.dashboard.highlights"), sufia.dashboard_highlights_path %></li>
+        <% end %>
         <li><%= link_to t("sufia.toolbar.dashboard.shares"), sufia.dashboard_shares_path %></li>
       </ul>
     </li>
