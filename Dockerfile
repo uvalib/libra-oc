@@ -27,7 +27,6 @@ ENV APP_HOME /libra-oc
 WORKDIR $APP_HOME
 
 ADD . $APP_HOME
-#RUN cp -f tools/mediainfo-debian/* tools/fits-1.0.5/tools/mediainfo/linux/
 
 RUN rake assets:precompile
 
