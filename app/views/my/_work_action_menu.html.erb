@@ -24,14 +24,14 @@
         <span> <%= t("sufia.dashboard.my.action.delete_work") %> </span>
       <% end %>
     </li>
-    <% if Toggles.config.expose_highlights %>
+    <% if Toggles.expose_highlights %>
     <li role="menuitem" tabindex="-1">
       <%= display_trophy_link(current_user, document.id) do |text| %>
         <i class='glyphicon glyphicon-star'></i> <%= text %>
       <% end %>
     </li>
     <% end %>
-    <% if Toggles.config.expose_ownership_transfer %>
+    <% if Toggles.expose_ownership_transfer %>
     <li role="menuitem" tabindex="-1">
       <%= link_to(sufia.new_work_transfer_path(document.id), class: 'itemicon itemtransfer', title: t("sufia.dashboard.my.action.transfer")) do %>
         <i aria-hidden="true" class='glyphicon glyphicon-transfer'></i>

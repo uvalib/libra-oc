@@ -2,10 +2,10 @@
 <% tabs ||= %w[metadata files relationships share] # default tab order %>
 
 <% # remove the stuff we dont want %>
-<% if Toggles.config.expose_collections == false %>
+<% if Toggles.expose_collections == false %>
     <% tabs = tabs - ['relationships'] %>
 <% end %>
-<% if Toggles.config.expose_work_share == false %>
+<% if Toggles.expose_work_share == false %>
     <% tabs = tabs - ['share'] %>
 <% end %>
 
@@ -42,7 +42,7 @@
         </div>
       <% end %>
 
-      <% if Toggles.config.expose_work_share %>
+      <% if Toggles.expose_work_share %>
       <div role="tabpanel" class="tab-pane" id="share" data-param-key="<%= f.object.model_name.param_key %>">
           <div class="form-tab-content">
             <%= render "form_share", f: f %>

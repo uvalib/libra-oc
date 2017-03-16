@@ -17,6 +17,7 @@
   </div>
 </div>
 
+<% if Toggles.expose_proxies %>
 <div class="panel panel-default" id="proxy_management">
   <div class="panel-heading dashboard-panel">
     <h3 class="panel-title "><%= t("sufia.dashboard.manage_proxies") %></h3>
@@ -25,8 +26,9 @@
     <%= render 'dashboard/_index_partials/proxy_rights', user: current_user %>
   </div>
 </div>
+<%end%>
 
-<% if Toggles.config.expose_ownership_transfer %>
+<% if Toggles.expose_ownership_transfer %>
 <div class="panel panel-default" id="transfers">
   <div class="panel-heading dashboard-panel">
     <h3 class="panel-title "><%= t("sufia.dashboard.transfer_of_ownership") %></h3>

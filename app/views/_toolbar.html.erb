@@ -7,15 +7,15 @@
       <% end %>
       <ul class="dropdown-menu">
         <li><%= link_to t("sufia.toolbar.dashboard.my"), sufia.dashboard_index_path %></li>
-        <% if Toggles.config.expose_ownership_transfer %>
+        <% if Toggles.expose_ownership_transfer %>
         <li class="divider"></li>
         <li><%= link_to t("sufia.toolbar.dashboard.transfers"), sufia.transfers_path %></li>
         <% end %>
-        <% if Toggles.config.expose_highlights %>
+        <% if Toggles.expose_highlights %>
         <li class="divider"></li>
         <li><%= link_to t("sufia.toolbar.dashboard.highlights"), sufia.dashboard_highlights_path %></li>
         <% end %>
-        <% if Toggles.config.expose_work_share %>
+        <% if Toggles.expose_work_share %>
         <li><%= link_to t("sufia.toolbar.dashboard.shares"), sufia.dashboard_shares_path %></li>
         <% end %>
       </ul>
@@ -66,7 +66,7 @@
       </li>
     <% end %>
 
-    <% if Toggles.config.expose_collections %>
+    <% if Toggles.expose_collections %>
       <% if can?(:create, Collection) %>
         <li class="dropdown">
           <%= link_to sufia.dashboard_collections_path, role: 'button', data: { toggle: 'dropdown' }, aria: { haspopup: true, expanded: false } do %>

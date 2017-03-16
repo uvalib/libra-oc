@@ -1,52 +1,31 @@
 module Toggles
 
   def self.config( &block )
-    @config ||= Toggles::Configuration.new
+    @config ||= Hash.new(defaults).with_indifferent_access
     yield @config if block
     @config
   end
 
-  class Configuration
-
-    attr_writer :expose_collections
-    def expose_collections
-      @expose_collections
-    end
-
-    attr_writer :expose_follows
-    def expose_follows
-      @expose_follows
-    end
-
-    attr_writer :expose_highlights
-    def expose_highlights
-      @expose_highlights
-    end
-
-    attr_writer :expose_ownership_transfer
-    def expose_ownership_transfer
-      @expose_ownership_transfer
-    end
-
-    attr_writer :expose_work_share
-    def expose_work_share
-      @expose_work_share
-    end
-
-    attr_writer :expose_search
-    def expose_search
-      @expose_search
-    end
-
-    def initialize
-      @expose_collections = true
-      @expose_follows = true
-      @expose_highlights = true
-      @expose_ownership_transfer = true
-      @expose_work_share = true
-      @expose_search = true
-    end
-
+  def self.defaults
+    {
+      expose_collections: true,
+      expose_follows: true,
+      expose_highlights: true,
+      expose_ownership_transfer: true,
+      expose_work_share: true,
+      expose_search: true,
+      expose_proxies: true
+    }
   end
 
+  private
+  # Forwards any missing method call to the config hash
+  # This allows us to use the method name as a convenience
+  def self.method_missing(method, *args, &block)
+    if @config && @config.has_key?(method)
+      @config[method]
+    else
+      super
+    end
+  end
 end
