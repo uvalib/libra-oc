@@ -33,12 +33,18 @@ module Toggles
       @expose_work_share
     end
 
+    attr_writer :expose_search
+    def expose_search
+      @expose_search
+    end
+
     def initialize
       @expose_collections = true
       @expose_follows = true
       @expose_highlights = true
       @expose_ownership_transfer = true
       @expose_work_share = true
+      @expose_search = true
     end
 
   end
