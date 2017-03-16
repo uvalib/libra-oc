@@ -28,11 +28,17 @@ module Toggles
       @expose_ownership_transfer
     end
 
+    attr_writer :expose_work_share
+    def expose_work_share
+      @expose_work_share
+    end
+
     def initialize
       @expose_collections = true
       @expose_follows = true
       @expose_highlights = true
       @expose_ownership_transfer = true
+      @expose_work_share = true
     end
 
   end

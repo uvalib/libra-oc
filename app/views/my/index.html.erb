@@ -25,9 +25,11 @@
     <%= link_to t('sufia.dashboard.my.highlights'), sufia.dashboard_highlights_path %>
   </li>
   <% end %>
+  <% if Toggles.config.expose_work_share %>
   <li class="<%= "active" if @selected_tab == 'shared' %>">
     <%= link_to t('sufia.dashboard.my.shares'), sufia.dashboard_shares_path %>
   </li>
+  <% end %>
 </ul>
 
 <%= render 'search_header' %>

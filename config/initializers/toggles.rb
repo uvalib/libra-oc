@@ -19,3 +19,8 @@ Toggles.config.expose_highlights = false
 # do we expose the idea of ownership transfer?
 # the default is true
 Toggles.config.expose_ownership_transfer = false
+
+#
+# do we expose the idea of work shares?
+# the default is true
+Toggles.config.expose_work_share = false
