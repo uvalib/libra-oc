@@ -9,7 +9,9 @@
   </div>
   <div class="col-sm-8">
     <%= render 'work_description', presenter: @presenter %>
+    <% if Toggles.config.expose_collections %>
     <%= render 'relationships', presenter: @presenter %>
+    <% end %>
     <%= render 'metadata', presenter: @presenter %>
   </div>
   <div class="col-sm-4">
