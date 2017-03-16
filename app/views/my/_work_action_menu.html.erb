@@ -31,11 +31,13 @@
       <% end %>
     </li>
     <% end %>
+    <% if Toggles.config.expose_ownership_transfer %>
     <li role="menuitem" tabindex="-1">
       <%= link_to(sufia.new_work_transfer_path(document.id), class: 'itemicon itemtransfer', title: t("sufia.dashboard.my.action.transfer")) do %>
         <i aria-hidden="true" class='glyphicon glyphicon-transfer'></i>
         <span> <%= t("sufia.dashboard.my.action.transfer") %> </span>
       <% end %>
     </li>
+    <% end %>
   </ul>
 </div>
