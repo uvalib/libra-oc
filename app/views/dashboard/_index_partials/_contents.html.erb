@@ -7,6 +7,7 @@
   </div>
 </div>
 
+<% if Toggles.expose_notifications %>
 <div class="panel panel-default" id="notifications">
   <div class="panel-heading dashboard-panel">
     <h3 class="panel-title "><%= t("sufia.dashboard.user_notifications") %></h3>
@@ -16,6 +17,7 @@
     <%= link_to_additional_notifications %>
   </div>
 </div>
+<%end%>
 
 <% if Toggles.expose_proxies %>
 <div class="panel panel-default" id="proxy_management">

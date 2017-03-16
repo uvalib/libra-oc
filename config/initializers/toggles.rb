@@ -1,6 +1,7 @@
 require_dependency 'libraoc/toggles'
 
 Toggles.config do |config|
+
   config[:expose_collections] = false
   config[:expose_follows] = false
   config[:expose_highlights] = false
@@ -8,6 +9,7 @@ Toggles.config do |config|
   config[:expose_work_share] = false
   config[:expose_search] = true
   config[:expose_proxies] = false
+  config[:expose_notifications] = false
 end
 #
 ##
