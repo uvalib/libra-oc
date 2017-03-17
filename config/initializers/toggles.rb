@@ -33,4 +33,8 @@ Toggles.config do |config|
   ## do we expose the idea of notifications?
   ## the default is true
   config[:expose_notifications] = false
+
+  ## do we expose the idea of batched ingest?
+  ## the default is true
+  config[:expose_batch_ingest] = false
 end

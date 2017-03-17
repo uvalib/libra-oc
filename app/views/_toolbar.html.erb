@@ -39,6 +39,7 @@
                     role: 'menuitem'
                   ) %>
             </li>
+            <% if Toggles.expose_batch_ingest %>
             <li>
               <%= link_to(
                     t("sufia.toolbar.works.batch"),
@@ -48,6 +49,7 @@
                     role: 'menuitem'
                   ) %>
             </li>
+            <% end %>
           <% else %>
             <% # simple link to the first work type %>
             <li>
@@ -58,9 +60,12 @@
                   role: 'menuitem'
                 ) %>
             </li>
-            <li><%= link_to t("sufia.toolbar.works.batch"),
+            <% if Toggles.expose_batch_ingest %>
+            <li>
+              <%= link_to t("sufia.toolbar.works.batch"),
                             sufia.new_batch_upload_path(payload_concern: create_work_presenter.first_model) %>
             </li>
+            <% end %>
           <% end %>
         </ul>
       </li>

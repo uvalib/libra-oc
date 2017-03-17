@@ -15,7 +15,8 @@ module Toggles
       expose_work_share: true,
       expose_search: true,
       expose_proxies: true,
-      expose_notifications: true
+      expose_notifications: true,
+      expose_batch_ingest: true
     }
   end
 
