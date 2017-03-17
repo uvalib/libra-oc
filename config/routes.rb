@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  # libra-oc specific endpoints
+  get '/computing_id' => 'ajax#computing_id'
+  get '/orcid_search' => 'ajax#orcid_search'
+
   resources :public_view, only: [:show]
 
   concern :exportable, Blacklight::Routes::Exportable.new
