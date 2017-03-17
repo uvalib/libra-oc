@@ -11,12 +11,14 @@
           </div>
       <% end  %>
     <% end  %>
+    <% if false %>
     <div class="col-xs-6 col-sm-3 heading-tile">
       <%= link_to sufia.dashboard_works_path  do %>
           <span class="glyphicon glyphicon-eye-open"></span>
           <%= t("sufia.dashboard.view_works") %>
       <% end %>
     </div>
+  <%end%>
     <% if Toggles.expose_collections %>
       <div class="col-xs-6 col-sm-3 heading-tile">
         <%= link_to sufia.dashboard_collections_path, id: "hydra-collection-view" do %>
