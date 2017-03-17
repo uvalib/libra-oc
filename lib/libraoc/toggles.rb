@@ -14,7 +14,8 @@ module Toggles
       expose_ownership_transfer: true,
       expose_work_share: true,
       expose_search: true,
-      expose_proxies: true
+      expose_proxies: true,
+      expose_notifications: true
     }
   end
 
