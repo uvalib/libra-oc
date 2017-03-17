@@ -1,6 +1,8 @@
+<% if false %>
 <div class="list-group-item">
   <span class="glyphicon glyphicon-time"></span> Joined on <%= user.created_at.to_date.strftime("%b %d, %Y") %>
 </div>
+<%end%>
 
 <% if Toggles.expose_collections %>
   <div class="list-group-item">
