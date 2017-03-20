@@ -33,7 +33,8 @@
       <%= orcid_label %>
     <% end %>
     <div class="col-xs-8">
-       <%= f.text_field :orcid, class: "form-control" %>
+       <% orcid = extract_orcid_for_display( @user.orcid ) %>
+       <input type="text" class="form-control orcid_widget" id="user_orcid" name="user[orcid]" readonly="true" value="<%= orcid %>" />
     </div>
   </div><!-- .form-group -->
 
