@@ -35,6 +35,15 @@ class SolrDocument
     self[Solrizer.solr_name('authors')]
   end
 
+  def authors_display
+    person_display 'authors'
+  end
+
+  def contributors_display
+    person_display 'contributors'
+  end
+
+
   def contributors
     self[Solrizer.solr_name('contributors')]
   end
@@ -80,4 +89,20 @@ class SolrDocument
     self[Solrizer.solr_name('abstract')]
   end
 
+  private
+
+  def person_display solr_name
+    values = self[Solrizer.solr_name(solr_name)]
+    return nil unless values.present?
+    values.map do |author|
+      begin
+        a = JSON.parse(author)
+        email = User.email_from_cid( a['computing_id'] )
+        email = "(#{email})" if a['email'].present?
+        "#{a['first_name']} #{a['last_name']} #{email}"
+      rescue JSON::ParserError => e
+        author
+      end
+    end
+  end
 end

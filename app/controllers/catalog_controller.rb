@@ -64,8 +64,8 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :iconify_auto_link
     config.add_index_field solr_name("keyword", :stored_searchable), label: "Keyword", itemprop: 'keywords', link_to_search: solr_name("keyword", :facetable)
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
-    config.add_index_field solr_name("authors", :stored_searchable), label: "Authors", itemprop: 'authors', link_to_search: solr_name("authors", :facetable)
-    config.add_index_field solr_name("contributors", :stored_searchable), label: "Contributors", itemprop: 'contributor', link_to_search: solr_name("contributors", :facetable)
+    config.add_index_field solr_name("authors", :stored_searchable), label: "Authors", itemprop: 'authors', link_to_search: solr_name("authors", :facetable), accessor: 'authors_display'
+    config.add_index_field solr_name("contributors", :stored_searchable), label: "Contributors", itemprop: 'contributor', link_to_search: solr_name("contributors", :facetable), accessor: 'contributors_display'
     config.add_index_field solr_name("proxy_depositor", :symbol), label: "Depositor", helper_method: :link_to_profile
     config.add_index_field solr_name("depositor"), label: "Owner", helper_method: :link_to_profile
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("publisher", :facetable)
@@ -87,7 +87,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("description", :stored_searchable), label: "Description"
     config.add_show_field solr_name("keyword", :stored_searchable), label: "Keyword"
     config.add_show_field solr_name("subject", :stored_searchable), label: "Subject"
-    config.add_show_field solr_name("contributors", :stored_searchable), label: "Contributor"
+    config.add_show_field solr_name("contributors", :stored_searchable), label: "Contributor", accessor: 'contributors_display'
     config.add_show_field solr_name("publisher", :stored_searchable), label: "Publisher"
     config.add_show_field solr_name("language", :stored_searchable), label: "Language"
     config.add_show_field solr_name("date_uploaded", :stored_searchable), label: "Date Uploaded"
@@ -97,7 +97,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
     config.add_show_field solr_name("format", :stored_searchable), label: "File Format"
     config.add_show_field solr_name("identifier", :stored_searchable), label: "Identifier"
-    config.add_show_field solr_name("authors", :stored_searchable), label: "Authors"
+    config.add_show_field solr_name("authors", :stored_searchable), label: "Authors", accessor: 'authors_display'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

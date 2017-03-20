@@ -30,10 +30,16 @@ module Libraoc::PersonMetadata
     end
 
     #
-    # helper to allow us to display Person information in a consistent manner
+    # json encoded because this is what goes into solr.
     #
     def to_s
+      self.to_json
+    end
 
+    #
+    # helper to allow us to display Person information in a consistent manner
+    #
+    def to_display
       begin
         email = User.email_from_cid( self.computing_id )
         email = "(#{email})" if email.present?
@@ -41,7 +47,6 @@ module Libraoc::PersonMetadata
       rescue
         'Unknown'
       end
-
     end
   end
 
