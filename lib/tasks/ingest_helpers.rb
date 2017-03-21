@@ -138,7 +138,7 @@ module IngestHelpers
       'No abstract found'
   ]
 
-  # how we map a work type to the predefined resource types
+  # how we map a work type to the predefined resource types (these are defined in the resource_type authority)
   RESOURCE_TYPE_MAP = {
       'article' => 'Article',
       'article_reprint' => 'Article',
@@ -199,6 +199,7 @@ module IngestHelpers
     warnings << 'missing language' if payload[ :language ].nil?
     warnings << 'missing notes' if payload[ :notes ].nil?
     warnings << 'missing admin notes' if payload[ :admin_notes ].nil?
+    warnings << 'missing citation' if payload[ :citation ].nil?
 
     return errors, warnings
   end
@@ -258,7 +259,7 @@ module IngestHelpers
       w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
       w.work_source = payload[ :source ] if payload[ :source ]
 
-      w.resource_type = [ payload[ :resource_type ] ] if payload[ :resource_type ]
+      w.resource_type = [ RESOURCE_TYPE_MAP[ payload[ :resource_type ] ] ] if payload[ :resource_type ]
     end
 
     return ok, work
@@ -266,14 +267,18 @@ module IngestHelpers
 
   #
   # based on the directory we are ingesting from, take a guess at the resource type
-  def identify_resource_type( dirname )
-
-    my_type = File.basename( File.dirname( dirname ) )
-    type_lookup = RESOURCE_TYPE_MAP[ my_type ].nil? ? '' : RESOURCE_TYPE_MAP[ my_type ]
-    return nil if type_lookup.blank?
-    return RESOURCE_TYPE_MAP[ my_type ]
+  #
+  def determine_resource_type( dirname )
+    resource_type = File.basename( File.dirname( dirname ) )
+    return resource_type.blank? ? nil : resource_type
   end
 
+  #
+  # construct a citation field based on the information captured
+  #
+  def construct_citation( payload )
+    return nil
+  end
   #
   # get the list of new items from the work directory
   #

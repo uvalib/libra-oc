@@ -226,7 +226,7 @@ namespace :libraoc do
      payload[ :source ] = solr_doc.at_path( 'id' )
 
      # resource type
-     payload[ :resource_type ] = IngestHelpers.identify_resource_type( dirname )
+     payload[ :resource_type ] = IngestHelpers.determine_resource_type( dirname )
 
      #
      # handle optional fields
@@ -247,6 +247,9 @@ namespace :libraoc do
      # notes
      notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
      payload[ :notes ] = notes if notes.present?
+
+     # construct the citation
+     payload[ :citation ] = IngestHelpers.construct_citation( payload )
 
      return payload
   end
