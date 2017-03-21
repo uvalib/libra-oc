@@ -25,10 +25,6 @@ module Libraoc::PersonMetadata
       index.as :stored_searchable
     end
 
-    property :orcid_id, predicate: ::RDF::URI('http://example.org/terms/orcid_id'), multiple: false do |index|
-      index.as :stored_searchable
-    end
-
     #
     # json encoded because this is what goes into solr.
     #

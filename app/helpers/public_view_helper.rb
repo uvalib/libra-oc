@@ -1,3 +1,5 @@
+require_dependency 'libraoc/helpers/service_helpers'
+
 module PublicViewHelper
 
   def file_date(date)
@@ -45,28 +47,28 @@ module PublicViewHelper
     concat content_tag(:span, author_label, class: 'document-label')
     authors.each do |author|
       
-       author_string = construct_person( author )
+       author_string = construct_person_span( author, true )
        unless author_string.blank?
           concat content_tag(:span, author_string,
                              style: 'font-weight:normal', class:'document-value' )
-
-           if author.orcid_id.present?
-              orcid_link = link_to author.orcid_id, target: '_blank' do
-                image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')
-              end
-              concat orcid_link
-           end
        end
     end
     concat raw('</div>')
   end
 
-  def construct_person( person )
+  def construct_person_span(person, want_orcid = false )
     return '' if person.nil?
-    person_str = concat_with_comma( '', person.last_name )
-    person_str = concat_with_comma( person_str, person.first_name )
-    person_str = concat_with_comma( person_str, person.department )
-    return concat_with_comma( person_str, person.institution )
+    first_line = concat_with_comma( '', person.last_name )
+    first_line = concat_with_comma( first_line, person.first_name )
+    first_line = concat_with_comma( first_line, person.department )
+    results = content_tag(:span, first_line )
+    orcid_tag = want_orcid ? construct_orcid_tag( person ) : ''
+
+    if person.institution.present? || orcid_tag.present?
+       results += content_tag(:span, raw( "#{person.institution} #{orcid_tag}" ) )
+    end
+
+    return results
   end
 
   def concat_with_comma( destination, field )
@@ -77,10 +79,10 @@ module PublicViewHelper
     return destination
   end
 
-  def construct_author_orcid( author )
-    return '' if author.nil?
+  def construct_orcid_tag( person )
+    return '' if person.nil? || person.computing_id.blank?
 
-    orcid = get_author_orcid( author )
+    orcid = Helpers.lookup_orcid( person.computing_id )
     return '' if orcid.blank?
 
     return "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')} #{link_to extract_orcid_for_display( orcid ), orcid, { target: '_blank' }}".html_safe
@@ -97,7 +99,7 @@ module PublicViewHelper
     contributor_label = contributors.one? ? "Contributor:" : "Contributors:"
     concat content_tag(:span, contributor_label, class: 'document-label')
     contributors.each do |contributor|
-      contributor_string = construct_person( contributor )
+      contributor_string = construct_person_span(contributor, false )
       unless contributor_string.blank?
         concat content_tag(:span, contributor_string,
                            style: 'font-weight:normal', class:'document-value' )
