@@ -42,28 +42,28 @@ class LibraWork < ActiveFedora::Base
   end
 
 
-  property :published_date, predicate: ::RDF::URI('http://example.org/terms/published_date'), multiple: false do |index|
+  property :published_date, predicate: ::RDF::Vocab::SCHEMA.datePublished, multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :sponsoring_agency, predicate: ::RDF::URI('http://example.org/terms/sponsoring_agency') do |index|
+  property :sponsoring_agency, predicate: ::RDF::Vocab::SCHEMA.funder do |index|
     index.as :stored_searchable
   end
 
-  property :notes, predicate: ::RDF::URI('http://example.org/terms/notes'), multiple: false do |index|
+  property :notes, predicate: ::RDF::Vocab::SCHEMA.comment, multiple: false do |index|
     index.type :text
     index.as :stored_searchable
   end
 
-  property :license, predicate: ::RDF::URI('http://example.org/terms/license'), multiple: false do |index|
+  property :license, predicate: ::RDF::Vocab::DC.rights, multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :doi, predicate: ::RDF::URI('http://example.org/terms/doi'), multiple: false do |index|
+  property :doi, predicate: ::RDF::Vocab::Identifiers.orcid, multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :libra_id, predicate: ::RDF::URI('http://example.org/terms/libra_id'), multiple: false do |index|
+  property :libra_id, predicate: ::RDF::Vocab::Identifiers.local, multiple: false do |index|
     index.as :stored_searchable
   end
 

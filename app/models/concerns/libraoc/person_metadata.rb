@@ -5,23 +5,23 @@ module Libraoc::PersonMetadata
 
     type ::RDF::Vocab::FOAF.Person
 
-    property :first_name, predicate: ::RDF::Vocab::FOAF.firstName, multiple: false do |index|
+    property :first_name, predicate: ::RDF::Vocab::SCHEMA.givenName, multiple: false do |index|
       index.as :stored_searchable
     end
 
-    property :last_name, predicate: ::RDF::Vocab::FOAF.lastName, multiple: false do |index|
+    property :last_name, predicate: ::RDF::Vocab::SCHEMA.familyName, multiple: false do |index|
       index.as :stored_searchable
     end
 
-    property :computing_id, predicate: ::RDF::URI('http://example.org/terms/computing_id'), multiple: false do |index|
+    property :computing_id, predicate: ::RDF::Vocab::SCHEMA.email, multiple: false do |index|
       index.as :stored_searchable
     end
 
-    property :department, predicate: ::RDF::URI('http://example.org/terms/department'), multiple: false do |index|
+    property :department, predicate: ::RDF::Vocab::SCHEMA.department, multiple: false do |index|
       index.as :stored_searchable
     end
 
-    property :institution, predicate: ::RDF::URI('http://example.org/terms/institution'), multiple: false do |index|
+    property :institution, predicate: ::RDF::Vocab::SCHEMA.affiliation, multiple: false do |index|
       index.as :stored_searchable
     end
 

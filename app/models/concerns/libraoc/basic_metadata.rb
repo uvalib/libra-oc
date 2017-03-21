@@ -20,16 +20,16 @@ module Libraoc::BasicMetadata
 #   property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
 #     index.as :stored_searchable, :facetable
 #   end
-    property :description, predicate: ::RDF::Vocab::DC11.description, multiple: false do |index|
+    property :description, predicate: ::RDF::Vocab::DC.abstract, multiple: false do |index|
       index.type :text
       index.as :stored_searchable
     end
-    property :keyword, predicate: ::RDF::Vocab::DC11.relation do |index|
+    property :keyword, predicate: ::RDF::Vocab::SCHEMA.keywords do |index|
       index.as :stored_searchable, :facetable
     end
 
     # Used for a license
-    property :rights, predicate: ::RDF::Vocab::DC.rights do |index|
+    property :rights, predicate: ::RDF::Vocab::EDM.rights do |index|
       index.as :stored_searchable
     end
 
