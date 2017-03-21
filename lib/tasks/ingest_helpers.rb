@@ -260,6 +260,8 @@ module IngestHelpers
       w.work_source = payload[ :source ] if payload[ :source ]
 
       w.resource_type = [ RESOURCE_TYPE_MAP[ payload[ :resource_type ] ] ] if payload[ :resource_type ]
+
+      w.related_url = [ payload[ :related_url ] ] if payload[ :related_url ]
     end
 
     return ok, work

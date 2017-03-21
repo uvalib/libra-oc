@@ -227,6 +227,9 @@ namespace :libraoc do
      # document source
      payload[ :source ] = solr_doc.at_path( 'id' )
 
+     # related URL's
+     payload[ :related_url ] = extract_related_url( solr_doc, fedora_doc )
+
      # resource type
      payload[ :resource_type ] = IngestHelpers.determine_resource_type( dirname )
 
@@ -304,6 +307,18 @@ namespace :libraoc do
     # try for conference papers
     issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'conference_date_t' )
     return issued_date if issued_date.present?
+
+    return nil
+  end
+
+  #
+  # Attempt to extract the related URL
+  #
+  def extract_related_url( solr_doc, fedora_doc )
+
+    # general approach
+    related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
+    return related_url if related_url.present?
 
     return nil
   end
