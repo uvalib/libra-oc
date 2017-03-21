@@ -40,6 +40,7 @@ module PublicViewHelper
 
   def display_authors( authors )
     return '' if authors.none?
+    concat raw('<div class="document-row">')
     author_label = authors.one? ? "Author:" : "Authors:"
     concat content_tag(:span, author_label, class: 'document-label')
     authors.each do |author|
@@ -57,6 +58,7 @@ module PublicViewHelper
            end
        end
     end
+    concat raw('</div>')
   end
 
   def construct_person( person )
@@ -91,6 +93,7 @@ module PublicViewHelper
 
   def display_contributors(contributors)
     return '' if contributors.none?
+    concat raw('<div class="document-row">')
     contributor_label = contributors.one? ? "Contributor:" : "Contributors:"
     concat content_tag(:span, contributor_label, class: 'document-label')
     contributors.each do |contributor|
@@ -100,6 +103,7 @@ module PublicViewHelper
                            style: 'font-weight:normal', class:'document-value' )
       end
     end
+    concat raw('</div>')
   end
 
   def display_description( description )
