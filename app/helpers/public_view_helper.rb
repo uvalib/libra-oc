@@ -44,26 +44,35 @@ module PublicViewHelper
     concat content_tag(:span, author_label, class: 'document-label')
     authors.each do |author|
       
-    author_string =  content_tag :span, "#{author.last_name}, #{author.first_name}"
-    institution = "#{author.department}, #{author.institution}"
+       author_string = construct_person( author )
+       unless author_string.blank?
+          concat content_tag(:p, author_string,
+                             style: 'font-weight:normal', class:'document-value' )
 
-      unless author_string.blank?
-        concat content_tag(:p, (author_string + institution).html_safe,
-                           style: 'font-weight:normal', class:'document-value' )
-
-        if author.orcid_id.present?
-          orcid_link = link_to author.orcid_id, target: '_blank' do
-            image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')
-          end
-          concat orcid_link
-        end
-      end
+           if author.orcid_id.present?
+              orcid_link = link_to author.orcid_id, target: '_blank' do
+                image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')
+              end
+              concat orcid_link
+           end
+       end
     end
   end
 
   def construct_person( person )
     return '' if person.nil?
-    return "#{person.last_name}, #{person.first_name}, #{person.department}, #{person.institution}"
+    person_str = concat_with_comma( '', person.last_name )
+    person_str = concat_with_comma( person_str, person.first_name )
+    person_str = concat_with_comma( person_str, person.department )
+    return concat_with_comma( person_str, person.institution )
+  end
+
+  def concat_with_comma( destination, field )
+    if field.present?
+      return destination.present? ? "#{destination}, #{field}" : field
+    end
+
+    return destination
   end
 
   def construct_author_orcid( author )
