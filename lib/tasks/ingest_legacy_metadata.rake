@@ -119,7 +119,7 @@ namespace :libraoc do
      puts "Ingesting #{File.basename( dirname )} (#{id})..."
 
      # create a payload from the document
-     payload = create_legacy_ingest_payload(solr_doc, fedora_doc )
+     payload = create_legacy_ingest_payload( dirname, solr_doc, fedora_doc )
 
      # merge in any default attributes
      payload = apply_defaults_for_legacy_item( defaults, payload )
@@ -153,7 +153,7 @@ namespace :libraoc do
      # create the work
      ok, work = IngestHelpers.create_new_item( depositor, payload )
      if ok == true
-       puts "New work created; id #{work.id} (#{work.identifier[0] || 'none'})"
+       puts "New work created; id: #{work.id} (#{work.identifier[0] || 'none'})"
      else
        #puts " ERROR: creating new generic work for #{File.basename( dirname )} (#{id})"
        #return false
@@ -171,7 +171,7 @@ namespace :libraoc do
   #
   # create a ingest payload from the Libra document
   #
-  def create_legacy_ingest_payload( solr_doc, fedora_doc )
+  def create_legacy_ingest_payload( dirname, solr_doc, fedora_doc )
 
 
      payload = {}
@@ -224,6 +224,9 @@ namespace :libraoc do
 
      # document source
      payload[ :source ] = solr_doc.at_path( 'id' )
+
+     # resource type
+     payload[ :resource_type ] = IngestHelpers.identify_resource_type( dirname )
 
      #
      # handle optional fields

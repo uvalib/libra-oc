@@ -138,6 +138,15 @@ module IngestHelpers
       'No abstract found'
   ]
 
+  # how we map a work type to the predefined resource types
+  RESOURCE_TYPE_MAP = {
+      'article' => 'Article',
+      'article_reprint' => 'Article',
+      'book' => 'Book',
+      'book_part' => 'Part of Book',
+      'conference_paper' => 'Conference Proceeding'
+  }
+
   #
   # validate the payload before we attempt to create a new work
   #
@@ -160,6 +169,7 @@ module IngestHelpers
     errors << 'missing source' if payload[ :source ].nil?
     errors << 'missing license' if payload[ :license ].nil?
     errors << 'missing embargo' if payload[ :embargo_type ].nil?
+    errors << 'missing resource_type' if payload[ :resource_type ].nil?
 
     # check for an abstract that exceeds the maximum size
     if payload[ :abstract ].blank? == false && payload[ :abstract ].length > MAX_ABSTRACT_LENGTH
@@ -252,6 +262,16 @@ module IngestHelpers
     end
 
     return ok, work
+  end
+
+  #
+  # based on the directory we are ingesting from, take a guess at the resource type
+  def identify_resource_type( dirname )
+
+    my_type = File.basename( File.dirname( dirname ) )
+    type_lookup = RESOURCE_TYPE_MAP[ my_type ].nil? ? '' : RESOURCE_TYPE_MAP[ my_type ]
+    return nil if type_lookup.blank?
+    return RESOURCE_TYPE_MAP[ my_type ]
   end
 
   #
