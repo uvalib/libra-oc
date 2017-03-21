@@ -546,8 +546,8 @@ module IngestHelpers
   #
   def escape_fields( payload )
 
-    payload[:title] = escape_field( payload[:title] ) if field_supplied( payload[:title] )
-    payload[:abstract] = escape_field( payload[:abstract] ) if field_supplied( payload[:abstract] )
+    #payload[:title] = escape_field( payload[:title] ) if field_supplied( payload[:title] )
+    #payload[:abstract] = escape_field( payload[:abstract] ) if field_supplied( payload[:abstract] )
     return payload
 
   end
