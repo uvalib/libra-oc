@@ -71,9 +71,10 @@ namespace :libraoc do
 
     success_count = 0
     error_count = 0
+    total = ingests.size
     ingests.each_with_index do | dirname, ix |
       next if ix < start_ix
-      ok = ingest_legacy_metadata( defaults, user, File.join( ingest_dir, dirname ) )
+      ok = ingest_legacy_metadata( defaults, user, File.join( ingest_dir, dirname ), ix + 1, total )
       ok == true ? success_count += 1 : error_count += 1
       break if ENV[ 'MAX_COUNT' ] && ENV[ 'MAX_COUNT' ].to_i == ( success_count + error_count )
     end
@@ -111,15 +112,16 @@ namespace :libraoc do
   #
   # convert a set of Libra extract assets into a new Libra metadata record
   #
-  def ingest_legacy_metadata( defaults, depositor, dirname )
+  def ingest_legacy_metadata( defaults, depositor, dirname, current, total )
 
      solr_doc, fedora_doc = IngestHelpers.load_legacy_ingest_content(dirname )
      id = solr_doc['id']
 
      puts "Ingesting #{File.basename( dirname )} (#{id})..."
+     puts "Ingesting #{current} of #{total}: #{File.basename( dirname )} (#{id})..."
 
      # create a payload from the document
-     payload = create_legacy_ingest_payload(solr_doc, fedora_doc )
+     payload = create_legacy_ingest_payload( dirname, solr_doc, fedora_doc )
 
      # merge in any default attributes
      payload = apply_defaults_for_legacy_item( defaults, payload )
@@ -153,7 +155,7 @@ namespace :libraoc do
      # create the work
      ok, work = IngestHelpers.create_new_item( depositor, payload )
      if ok == true
-       puts "New work created; id #{work.id} (#{work.identifier[0] || 'none'})"
+       puts "New work created; id: #{work.id} (#{work.identifier[0] || 'none'})"
      else
        #puts " ERROR: creating new generic work for #{File.basename( dirname )} (#{id})"
        #return false
@@ -171,7 +173,7 @@ namespace :libraoc do
   #
   # create a ingest payload from the Libra document
   #
-  def create_legacy_ingest_payload( solr_doc, fedora_doc )
+  def create_legacy_ingest_payload( dirname, solr_doc, fedora_doc )
 
 
      payload = {}
@@ -225,6 +227,12 @@ namespace :libraoc do
      # document source
      payload[ :source ] = solr_doc.at_path( 'id' )
 
+     # related URL's
+     payload[ :related_url ] = extract_related_url( solr_doc, fedora_doc )
+
+     # resource type
+     payload[ :resource_type ] = IngestHelpers.determine_resource_type( dirname )
+
      #
      # handle optional fields
      #
@@ -244,6 +252,9 @@ namespace :libraoc do
      # notes
      notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
      payload[ :notes ] = notes if notes.present?
+
+     # construct the citation
+     payload[ :citation ] = IngestHelpers.construct_citation( payload )
 
      return payload
   end
@@ -296,6 +307,18 @@ namespace :libraoc do
     # try for conference papers
     issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'conference_date_t' )
     return issued_date if issued_date.present?
+
+    return nil
+  end
+
+  #
+  # Attempt to extract the related URL
+  #
+  def extract_related_url( solr_doc, fedora_doc )
+
+    # general approach
+    related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
+    return related_url if related_url.present?
 
     return nil
   end

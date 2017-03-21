@@ -34,7 +34,7 @@ RUN rake assets:precompile
 RUN chown -R webservice $APP_HOME && chgrp -R webservice $APP_HOME
 
 # Specify the user
-#USER webservice
+USER webservice
 
 # Define port and startup script
 EXPOSE 3000

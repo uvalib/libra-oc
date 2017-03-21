@@ -1,3 +1,5 @@
+require_dependency 'libraoc/helpers/service_helpers'
+
 module PublicViewHelper
 
   def file_date(date)
@@ -40,36 +42,47 @@ module PublicViewHelper
 
   def display_authors( authors )
     return '' if authors.none?
+    concat raw('<div class="document-row">')
     author_label = authors.one? ? "Author:" : "Authors:"
     concat content_tag(:span, author_label, class: 'document-label')
     authors.each do |author|
       
-    author_string =  content_tag :span, "#{author.last_name}, #{author.first_name}"
-    institution = "#{author.department}, #{author.institution}"
-
-      unless author_string.blank?
-        concat content_tag(:p, (author_string + institution).html_safe,
-                           style: 'font-weight:normal', class:'document-value' )
-
-        if author.orcid_id.present?
-          orcid_link = link_to author.orcid_id, target: '_blank' do
-            image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')
-          end
-          concat orcid_link
-        end
-      end
+       author_string = construct_person_span( author, true )
+       unless author_string.blank?
+          concat content_tag(:span, author_string,
+                             style: 'font-weight:normal', class:'document-value' )
+       end
     end
+    concat raw('</div>')
   end
 
-  def construct_person( person )
+  def construct_person_span(person, want_orcid = false )
     return '' if person.nil?
-    return "#{person.last_name}, #{person.first_name}, #{person.department}, #{person.institution}"
+    first_line = concat_with_comma( '', person.last_name )
+    first_line = concat_with_comma( first_line, person.first_name )
+    first_line = concat_with_comma( first_line, person.department )
+    results = content_tag(:span, first_line )
+    orcid_tag = want_orcid ? construct_orcid_tag( person ) : ''
+
+    if person.institution.present? || orcid_tag.present?
+       results += content_tag(:span, raw( "#{person.institution} #{orcid_tag}" ) )
+    end
+
+    return results
   end
 
-  def construct_author_orcid( author )
-    return '' if author.nil?
+  def concat_with_comma( destination, field )
+    if field.present?
+      return destination.present? ? "#{destination}, #{field}" : field
+    end
 
-    orcid = get_author_orcid( author )
+    return destination
+  end
+
+  def construct_orcid_tag( person )
+    return '' if person.nil? || person.computing_id.blank?
+
+    orcid = Helpers.lookup_orcid( person.computing_id )
     return '' if orcid.blank?
 
     return "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')} #{link_to extract_orcid_for_display( orcid ), orcid, { target: '_blank' }}".html_safe
@@ -82,15 +95,17 @@ module PublicViewHelper
 
   def display_contributors(contributors)
     return '' if contributors.none?
+    concat raw('<div class="document-row">')
     contributor_label = contributors.one? ? "Contributor:" : "Contributors:"
     concat content_tag(:span, contributor_label, class: 'document-label')
     contributors.each do |contributor|
-      contributor_string = construct_person( contributor )
+      contributor_string = construct_person_span(contributor, false )
       unless contributor_string.blank?
-        concat content_tag(:p, contributor_string,
+        concat content_tag(:span, contributor_string,
                            style: 'font-weight:normal', class:'document-value' )
       end
     end
+    concat raw('</div>')
   end
 
   def display_description( description )

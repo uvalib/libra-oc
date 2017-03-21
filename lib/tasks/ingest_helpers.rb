@@ -138,6 +138,15 @@ module IngestHelpers
       'No abstract found'
   ]
 
+  # how we map a work type to the predefined resource types (these are defined in the resource_type authority)
+  RESOURCE_TYPE_MAP = {
+      'article' => 'Article',
+      'article_reprint' => 'Article',
+      'book' => 'Book',
+      'book_part' => 'Part of Book',
+      'conference_paper' => 'Conference Proceeding'
+  }
+
   #
   # validate the payload before we attempt to create a new work
   #
@@ -160,6 +169,7 @@ module IngestHelpers
     errors << 'missing source' if payload[ :source ].nil?
     errors << 'missing license' if payload[ :license ].nil?
     errors << 'missing embargo' if payload[ :embargo_type ].nil?
+    errors << 'missing resource_type' if payload[ :resource_type ].nil?
 
     # check for an abstract that exceeds the maximum size
     if payload[ :abstract ].blank? == false && payload[ :abstract ].length > MAX_ABSTRACT_LENGTH
@@ -189,6 +199,7 @@ module IngestHelpers
     warnings << 'missing language' if payload[ :language ].nil?
     warnings << 'missing notes' if payload[ :notes ].nil?
     warnings << 'missing admin notes' if payload[ :admin_notes ].nil?
+    warnings << 'missing citation' if payload[ :citation ].nil?
 
     return errors, warnings
   end
@@ -248,12 +259,28 @@ module IngestHelpers
       w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
       w.work_source = payload[ :source ] if payload[ :source ]
 
-      w.resource_type = [ payload[ :resource_type ] ] if payload[ :resource_type ]
+      w.resource_type = [ RESOURCE_TYPE_MAP[ payload[ :resource_type ] ] ] if payload[ :resource_type ]
+
+      w.related_url = [ payload[ :related_url ] ] if payload[ :related_url ]
     end
 
     return ok, work
   end
 
+  #
+  # based on the directory we are ingesting from, take a guess at the resource type
+  #
+  def determine_resource_type( dirname )
+    resource_type = File.basename( File.dirname( dirname ) )
+    return resource_type.blank? ? nil : resource_type
+  end
+
+  #
+  # construct a citation field based on the information captured
+  #
+  def construct_citation( payload )
+    return nil
+  end
   #
   # get the list of new items from the work directory
   #
@@ -521,8 +548,8 @@ module IngestHelpers
   #
   def escape_fields( payload )
 
-    payload[:title] = escape_field( payload[:title] ) if field_supplied( payload[:title] )
-    payload[:abstract] = escape_field( payload[:abstract] ) if field_supplied( payload[:abstract] )
+    #payload[:title] = escape_field( payload[:title] ) if field_supplied( payload[:title] )
+    #payload[:abstract] = escape_field( payload[:abstract] ) if field_supplied( payload[:abstract] )
     return payload
 
   end
