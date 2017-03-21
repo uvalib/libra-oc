@@ -1,31 +1,34 @@
-<div class="form-group multi_value required libra_work_rights managed">
+<div class="form-group multi_value person required libra_work_<%= name %> managed">
   <%= f.label "#{name}_attributes", name.titleize, class: 'multi_value' %>
 
     <ul class="listing" aria-live="polite">
         <li class="field-wrapper input-group input-append">
           <%= f.simple_fields_for name do |af| %>
-            <div class="row form-group">
-              <div class="col-sm-6">
-                <%= af.input :computing_id, label: "Computing ID", input_html: {class: 'form-control'}, required: false  %>
+            <div class="person-group"
+                 data-personType="<%= name %>"
+                 data-index="<%= af.options[:child_index] %>"
+                 data-persontype="<%= name %>" >
+              <div class="row form-group">
+                <div class="col-sm-6">
+                  <%= af.input :computing_id, label: "Computing ID", input_html: {class: 'form-control id-lookup'}, required: false  %>
+                </div>
               </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-sm-6">
-                <%= af.input :first_name, input_html: {class: 'form-control'}, required: false %>
+              <div class="row form-group">
+                <div class="col-sm-6">
+                  <%= af.input :first_name, input_html: {class: 'form-control'}, required: false %>
+                </div>
+                <div class="col-sm-6">
+                  <%= af.input :last_name, input_html: {class: 'form-control'}, required: false %>
+                </div>
               </div>
-              <div class="col-sm-6">
-                <%= af.input :last_name, input_html: {class: 'form-control'}, required: false %>
+              <div class="row form-group">
+                <div class="col-sm-6">
+                  <%= af.input :department, input_html: {class: 'form-control'}, required: false %>
+                </div>
+                <div class="col-sm-6">
+                  <%= af.input :institution, input_html: {class: 'form-control'}, required: false %>
+                </div>
               </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-sm-6">
-                <%= af.input :department, input_html: {class: 'form-control'}, required: false %>
-              </div>
-              <div class="col-sm-6">
-                <%= af.input :institution, input_html: {class: 'form-control'}, required: false %>
-              </div>
-            </div>
-            <div class="row form-group">
             </div>
             <hr />
           <%end%>
