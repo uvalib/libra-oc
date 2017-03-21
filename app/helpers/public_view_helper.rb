@@ -46,7 +46,7 @@ module PublicViewHelper
       
        author_string = construct_person( author )
        unless author_string.blank?
-          concat content_tag(:p, author_string,
+          concat content_tag(:span, author_string,
                              style: 'font-weight:normal', class:'document-value' )
 
            if author.orcid_id.present?
@@ -96,7 +96,7 @@ module PublicViewHelper
     contributors.each do |contributor|
       contributor_string = construct_person( contributor )
       unless contributor_string.blank?
-        concat content_tag(:p, contributor_string,
+        concat content_tag(:span, contributor_string,
                            style: 'font-weight:normal', class:'document-value' )
       end
     end
