@@ -54,9 +54,9 @@ gem 'blacklight_advanced_search'
 gem 'devise'
 gem 'devise-guests', '~> 0.5'
 
-# workers
+# sidekiq worker support
 gem 'sidekiq'
-
+gem 'sidekiq-failures'
 
 gem 'rsolr', '~> 1.0'
 
