@@ -3,10 +3,14 @@
 module CurationConcerns
   class LibraWorkForm < Sufia::Forms::WorkForm
     self.model_class = ::LibraWork
-    self.required_fields += [:authors]
-    self.required_fields -= [:creator]
-    self.terms += [:resource_type, :abstract, :authors, :contributors]
-    self.terms -= [:description, :creator, :subject, :based_near, :contributor]
+    self.terms -= [:description, :creator, :subject, :based_near, :contributor,
+                   :keyword, :publisher, :date_created, :language, :identifier,
+                   :related_url, :source ]
+    self.terms += [ :resource_type, :abstract, :authors,
+                    :keyword, :contributors, :language, :source, :publisher, :published_date,
+                    :related_url, :sponsoring_agency, :notes
+    ]
+    self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
     delegate :authors, to: :model
     delegate :contributors, to: :model
 
