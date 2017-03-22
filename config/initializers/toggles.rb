@@ -37,4 +37,12 @@ Toggles.config do |config|
   ## do we expose the idea of batched ingest?
   ## the default is true
   config[:expose_batch_ingest] = false
+
+  ## do we expose the concept of embargo visibility for works
+  ## the default is true
+  config[:expose_embargo_visibility] = false
+
+  ## do we expose the concept of lease visibility for works
+  ## the default is true
+  config[:expose_lease_visibility] = false
 end

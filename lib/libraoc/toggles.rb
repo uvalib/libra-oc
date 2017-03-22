@@ -16,7 +16,9 @@ module Toggles
       expose_search: true,
       expose_proxies: true,
       expose_notifications: true,
-      expose_batch_ingest: true
+      expose_batch_ingest: true,
+      expose_embargo_visibility: true,
+      expose_lease_visibility: true
     }
   end
 
