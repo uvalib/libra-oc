@@ -40,7 +40,7 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
     if open_access_with_embargo?
       'Open Access with Embargo'
     elsif open_access?
-      'Open Access'
+      'Visible Worldwide'
     elsif registered?
       I18n.translate('curation_concerns.institution_name')
     else
