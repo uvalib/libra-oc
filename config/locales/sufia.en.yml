@@ -11,9 +11,13 @@ en:
       copyright_html: "<strong>Copyright &copy; 2016 Project Hydra</strong> Licensed under the Apache License, Version 2.0"
     active_consent_to_agreement: "I have read and agree to the"
     deposit_agreement: "Libra Deposit License"
+    visibility:
+      open: "Visible Worldwide"
 
   curation_concerns:
     institution_name: "Restricted to UVa Only"
     visibility:
+      open:
+        label_html: "Visible Worldwide"
       authenticated:
         label_html: "Restricted to UVa Only"
