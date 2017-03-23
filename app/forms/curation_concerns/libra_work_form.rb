@@ -5,7 +5,7 @@ module CurationConcerns
     self.model_class = ::LibraWork
     self.terms -= [:description, :creator, :subject, :based_near, :contributor,
                    :keyword, :publisher, :date_created, :language, :identifier,
-                   :related_url ]
+                   :related_url, :source ]
     self.terms += [ :resource_type, :abstract, :authors,
                     :keyword, :contributors, :language, :source_citation, :publisher, :published_date,
                     :related_url, :sponsoring_agency, :notes
