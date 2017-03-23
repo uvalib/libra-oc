@@ -10,6 +10,9 @@ class User < ApplicationRecord
   # helpers, etc for libraoc users
   include Libraoc::UserAttributes
 
+  # support to persist the ORCID on an external service
+  include Libraoc::OrcidBehavior
+
   if Blacklight::Utils.needs_attr_accessible?
     attr_accessible :email, :password, :password_confirmation
   end
