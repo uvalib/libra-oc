@@ -16,7 +16,7 @@
                <%= display_rights(@work.rights) %>
                <% display_contributors( @work.contributors ) %>
                <%= display_language( @work.language ) %>
-               <%= display_generic("Source", @work.source) %>
+               <%= display_generic("Source Citation", @work.source_citation) %>
                <%= display_generic("Publisher", @work.publisher) %>
                <%= display_generic_date("Published Date", @work.published_date) %>
                <%= display_related_links( @work.related_url ) %>

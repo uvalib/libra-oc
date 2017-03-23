@@ -166,7 +166,7 @@ module IngestHelpers
     errors << 'missing rights' if payload[ :rights ].nil?
     errors << 'missing publisher' if payload[ :publisher ].nil?
     errors << 'missing institution' if payload[ :institution ].nil?
-    errors << 'missing source' if payload[ :source ].nil?
+    errors << 'missing work source' if payload[ :work_source ].nil?
     errors << 'missing license' if payload[ :license ].nil?
     errors << 'missing embargo' if payload[ :embargo_type ].nil?
     errors << 'missing resource_type' if payload[ :resource_type ].nil?
@@ -257,12 +257,13 @@ module IngestHelpers
       w.license = LibraWork::DEFAULT_LICENSE
 
       w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
-      w.work_source = payload[ :source ] if payload[ :source ]
+      w.work_source = payload[ :work_source ] if payload[ :work_source ]
 
       w.resource_type = [ RESOURCE_TYPE_MAP[ payload[ :resource_type ] ] ] if payload[ :resource_type ]
 
       w.related_url = [ payload[ :related_url ] ] if payload[ :related_url ]
-    end
+
+      w.source_citation = [ payload[ :citation ] ] if payload[ :citation ]    end
 
     return ok, work
   end
@@ -279,7 +280,7 @@ module IngestHelpers
   # construct a citation field based on the information captured
   #
   def construct_citation( payload )
-    return nil
+    return 'The citation'
   end
   #
   # get the list of new items from the work directory

@@ -66,7 +66,7 @@ module Libraoc::BasicMetadata
     property :bibliographic_citation, predicate: ::RDF::Vocab::DC.bibliographicCitation do |index|
       index.as :stored_searchable
     end
-    property :source, predicate: ::RDF::Vocab::DC.source do |index|
+    property :source_citation, predicate: ::RDF::Vocab::DC.source do |index|
       index.as :stored_searchable
     end
   end

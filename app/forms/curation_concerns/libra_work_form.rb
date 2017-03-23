@@ -5,9 +5,9 @@ module CurationConcerns
     self.model_class = ::LibraWork
     self.terms -= [:description, :creator, :subject, :based_near, :contributor,
                    :keyword, :publisher, :date_created, :language, :identifier,
-                   :related_url, :source ]
+                   :related_url ]
     self.terms += [ :resource_type, :abstract, :authors,
-                    :keyword, :contributors, :language, :source, :publisher, :published_date,
+                    :keyword, :contributors, :language, :source_citation, :publisher, :published_date,
                     :related_url, :sponsoring_agency, :notes
     ]
     self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
@@ -16,7 +16,7 @@ module CurationConcerns
 
     def self.multiple?(field)
 
-      if [:title, :description, :publisher, :source, :abstract].include? field.to_sym
+      if [:title, :description, :publisher, :abstract].include? field.to_sym
         false
       else
         super
@@ -27,7 +27,6 @@ module CurationConcerns
       attrs = super
       attrs[:title] = Array(attrs[:title]) if attrs[:title]
       attrs[:description] = Array(attrs[:description]) if attrs[:description]
-      attrs[:source] = Array(attrs[:source]) if attrs[:source]
       #attrs[:abstract] = Array(attrs[:abstract]) if attrs[:abstract]
       attrs
     end
@@ -37,15 +36,6 @@ module CurationConcerns
     end
 
     def description
-      super.first || ""
-    end
-
-    #def abstract
-    #  super.first || ""
-    #end
-
-
-    def source
       super.first || ""
     end
 

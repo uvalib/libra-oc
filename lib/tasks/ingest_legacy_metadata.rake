@@ -223,8 +223,8 @@ namespace :libraoc do
      release_date = IngestHelpers.solr_first_field_extract(solr_doc, 'embargo_embargo_release_date_t' )
      payload[ :embargo_release_date ] = release_date if release_date.present?
 
-     # document source
-     payload[ :source ] = solr_doc.at_path( 'id' )
+     # document work source
+     payload[ :work_source ] = solr_doc.at_path( 'id' )
 
      # related URL's
      payload[ :related_url ] = extract_related_url( solr_doc, fedora_doc )

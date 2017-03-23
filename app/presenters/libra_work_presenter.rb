@@ -11,6 +11,7 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
            :license,
            :doi,
            :libra_id,
+           :source_citation,
            :work_source,
            :abstract,
            :keywords,
