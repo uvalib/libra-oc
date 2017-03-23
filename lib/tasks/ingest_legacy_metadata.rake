@@ -117,7 +117,6 @@ namespace :libraoc do
      solr_doc, fedora_doc = IngestHelpers.load_legacy_ingest_content(dirname )
      id = solr_doc['id']
 
-     puts "Ingesting #{File.basename( dirname )} (#{id})..."
      puts "Ingesting #{current} of #{total}: #{File.basename( dirname )} (#{id})..."
 
      # create a payload from the document
