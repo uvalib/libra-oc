@@ -13,6 +13,21 @@ namespace :libraoc do
   namespace :doi do
 
   #
+  # list DOIs for all works
+  #
+  desc "List DOI's for all works"
+  task list_all: :environment do |t, args|
+
+    count = 0
+    LibraWork.search_in_batches( {} ) do |group|
+      TaskHelpers.batched_process_solr_works( group, &method( :show_work_doi_callback ) )
+      count += group.size
+    end
+
+    puts "Listed #{count} work(s)"
+  end
+
+  #
   # list DOIs for all works from the specified user
   #
   desc "List DOI's for all my works; optionally provide depositor email"
@@ -51,7 +66,7 @@ namespace :libraoc do
       next
     end
 
-    status, r = ServiceClient::EntityIdClient.instance.metadataget( work.identifier )
+    status, r = ServiceClient::EntityIdClient.instance.metadataget( work.doi )
     if ServiceClient::EntityIdClient.instance.ok?( status )
       puts r
     else
@@ -104,7 +119,7 @@ namespace :libraoc do
     end
 
     if update_work_doi( work )
-      puts "New DOI assigned to work #{work.id} (#{work.identifier})"
+      puts "New DOI assigned to work #{work.id} (#{work.doi})"
     end
 
   end
@@ -198,7 +213,7 @@ namespace :libraoc do
     end
 
     if update_work_metadata( work )
-      puts "Updated DOI metadata for work #{work.id} (#{work.identifier})"
+      puts "Updated DOI metadata for work #{work.id} (#{work.doi})"
     end
 
   end
@@ -288,12 +303,12 @@ namespace :libraoc do
   #
 
   def show_work_doi_callback( work )
-    puts "#{work.id} => #{work.identifier[ 0 ] || 'None'}"
+    puts "#{work.id} => #{work.doi || 'None'}"
   end
 
   # update the DOI for the supplied work
   def update_work_unassigned_doi( work )
-    if work.identifier.blank? == true
+    if work.doi.blank? == true
       update_work_doi( work )
     end
   end
@@ -301,9 +316,9 @@ namespace :libraoc do
   # update the DOI for the supplied work
   def update_work_doi( work )
 
-      if work.identifier.blank? == false
-         puts "WARNING: work #{work.id} already has a DOI (#{work.identifier}), revoking it"
-         status = ServiceClient::EntityIdClient.instance.revoke( work.identifier )
+      if work.doi.blank? == false
+         puts "WARNING: work #{work.id} already has a DOI (#{work.doi}), revoking it"
+         status = ServiceClient::EntityIdClient.instance.revoke( work.doi )
          if ServiceClient::EntityIdClient.instance.ok?( status ) == false
             puts "ERROR: revoke DOI request returns #{status}, continuing anyway"
          end
@@ -318,7 +333,7 @@ namespace :libraoc do
 
       # update the identifier
       puts "Assigned new DOI (#{id})"
-      work.identifier = id
+      work.doi = id
       #work.permanent_url = LibraWork.doi_url( id )
       work.save!
 

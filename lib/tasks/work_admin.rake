@@ -199,7 +199,7 @@ namespace :work do
       print 'getting DOI...'
       status, id = ServiceClient::EntityIdClient.instance.newid( w )
       if ServiceClient::EntityIdClient.instance.ok?( status )
-         w.identifier = [ id ]
+         w.doi = id
       #   w.permanent_url = LibraWork.doi_url( id )
          puts 'done'
       else

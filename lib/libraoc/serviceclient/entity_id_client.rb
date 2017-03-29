@@ -1,12 +1,12 @@
 require_dependency 'libraoc/serviceclient/base_client'
-#require_dependency 'libra2/app/helpers/url_helper'
+require_dependency 'app/helpers/url_helper'
 
 module ServiceClient
 
    class EntityIdClient < BaseClient
 
      # get the helpers
-     #include UrlHelper
+     include UrlHelper
 
      #
      # configure with the appropriate configuration file
@@ -52,8 +52,8 @@ module ServiceClient
      # update an existing DOI with any metadata we can determine from the supplied work
      #
      def metadatasync( work )
-       #puts "=====> metadatasync #{work.identifier}"
-       url = "#{self.url}/#{work.identifier}?auth=#{self.authtoken}"
+       #puts "=====> metadatasync #{work.doi}"
+       url = "#{self.url}/#{work.doi}?auth=#{self.authtoken}"
        payload =  self.construct_payload( work )
        status, _ = rest_put( url, payload )
        return status
@@ -95,17 +95,17 @@ module ServiceClient
      #
      def construct_payload( work )
        h = {}
-       #h['url'] = fully_qualified_work_url( work.id )
+       h['url'] = fully_qualified_work_url( work.id ) # 'http://google.com'
        h['title'] = work.title.join( ' ' ) if work.title
-       #h['publisher'] = work.publisher if work.publisher
-       #h['creator_firstname'] = work.author_first_name if work.author_first_name
-       #h['creator_lastname'] = work.author_last_name if work.author_last_name
-       #h['creator_department'] = work.department if work.department
-       #h['creator_institution'] = work.author_institution if work.author_institution
-       #h['publication_date'] = work.date_published if work.date_published
+       h['publisher'] = work.publisher if work.publisher
+       h['creator_firstname'] = author_firstname( work.authors ) if author_firstname( work.authors )
+       h['creator_lastname'] = author_lastname( work.authors ) if author_lastname( work.authors )
+       h['creator_department'] = author_department( work.authors ) if author_department( work.authors )
+       h['creator_institution'] = author_institution( work.authors ) if author_institution( work.authors )
+       h['publication_date'] = work.published_date if work.published_date
        #h['publication_milestone'] = work.degree if work.degree
        h['type'] = 'Text'
-       h.to_json
+       return h.to_json
      end
 
      #
@@ -122,6 +122,28 @@ module ServiceClient
 
      def url
        configuration[ :url ]
+     end
+
+     private
+
+     def author_firstname( authors )
+       return authors[ 0 ].first_name if authors && authors[ 0 ] && authors[ 0 ].first_name.present?
+       return nil
+     end
+
+     def author_lastname( authors )
+       return authors[ 0 ].last_name if authors && authors[ 0 ] && authors[ 0 ].last_name.present?
+       return nil
+     end
+
+     def author_department( authors )
+       return authors[ 0 ].department if authors && authors[ 0 ] && authors[ 0 ].department.present?
+       return nil
+     end
+
+     def author_institution( authors )
+       return authors[ 0 ].institution if authors && authors[ 0 ] && authors[ 0 ].institution.present?
+       return nil
      end
 
    end

@@ -82,29 +82,6 @@ namespace :libraoc do
 
   end
 
-  desc "Enumerate legacy Libra items"
-  task legacy_list: :environment do |t, args|
-
-    count = 0
-    LibraWork.search_in_batches( {} ) do |group|
-      group.each do |gw_solr|
-
-        begin
-           gw = LibraWork.find( gw_solr['id'] )
-           if gw.is_legacy_thesis?
-             puts "#{gw.work_source} #{gw.identifier || 'None'}"
-             count += 1
-           end
-        rescue => e
-        end
-
-      end
-
-      puts "Listed #{count} legacy work(s)"
-    end
-
-  end
-
   #
   # helpers
   #
@@ -154,7 +131,7 @@ namespace :libraoc do
      # create the work
      ok, work = IngestHelpers.create_new_item( depositor, payload )
      if ok == true
-       puts "New work created; id: #{work.id} (#{work.identifier[0] || 'none'})"
+       puts "New work created; id: #{work.id} (#{work.doi || 'none'})"
      else
        #puts " ERROR: creating new generic work for #{File.basename( dirname )} (#{id})"
        #return false
