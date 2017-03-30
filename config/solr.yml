@@ -1,0 +1,8 @@
+development:
+  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
+
+test:
+  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
+
+production:
+  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
