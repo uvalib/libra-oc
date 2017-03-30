@@ -65,6 +65,7 @@ module CurationConcerns
       permitted << { contributors_attributes: permitted_people_params }
       permitted << :rights
       permitted
+      byebug
     end
 
     def self.permitted_people_params
