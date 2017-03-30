@@ -47,18 +47,17 @@ group :development do
 end
 
 # Sufia Related
-gem 'sufia', '~> 7.3.0.rc1'
-gem 'curation_concerns', '1.7.4', github: 'uvalib/curation_concerns', branch: 'redis-password-patch'
-gem 'flipflop', github: 'jcoyne/flipflop', branch: 'hydra'
+gem 'sufia', '~> 7.3.0'
+gem 'curation_concerns', '~> 1.7.6', github: 'uvalib/curation_concerns', branch: '1.7.6'
 gem 'blacklight_advanced_search'
 gem 'devise'
-gem 'devise-guests', '~> 0.5'
+gem 'devise-guests'
 
 # sidekiq worker support
 gem 'sidekiq'
 gem 'sidekiq-failures'
 
-gem 'rsolr', '~> 1.0'
+gem 'rsolr'
 
 gem 'rest-client'
 
