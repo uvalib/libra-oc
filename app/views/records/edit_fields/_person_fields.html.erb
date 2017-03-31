@@ -2,10 +2,9 @@
   <%= f.label "#{name}_attributes", name.titleize, class: 'multi_value' %>
 
     <ul class="listing" aria-live="polite">
+      <%= f.fields_for name do |af| %>
         <li class="field-wrapper input-group input-append">
-          <%= f.simple_fields_for name do |af| %>
-            <div class="person-group"
-                 data-personType="<%= name %>"
+            <div class="person-group person-input"
                  data-index="<%= af.options[:child_index] %>"
                  data-persontype="<%= name %>" >
               <div class="row form-group">
@@ -31,8 +30,8 @@
               </div>
             </div>
             <hr />
-          <%end%>
         </li>
+      <%end%>
     </ul>
     <button type="button" class="btn btn-link add"><span class="glyphicon glyphicon-plus"></span><span class="controls-add-text">Add another <%= name.singularize.titleize %></span></button>
 

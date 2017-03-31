@@ -1,11 +1,8 @@
-default: &default
+development:
   url: <%= "#{ENV['SOLR_URL']}/libra2" %>
 
-development:
-  <<: *default
-
 test:
-  <<: *default
+  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
 
 production:
-  <<: *default
+  url: <%= "#{ENV['SOLR_URL']}/libra2" %>

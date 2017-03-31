@@ -1,17 +1,18 @@
-default: &default
+development:
   user: <%= ENV['FEDORA_USER'] %>
   password: <%= ENV['FEDORA_PASSWD'] %>
   url: <%= ENV['FEDORA_URL'] %>
-
-development:
-  <<: *default
   base_path: /libraopen/dev
 
 test:
-  <<: *default
+  user: <%= ENV['FEDORA_USER'] %>
+  password: <%= ENV['FEDORA_PASSWD'] %>
+  url: <%= ENV['FEDORA_URL'] %>
   base_path: /libraopen/test
 
 production:
-  <<: *default
+  user: <%= ENV['FEDORA_USER'] %>
+  password: <%= ENV['FEDORA_PASSWD'] %>
+  url: <%= ENV['FEDORA_URL'] %>
   base_path: /libraopen/prod
 
