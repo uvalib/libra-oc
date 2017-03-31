@@ -115,7 +115,7 @@ var HydraEditor = (function($) {
       var $removeControl = this.remover.clone();
       $activeFieldControls = $activeField.children('.field-controls');
       $('.add', $activeFieldControls).remove();
-      //$activeFieldControls.prepend($removeControl);
+      $activeFieldControls.prepend($removeControl);
     },
 
     clearEmptyWarning: function() {
