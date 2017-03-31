@@ -277,12 +277,6 @@ module IngestHelpers
   end
 
   #
-  # construct a citation field based on the information captured
-  #
-  def construct_citation( payload )
-    return 'The citation'
-  end
-  #
   # get the list of new items from the work directory
   #
   def get_ingest_list( dirname )
@@ -576,14 +570,36 @@ module IngestHelpers
   #
   # fedora field extract
   #
-  def fedora_first_field_extract( fedora_doc, selector )
+  def fedora_first_field_extract( fedora_doc, selector, the_type = nil )
 
-    node = fedora_doc.css( selector ).first
-    field = node.text if node
-    return field if field.present?
+    node = fedora_node_extract( fedora_doc, selector, the_type )
+    return nil if node.nil?
+    return node.text if node.text.present?
+    return nil
+  end
+
+  #
+  # fedora node extract
+  #
+  def fedora_node_extract( fedora_doc, selector, the_type = nil )
+
+    node_list = fedora_node_list_extract( fedora_doc, selector )
+    return nil if node_list.nil?
+    node_list.each_with_index do |n, ix|
+       return n if ix == 0 && the_type == nil
+       return n if the_type != nil && n.attribute( 'type' ).value == the_type
+    end
 
     return nil
   end
+
+  #
+  # fedora node list extract
+  #
+  def fedora_node_list_extract( fedora_doc, selector )
+    return fedora_doc.css( selector )
+  end
+
 end
 
 #

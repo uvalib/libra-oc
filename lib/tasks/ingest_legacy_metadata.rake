@@ -6,6 +6,9 @@
 require_dependency 'tasks/ingest_helpers'
 include IngestHelpers
 
+require_dependency 'tasks/citation_helpers'
+include CitationHelpers
+
 namespace :libraoc do
 
   namespace :ingest do
@@ -229,8 +232,44 @@ namespace :libraoc do
      notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
      payload[ :notes ] = notes if notes.present?
 
+     # publisher attributes
+     publisher = extract_publisher( solr_doc, fedora_doc )
+     payload[ :publisher ] = publisher if publisher.present?
+     publish_location = extract_publish_location( solr_doc, fedora_doc )
+     payload[ :publish_location ] = publish_location if publish_location.present?
+     publish_date = extract_publish_date( solr_doc, fedora_doc )
+     payload[ :publish_date ] = publish_date if publish_date.present?
+
+     # ISBN & ISSN
+     isbn = extract_isbn( solr_doc, fedora_doc )
+     payload[ :isbn ] = isbn if isbn.present?
+     issn = extract_issn( solr_doc, fedora_doc )
+     payload[ :issn ] = issn if issn.present?
+
+     # conference attributes
+     conference_title = extract_conference_name( solr_doc, fedora_doc )
+     payload[ :conference_title ] = conference_title if conference_title.present?
+     conference_location = extract_conference_location( solr_doc, fedora_doc )
+     payload[ :conference_location ] = conference_location if conference_location.present?
+
+     # page attributes
+     start_page = extract_start_page( solr_doc, fedora_doc )
+     payload[ :start_page ] = start_page if start_page.present?
+     end_page = extract_end_page( solr_doc, fedora_doc )
+     payload[ :end_page ] = end_page if end_page.present?
+
+     # journal attributes
+     journal_title = extract_journal_name( solr_doc, fedora_doc )
+     payload[ :journal_title ] = journal_title if journal_title.present?
+     journal_volume = extract_journal_volume( solr_doc, fedora_doc )
+     payload[ :journal_volume ] = journal_volume if journal_volume.present?
+     journal_issue = extract_journal_issue( solr_doc, fedora_doc )
+     payload[ :journal_issue ] = journal_issue if journal_issue.present?
+     journal_year = extract_journal_year( solr_doc, fedora_doc )
+     payload[ :journal_publication_year ] = journal_year if journal_year.present?
+
      # construct the citation
-     payload[ :citation ] = IngestHelpers.construct_citation( payload )
+     payload[ :citation ] = CitationHelpers.render( payload )
 
      return payload
   end
@@ -296,6 +335,179 @@ namespace :libraoc do
     related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
     return related_url if related_url.present?
 
+    return nil
+  end
+
+  #
+  # Attempt to extract the start page
+  #
+  def extract_start_page( solr_doc, fedora_doc )
+
+    # for books and articles
+    start_page = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods relatedItem part extent start' )
+    return start_page if start_page.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the end page
+  #
+  def extract_end_page( solr_doc, fedora_doc )
+
+    # for books and articles
+    start_page = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods relatedItem part extent end' )
+    return start_page if start_page.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the publisher
+  #
+  def extract_publisher( solr_doc, fedora_doc )
+
+     # for books
+     publisher = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods originInfo publisher' )
+     return publisher if publisher.present?
+     return nil
+  end
+
+  #
+  # Attempt to extract the publish location
+  #
+  def extract_publish_location( solr_doc, fedora_doc )
+
+    # for books
+    publish_location = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods originInfo place placeTerm' )
+    return publish_location if publish_location.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the publish date
+  #
+  def extract_publish_date( solr_doc, fedora_doc )
+
+    # for books
+    publish_date = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods originInfo dateOther' )
+    return publish_date if publish_date.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the ISBN
+  #
+  def extract_isbn( solr_doc, fedora_doc )
+
+    # for books
+    isbn = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods identifier', 'isbn' )
+    return isbn if isbn.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the ISSN
+  #
+  def extract_issn( solr_doc, fedora_doc )
+
+    # for articles
+    issn = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods identifier', 'issn' )
+    return issn if issn.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the conference name
+  #
+  def extract_conference_name( solr_doc, fedora_doc )
+
+    # for conferences
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem name', 'conference' )
+    return nil if node.nil?
+    name = IngestHelpers.fedora_first_field_extract( node, 'namePart' )
+    return name if name.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the conference location
+  #
+  def extract_conference_location( solr_doc, fedora_doc )
+
+    # for conferences
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem name', 'conference' )
+    return nil if node.nil?
+
+    location = IngestHelpers.fedora_first_field_extract( node, 'affiliation' )
+    return location if location.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the journal name
+  #
+  def extract_journal_name( solr_doc, fedora_doc )
+
+    # for journals
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    return nil if node.nil?
+
+    name = IngestHelpers.fedora_first_field_extract( node, 'titleInfo title' )
+    return nil if name.present? == false
+    #puts "==> JOURNAL NAME #{name}"
+    return name
+  end
+
+  #
+  # Attempt to extract the journal volume
+  #
+  def extract_journal_volume( solr_doc, fedora_doc )
+
+    # for journals
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    return nil if node.nil?
+
+    node = IngestHelpers.fedora_node_extract( node, 'part detail', 'volume' )
+    return nil if node.nil?
+    node = IngestHelpers.fedora_node_extract( node, 'number' )
+    return nil if node.nil? || node.text.present? == false
+    #puts "==> JOURNAL VOLUME #{node.text}"
+    return node.text
+  end
+
+  #
+  # Attempt to extract the journal issue
+  #
+  def extract_journal_issue( solr_doc, fedora_doc )
+
+    # for journals
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    return nil if node.nil?
+
+    node = IngestHelpers.fedora_node_extract( node, 'part detail', 'number' )
+    return nil if node.nil?
+    node = IngestHelpers.fedora_node_extract( node, 'number' )
+    return nil if node.nil? || node.text.present? == false
+    #puts "==> JOURNAL ISSUE #{node.text}"
+    return node.text
+  end
+
+  #
+  # Attempt to extract the journal year
+  #
+  def extract_journal_year( solr_doc, fedora_doc )
+
+    # for journals
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    return nil if node.nil?
+
+    node_list = IngestHelpers.fedora_node_list_extract( node, 'part date' )
+    return nil if node_list.nil?
+    node_list.each_with_index do |n, ix|
+      if n.text.length == 4
+        #puts "==> JOURNAL DATE #{n.text}"
+        return n.text
+      end
+    end
     return nil
   end
 
