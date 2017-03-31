@@ -16,7 +16,7 @@ module CurationConcerns
 
     def self.multiple?(field)
 
-      if [:title, :description, :publisher, :abstract].include? field.to_sym
+      if [:title, :description, :publisher, :abstract, :language].include? field.to_sym
         false
       else
         super
@@ -64,8 +64,8 @@ module CurationConcerns
       permitted.delete( {contributors: []} )
       permitted << { contributors_attributes: permitted_people_params }
       permitted << :rights
+      permitted << :language
       permitted
-      byebug
     end
 
     def self.permitted_people_params

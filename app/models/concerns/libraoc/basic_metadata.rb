@@ -49,7 +49,7 @@ module Libraoc::BasicMetadata
     property :subject, predicate: ::RDF::Vocab::DC11.subject do |index|
       index.as :stored_searchable, :facetable
     end
-    property :language, predicate: ::RDF::Vocab::DC11.language do |index|
+    property :language, predicate: ::RDF::Vocab::DC11.language, multiple: false do |index|
       index.as :stored_searchable, :facetable
     end
 
