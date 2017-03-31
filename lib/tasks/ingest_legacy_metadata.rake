@@ -268,6 +268,12 @@ namespace :libraoc do
      journal_year = extract_journal_year( solr_doc, fedora_doc )
      payload[ :journal_publication_year ] = journal_year if journal_year.present?
 
+     # edited book attributes
+     editor_fname = extract_editor_first_name( solr_doc, fedora_doc )
+     payload[ :editor_first_name ] = editor_fname if editor_fname.present?
+     editor_lname = extract_editor_last_name( solr_doc, fedora_doc )
+     payload[ :editor_last_name ] = editor_lname if editor_lname.present?
+
      # construct the citation
      payload[ :citation ] = CitationHelpers.render( payload )
 
@@ -453,7 +459,6 @@ namespace :libraoc do
 
     name = IngestHelpers.fedora_first_field_extract( node, 'titleInfo title' )
     return nil if name.present? == false
-    #puts "==> JOURNAL NAME #{name}"
     return name
   end
 
@@ -470,7 +475,6 @@ namespace :libraoc do
     return nil if node.nil?
     node = IngestHelpers.fedora_node_extract( node, 'number' )
     return nil if node.nil? || node.text.present? == false
-    #puts "==> JOURNAL VOLUME #{node.text}"
     return node.text
   end
 
@@ -487,7 +491,6 @@ namespace :libraoc do
     return nil if node.nil?
     node = IngestHelpers.fedora_node_extract( node, 'number' )
     return nil if node.nil? || node.text.present? == false
-    #puts "==> JOURNAL ISSUE #{node.text}"
     return node.text
   end
 
@@ -504,9 +507,52 @@ namespace :libraoc do
     return nil if node_list.nil?
     node_list.each_with_index do |n, ix|
       if n.text.length == 4
-        #puts "==> JOURNAL DATE #{n.text}"
         return n.text
       end
+    end
+    return nil
+  end
+
+  #
+  # Attempt to extract the editor first name
+  #
+  def extract_editor_first_name( solr_doc, fedora_doc )
+
+    # for book parts
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    return nil if node.nil?
+
+    node = IngestHelpers.fedora_node_extract( node, 'name', 'personal' )
+    return nil if node.nil?
+
+    role_node = IngestHelpers.fedora_node_extract( node, 'role roleTerm', 'text' )
+    return nil if role_node.nil?
+
+    if role_node.text == 'editor'
+      name = IngestHelpers.fedora_first_field_extract( node, 'namePart', 'given' )
+      return name if name.present?
+    end
+    return nil
+  end
+
+  #
+  # Attempt to extract the editor last name
+  #
+  def extract_editor_last_name( solr_doc, fedora_doc )
+
+    # for book parts
+    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    return nil if node.nil?
+
+    node = IngestHelpers.fedora_node_extract( node, 'name', 'personal' )
+    return nil if node.nil?
+
+    role_node = IngestHelpers.fedora_node_extract( node, 'role roleTerm', 'text' )
+    return nil if role_node.nil?
+
+    if role_node.text == 'editor'
+      name = IngestHelpers.fedora_first_field_extract( node, 'namePart', 'family' )
+      return name if name.present?
     end
     return nil
   end

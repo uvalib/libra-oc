@@ -105,11 +105,14 @@ module CitationHelpers
     citation = substitute_token( citation, CONFERENCE_TITLE_TOKEN, payload[:conference_title ] )
     citation = substitute_token( citation, CONFERENCE_LOCATION_TOKEN, payload[:conference_location ] )
     citation = substitute_token( citation, PUB_URL_TOKEN, payload[:related_url ] )
-
     citation = substitute_token( citation, JOURNAL_TITLE_TOKEN, payload[ :journal_title ] )
     citation = substitute_token( citation, JOURNAL_VOLUME_TOKEN, payload[ :journal_volume ] )
     citation = substitute_token( citation, JOURNAL_ISSUE_TOKEN, payload[ :journal_issue ] )
     citation = substitute_token( citation, JOURNAL_PUB_YEAR_TOKEN, payload[ :journal_publication_year ] )
+
+    citation = substitute_token( citation, EDITOR_FIRST_NAME_TOKEN, payload[ :editor_first_name ] )
+    citation = substitute_token( citation, EDITOR_LAST_NAME_TOKEN, payload[ :editor_last_name ] )
+    citation = substitute_token( citation, BOOK_TITLE_TOKEN, payload[ :journal_title ] )
 
     # deal with some special cases
     other_authors = construct_other_authors( payload[ :authors ] )
@@ -150,9 +153,12 @@ module CitationHelpers
      res = res.gsub( '. .', '.' )
      res = res.gsub( '..', '.' )
      res = res.gsub( '()', '' )
+     res = res.gsub( ' . ', '. ' )
+     res = res.gsub( /:$/, '' )
+     res = res.gsub( /,$/, '' )
 
-     # finally remove all duplicate spaces
-     return res.gsub( '  ', ' ' )
+     # finally remove all duplicate spaces and strip trailing spaces
+     return res.gsub( '  ', ' ' ).rstrip
   end
 
   #
