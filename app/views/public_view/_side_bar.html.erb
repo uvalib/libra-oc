@@ -4,7 +4,7 @@
       <% @work.file_sets.each do |file| %>
         <div class="file_asset_record">
           <p><%= link_to file.title.first, download_path(file) %></p>
-          <p><span class="file_label">Uploaded:</span><%= file_date_created(file.date_uploaded) %></p>
+          <p><span class="file_label">Uploaded:</span><%= date_formatter(file.date_uploaded) %></p>
         </div>
       <% end %>
 

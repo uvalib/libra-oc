@@ -89,6 +89,10 @@ class SolrDocument
     self[Solrizer.solr_name('published_date')]
   end
 
+  def date_created
+    self[Solrizer.solr_name('date_created')]
+  end
+
   def abstract
     self[Solrizer.solr_name('abstract')]
   end

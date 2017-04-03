@@ -24,7 +24,7 @@
             <%= create_radio("grounds", "off", "Off Grounds") %><br>
             <%= create_radio("grounds", "on", "On Grounds", true) %><br>
             <hr>
-            <b>Current date: <%= file_date(@today) %></b><br>
+            <b>Current date: <%= date_formatter( @today ) %></b><br>
             <%= create_radio("time", "0", "Now", true) %><br>
             <%= create_radio("time", "5", "5 Months") %><br>
             <%= create_radio("time", "6", "6 Months") %><br>

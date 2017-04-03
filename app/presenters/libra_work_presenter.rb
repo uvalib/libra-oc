@@ -6,7 +6,6 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
            :contributors,
            :notes,
            :admin_notes,
-           :published_date,
            :sponsoring_agency,
            :license,
            :doi,

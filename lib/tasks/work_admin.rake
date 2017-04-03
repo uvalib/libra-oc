@@ -177,8 +177,10 @@ namespace :work do
       w.contributors << TaskHelpers.make_contributor( 'ecr2c' )
       w.contributors << TaskHelpers.make_contributor( 'naw4t' )
 
-      w.date_uploaded = CurationConcerns::TimeService.time_in_utc
-      w.date_created = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d" )
+      w.date_uploaded = CurationConcerns::TimeService.time_in_utc.to_s
+      w.date_created = CurationConcerns::TimeService.time_in_utc.to_s
+      w.published_date = CurationConcerns::TimeService.time_in_utc.to_s
+
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       #w.description = description
 
@@ -191,7 +193,7 @@ namespace :work do
       #w.dddegree = 'Placeholder degree'
       w.notes = 'Placeholder notes'
       w.admin_notes << 'Placeholder admin notes'
-      w.language << 'English'
+      w.language = 'English'
 
       w.rights << 'http://creativecommons.org/licenses/by/3.0/us/'
       #w.license = LibraWork::DEFAULT_LICENSE

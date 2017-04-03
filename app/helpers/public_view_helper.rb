@@ -2,28 +2,56 @@ require_dependency 'libraoc/helpers/service_helpers'
 
 module PublicViewHelper
 
-  def file_date(date)
+  def date_formatter( date )
+
     return "Unknown" if date.nil?
-    return date.strftime("%B %d, %Y")
+
+    # flatten an array
+    date = date[ 0 ] if date.kind_of?(Array)
+
+    # if already a datetime, handle presentation
+    return date_presenter( date ) if date.kind_of?(DateTime)
+
+    # if string, convert and present
+    dt = datetime_from_string( date ) if date.kind_of?( String )
+    return date_presenter( dt ) if dt.present?
+
+    # unclear what this is, just return it if it is a string
+    return date if date.kind_of?( String )
+    return "Unknown"
   end
 
-  def file_date_created(date)
-    return "Unknown" if date.nil?
-    date = date.join() if date.kind_of?(Array)
-    return file_date(date) if date.kind_of?(DateTime)
-    begin
-      return file_date(DateTime.strptime(date, "%Y:%m:%d"))
-    rescue
+  #
+  # convert some sort of timestamp into a datetime object
+  #
+  def datetime_from_string( ts )
+
+      return nil if ts.blank?
+
       begin
-        return file_date(DateTime.strptime(date, "%m/%d/%Y"))
+
+        # try yyyy-mm-dd...
+        dates = ts.match( /^(\d{4}-\d{2}-\d{2})/ )
+        return DateTime.strptime( dates[ 0 ], "%Y-%m-%d") if dates
+
+        # try yyyy/mm/dd...
+        dates = ts.match( /^(\d{4}\/\d{2}\/\d{2})/ )
+        return DateTime.strptime( dates[ 0 ], "%Y/%m/%d") if dates
+
       rescue
-        begin
-          return file_date(DateTime.strptime(date, "%Y-%m-%d"))
-        rescue
-          return date
-        end
+        # not sure what format, return nothing
+        return nil
       end
-    end
+
+   # not sure what format, return nothing
+   return nil
+
+  end
+
+  def date_presenter(date)
+    return "Unknown" if date.nil?
+    return date.strftime("%B %d, %Y") if date.kind_of?(DateTime)
+    return date
   end
 
   def display_title(work)
@@ -170,8 +198,8 @@ module PublicViewHelper
   end
 
   def display_generic_date(name, date)
-    return '' if date.blank? || date.kind_of?(Date)
-    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", date.gsub( '-', '/' ) ).render
+    return '' if date.blank?
+    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", date ).render
   end
 
   def display_generic(name, field)

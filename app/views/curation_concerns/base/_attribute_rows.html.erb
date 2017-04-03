@@ -7,11 +7,11 @@
 <%= show_line(presenter, :language, 'Language', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :source_citation, 'Source Citation', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :publisher, 'Publisher', true, include_empty: true, catalog_search_link: false ) %>
-<%= show_line(presenter, :published_date, 'Published Date', true, include_empty: true, catalog_search_link: false ) %>
+<%= CurationConcerns::Renderers::AttributeRenderer.new("Published Date", date_formatter( presenter.solr_document.published_date ), {include_empty: true}).render %>
 <%= show_line(presenter, :related_url, 'Related Links', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :sponsoring_agency, 'Sponsoring Agency', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :notes, 'Notes', true, include_empty: true, catalog_search_link: false ) %>
-<%= show_line(presenter, :date_created, 'Date Created', true, include_empty: true, catalog_search_link: false ) %>
+<%= CurationConcerns::Renderers::AttributeRenderer.new("Created Date", date_formatter( presenter.solr_document.date_created ), {include_empty: true}).render %>
 
 <%# Remaining fields we dont want on the show page %>
 <%#= show_line(presenter, :license, 'License', true, include_empty: true, catalog_search_link: false ) %>

@@ -17,7 +17,7 @@
                <%= display_language( @work.language ) %>
                <%= display_generic("Source Citation", @work.source_citation) %>
                <%= display_generic("Publisher", @work.publisher) %>
-               <%= display_generic_date("Published Date", @work.published_date) %>
+               <%= display_generic_date("Published Date", date_formatter( @work.published_date ) ) %>
                <%= display_related_links( @work.related_url ) %>
                <%= display_generic("Sponsoring Agency", @work.sponsoring_agency) %>
 
