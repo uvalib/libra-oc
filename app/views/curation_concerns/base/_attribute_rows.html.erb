@@ -2,7 +2,6 @@
 <%= show_line(presenter, :resource_type, 'Resource Type', true, include_empty: true, catalog_search_link: false ) %>
 <%= presenter.attribute_to_html :authors, render_as: :person  %>
 <%= show_line(presenter, :abstract, 'Abstract', true, include_empty: true, catalog_search_link: false ) %>
-<%= show_line(presenter, :license, 'License', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :keyword, 'Keywords', true, include_empty: true, catalog_search_link: false ) %>
 <%= presenter.attribute_to_html :contributors, render_as: :person  %>
 <%= show_line(presenter, :language, 'Language', true, include_empty: true, catalog_search_link: false ) %>
@@ -15,6 +14,7 @@
 <%= show_line(presenter, :date_created, 'Date Created', true, include_empty: true, catalog_search_link: false ) %>
 
 <%# Remaining fields we dont want on the show page %>
+<%#= show_line(presenter, :license, 'License', true, include_empty: true, catalog_search_link: false ) %>
 <%# show_line(presenter, :doi, 'DOI', true, include_empty: true, catalog_search_link: false ) %>
 <%# show_line(presenter, :libra_id, 'Libra ID', true, include_empty: true, catalog_search_link: false ) %>
 <%# show_line(presenter, :work_source, 'Work Source', true, include_empty: true, catalog_search_link: false ) %>
