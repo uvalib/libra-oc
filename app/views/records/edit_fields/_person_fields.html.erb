@@ -2,7 +2,7 @@
   <%= f.label "#{name}_attributes", name.titleize, class: 'multi_value' %>
 
     <ul class="listing" aria-live="polite">
-      <%= f.fields_for name do |af| %>
+      <%= f.simple_fields_for name do |af| %>
         <li class="field-wrapper input-group input-append">
             <div class="person-group person-input"
                  data-index="<%= af.options[:child_index] %>"

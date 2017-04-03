@@ -65,6 +65,7 @@ module CurationConcerns
       permitted << { contributors_attributes: permitted_people_params }
       permitted << :rights
       permitted << :language
+      permitted << :resource_type
       permitted
     end
 

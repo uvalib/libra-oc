@@ -62,9 +62,7 @@ module PublicViewHelper
 
   def display_resource_type work
     if work.resource_type.present?
-      work.resource_type.each do |type|
-        concat content_tag :span, type, class: 'pull-right label label-default'
-      end
+      concat content_tag :span, work.resource_type, class: 'pull-right label label-default'
     end
   end
 
