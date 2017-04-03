@@ -108,13 +108,6 @@ module PublicViewHelper
     concat raw('</div>')
   end
 
-  def display_description( description )
-    return '' if description.blank?
-    description = simple_format( description )
-    description = CGI.unescapeHTML( String.new description.to_s )
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Abstract:", raw( description ) ).render )
-  end
-
   def display_degree( degree )
     return '' if degree.blank?
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Degree:", degree ).render )

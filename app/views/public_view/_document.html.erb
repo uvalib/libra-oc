@@ -11,7 +11,6 @@
                <% display_resource_type @work %>
                <% display_authors( @work.authors ) %>
                <%= display_generic("Abstract", @work.abstract) %>
-               <%= display_description( @work.description ) %>
                <%= display_keywords( @work ) %>
                <%= display_rights(@work.rights) %>
                <% display_contributors( @work.contributors ) %>

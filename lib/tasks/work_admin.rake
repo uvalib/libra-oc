@@ -180,11 +180,11 @@ namespace :work do
       w.date_uploaded = CurationConcerns::TimeService.time_in_utc
       w.date_created = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d" )
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
-      w.description = description
+      #w.description = description
 
       #w.work_type = work_type
 
-      w.abstract = ' Placeholder abstract'
+      w.abstract = description
 
       w.publisher = LibraWork::DEFAULT_INSTITUTION
       #w.department = 'Placeholder department'

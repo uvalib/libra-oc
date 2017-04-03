@@ -38,7 +38,7 @@ module ShowHelper
     elsif required
       tr = show_wrap_required(tr)
     end
-    if field_name == :description
+    if field_name == :abstract
       tr = keep_new_lines(tr)
     end
     return tr
