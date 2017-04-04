@@ -1,5 +1,6 @@
 <div id="sidebar" class="col-xs-12 col-sm-3 col-sm-pull-9">
-  <h2>Files</h2>
+  <% if can_download_files?( @work ) %>
+    <h2>Files</h2>
     <div id="uploads">
       <% @work.file_sets.each do |file| %>
         <div class="file_asset_record">
@@ -9,4 +10,5 @@
       <% end %>
 
     </div>
+  <% end %>
 </div>

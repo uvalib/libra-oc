@@ -24,5 +24,8 @@ module LibraOc
     #config.active_job.queue_adapter = :sidekiq
     config.active_job.queue_adapter = :inline
 
+    # specify the name of the IP whitelist file
+    config.ip_whitelist = "#{Rails.root}/data/ipwhitelist.txt"
+
   end
 end

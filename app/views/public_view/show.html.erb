@@ -17,31 +17,12 @@
    <% end %>
 </div>
 <% else %>
-   <% if ENV['ALLOW_FAKE_NETBADGE'] == 'true' && @can_view %>
+   <% if ENV['ENABLE_TEST_FEATURES'] && @can_view %>
       <div class="debug-controls">
          <h1>Debugging</h1>
          <%= form_tag({}, {:method => :get}) do %>
             <%= create_radio("grounds", "off", "Off Grounds") %><br>
             <%= create_radio("grounds", "on", "On Grounds", true) %><br>
-            <hr>
-            <b>Current date: <%= date_formatter( @today ) %></b><br>
-            <%= create_radio("time", "0", "Now", true) %><br>
-            <%= create_radio("time", "5", "5 Months") %><br>
-            <%= create_radio("time", "6", "6 Months") %><br>
-            <%= create_radio("time", "7", "7 Months") %><br>
-            <%= create_radio("time", "11", "11 Months") %><br>
-            <%= create_radio("time", "12", "12 Months (1 year)") %><br>
-            <%= create_radio("time", "13", "13 Months") %><br>
-            <%= create_radio("time", "23", "23 Months") %><br>
-            <%= create_radio("time", "24", "24 Months (2 years)") %><br>
-            <%= create_radio("time", "25", "25 Months") %><br>
-            <%= create_radio("time", "59", "59 Months") %><br>
-            <%= create_radio("time", "60", "60 Months (5 years)") %><br>
-            <%= create_radio("time", "61", "61 Months") %><br>
-            <%= create_radio("time", "1559", "1559 Months") %><br>
-            <%= create_radio("time", "1560", "1560 Months (130 years)") %><br>
-            <%= create_radio("time", "1561", "1561 Months") %><br>
-
             <button name="button" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Override</button>
          <% end %>
       </div>

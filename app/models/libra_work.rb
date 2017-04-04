@@ -20,6 +20,9 @@ class LibraWork < ActiveFedora::Base
   # embargo periods (only one)
   EMBARGO_VALUE_FOREVER = 'forever'.freeze
 
+  # source definitions
+  SOURCE_LEGACY = 'libra-oa'.freeze
+
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
   accepts_nested_attributes_for :authors, reject_if: :all_blank
@@ -76,5 +79,28 @@ class LibraWork < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  #
+  # is this work publically visible?
+  #
+  def is_publicly_visible?
+    return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC )
+  end
+
+  #
+  # is this content mine according to the depositor?
+  #
+  def is_mine?( me )
+    return false if me.nil?
+    return false if depositor.nil?
+    return depositor == me
+  end
+
+  #
+  # is this legacy (migrated) content?
+  #
+  def is_legacy_content?
+    return false if work_source.nil?
+    return work_source.start_with? LibraWork::SOURCE_LEGACY
+  end
 
 end
