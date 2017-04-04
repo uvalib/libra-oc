@@ -1,4 +1,9 @@
+require_dependency 'libraoc/helpers/statistics_helper'
+
 class PublicViewController < ApplicationController
+
+  include StatisticsHelper
+
   layout 'public_view'
 
   def show
@@ -7,6 +12,11 @@ class PublicViewController < ApplicationController
 
     @can_view = helpers.can_view_work?( @work )
     if @can_view
+
+      # save work view statistics
+      work_view_event( @work.id, current_user )
+
+      # handle any debugging support necessary
       set_debugging_override( )
     else
       render404public( )
