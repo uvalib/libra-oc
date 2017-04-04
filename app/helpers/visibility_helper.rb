@@ -24,19 +24,45 @@ module VisibilityHelper
 	def can_access?( work )
 
 		# no work, no access
-		return false if work.nil?
+		if work.nil?
+			puts "==> undefined work; access is DENIED"
+      return false
+		end
+
 
 		# this work is owned by the current user regardless of visibility
-		return true if current_user.present? && work.is_mine?( current_user.email )
+		if current_user.present? && work.is_mine?( current_user.email )
+			puts "==> authenticated user and work is user owned; access is GRANTED"
+  		return true
+		end
 
 		# if this is a publicly visible work
-		return true if work.is_publicly_visible?
+    if work.is_publicly_visible?
+       puts "==> publicly visible work; access is GRANTED"
+		   return true
+    end
 
-		# assume the work is not publicly visible and only visible on-grounds
-		return is_on_grounds( )
+    # if this is an institution visible work
+    if work.is_institution_visible?
+
+      # the work is not publicly visible and should only be visible on-grounds
+      if is_on_grounds
+         puts "==> institution visible and on grounds; access is GRANTED"
+         return true
+      else
+        puts "==> institution visible and not on grounds; access is DENIED"
+        return false
+      end
+    end
+
+    puts "==> work is private; access is DENIED"
+    return false
 
 	end
 
+  #
+  # determine from the IP address if we are on-grounds or not
+  #
 	def is_on_grounds
 
 		if @grounds_override
@@ -51,6 +77,9 @@ module VisibilityHelper
 		return in_uva_ips
 	end
 
+  #
+  # load the IP block configuration
+  #
 	def uva_ip_blocks
 		uva_ip_ranges_list = [ ]
 		File.open( Rails.application.config.ip_whitelist, 'r' ).each_line { |line|
@@ -61,6 +90,9 @@ module VisibilityHelper
 		return uva_ip_ranges_list.map { |subnet| IPAddr.new subnet }
 	end
 
+  #
+  # helper to create radio buttons for the debug panel
+  #
 	def create_radio( name, value, label, is_default = false )
 		attr = { type: "radio", name: name, value: value}
 		if params[name.to_sym] == value || (params[name.to_sym].nil? && is_default)

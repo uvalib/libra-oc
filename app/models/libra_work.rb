@@ -80,10 +80,27 @@ class LibraWork < ActiveFedora::Base
   end
 
   #
-  # is this work publically visible?
+  # is this work publicly visible?
   #
   def is_publicly_visible?
+    return false if visibility.nil?
     return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC )
+  end
+
+  #
+  # is this work visible within the institution?
+  #
+  def is_institution_visible?
+    return false if visibility.nil?
+    return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED )
+  end
+
+  #
+  # is this work visible within the institution?
+  #
+  def is_private?
+    return true if visibility.nil?
+    return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE )
   end
 
   #
