@@ -250,7 +250,7 @@ module IngestHelpers
 
       w.publisher = payload[ :publisher ] if payload[ :publisher ]
 
-      w.language = payload[ :language ] if payload[ :language ]
+      w.language = [ payload[ :language ] ] if payload[ :language ]
 
       w.notes = payload[ :notes ] if payload[ :notes ]
       w.rights = [ payload[ :rights ] ] if payload[ :rights ]

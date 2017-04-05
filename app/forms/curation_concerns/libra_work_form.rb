@@ -4,10 +4,10 @@ module CurationConcerns
   class LibraWorkForm < Sufia::Forms::WorkForm
     self.model_class = ::LibraWork
     self.terms -= [:description, :creator, :subject, :based_near, :contributor,
-                   :keyword, :publisher, :date_created, :language, :identifier,
+                   :keyword, :publisher, :date_created, :identifier,
                    :related_url, :source ]
     self.terms += [ :resource_type, :abstract, :authors,
-                    :keyword, :contributors, :language, :source_citation, :publisher, :published_date,
+                    :keyword, :contributors, :source_citation, :publisher, :published_date,
                     :related_url, :sponsoring_agency, :notes
     ]
     self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
@@ -16,7 +16,7 @@ module CurationConcerns
 
     def self.multiple?(field)
 
-      if [:title, :publisher, :abstract, :language, :source_citation].include? field.to_sym
+      if [:title, :publisher, :abstract, :source_citation].include? field.to_sym
         false
       else
         super
