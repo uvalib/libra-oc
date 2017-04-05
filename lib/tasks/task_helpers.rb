@@ -16,7 +16,7 @@ module TaskHelpers
   DOCUMENT_XML_FILE = 'data.xml'
 
   # general definitions
-  DEFAULT_USER = 'naw4t'
+  DEFAULT_USER = 'dpg3k'
   DEFAULT_DOMAIN = 'virginia.edu'
 
   #

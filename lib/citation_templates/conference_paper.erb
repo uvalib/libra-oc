@@ -1,0 +1,33 @@
+<% # template for rendering conference citations %>
+<% # format: %>
+<% # <LastName>, <FirstName>. "<Title>." <Title of Conference>, <Conference Location>. <Publication Year>. %>
+
+<% # add author %>
+<% if vars[:author] %>
+   <%= "#{vars[:author]}" %>
+<% end %>
+
+<% # if we have other authors, add them here %>
+<% if vars[:author] %>
+   <% if vars[:other_authors] %>
+      <%= ", #{vars[:other_authors]}" %>
+   <% end %>
+   <%= ". " %>
+<% end %>
+
+<% # quote the title %>
+<% if vars[:title] %>
+   <%= "\"#{vars[:title]}.\" " %>
+<% end %>
+
+<% # conference details %>
+<% if vars[:conference_details] %>
+   <%= "#{vars[:conference_details]}. " %>
+<% end %>
+
+<% # conference date %>
+<% if vars[:conference_date] %>
+   <%= "#{vars[:conference_date]}." %>
+<% end %>
+
+<% # end of template %>

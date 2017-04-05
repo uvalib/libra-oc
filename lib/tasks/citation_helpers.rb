@@ -4,60 +4,6 @@
 
 module CitationHelpers
 
-  # basic template tokens
-  AUTHOR_FIRST_NAME_TOKEN = '<AuthorFirstName>'
-  AUTHOR_LAST_NAME_TOKEN = '<AuthorLastName>'
-  OTHER_AUTHORS_TOKEN = '<OtherAuthors>'
-  TITLE_TOKEN = '<Title>'
-  PUB_LOCATION_TOKEN = '<PublisherLocation>'
-  PUBLISHER_TOKEN = '<Publisher>'
-  PUB_YEAR_TOKEN = '<PublicationYear>'
-  AVAILABLE_PLACEHOLDER = 'Available:'
-  ISBN_PLACEHOLDER = 'ISBN:'
-  ISBN_TOKEN = '<ISBN>'
-  PUB_URL_TOKEN = '<PublicationUrl>'
-  ISSN_PLACEHOLDER = 'ISSN:'
-  ISSN_TOKEN = '<ISSN>'
-  EDITOR_PLACEHOLDER = 'Ed. '
-  BOOK_TITLE_TOKEN = '<BookTitle>'
-  EDITOR_FIRST_NAME_TOKEN = '<EditorFirstName>'
-  EDITOR_LAST_NAME_TOKEN = '<EditorLastName>'
-  START_PAGE_TOKEN = '<StartPage>'
-  END_PAGE_TOKEN = '<EndPage>'
-  JOURNAL_TITLE_TOKEN = '<JournalTitle>'
-  JOURNAL_VOLUME_TOKEN = '<JournalVolume>'
-  JOURNAL_ISSUE_TOKEN = '<JournalIssue>'
-  JOURNAL_PUB_YEAR_TOKEN = '<JournalPublicationYear>'
-  CONFERENCE_TITLE_TOKEN = '<ConferenceTitle>'
-  CONFERENCE_LOCATION_TOKEN = '<ConferenceLocation>'
-
-  # book citation template
-  BOOK_CITATION_TEMPLATE =
-      "#{AUTHOR_LAST_NAME_TOKEN}, #{AUTHOR_FIRST_NAME_TOKEN}, #{OTHER_AUTHORS_TOKEN}. #{TITLE_TOKEN}. " +
-      "#{PUB_LOCATION_TOKEN}: #{PUBLISHER_TOKEN}, #{PUB_YEAR_TOKEN}. " +
-      "#{AVAILABLE_PLACEHOLDER} #{ISBN_PLACEHOLDER}#{ISBN_TOKEN}, #{PUB_URL_TOKEN}"
-
-  EDITED_BOOK_CITATION_TEMPLATE =
-      "#{AUTHOR_LAST_NAME_TOKEN}, #{AUTHOR_FIRST_NAME_TOKEN}, #{OTHER_AUTHORS_TOKEN}. " +
-      "\"#{TITLE_TOKEN}\". #{EDITOR_PLACEHOLDER} #{EDITOR_FIRST_NAME_TOKEN} #{EDITOR_LAST_NAME_TOKEN}. " +
-      "#{BOOK_TITLE_TOKEN}. #{PUB_LOCATION_TOKEN}: #{PUBLISHER_TOKEN}, #{PUB_YEAR_TOKEN}. " +
-      "#{START_PAGE_TOKEN} - #{END_PAGE_TOKEN}. " +
-      "#{AVAILABLE_PLACEHOLDER} #{ISBN_PLACEHOLDER}#{ISBN_TOKEN}, #{PUB_URL_TOKEN}"
-
-  # article citation template
-  ARTICLE_CITATION_TEMPLATE =
-      "#{AUTHOR_LAST_NAME_TOKEN}, #{AUTHOR_FIRST_NAME_TOKEN}, #{OTHER_AUTHORS_TOKEN}. " +
-      "\"#{TITLE_TOKEN}\". #{JOURNAL_TITLE_TOKEN} #{JOURNAL_VOLUME_TOKEN}. " +
-      "#{JOURNAL_ISSUE_TOKEN} (#{JOURNAL_PUB_YEAR_TOKEN}): " +
-      "#{START_PAGE_TOKEN} - #{END_PAGE_TOKEN}. " +
-      "#{AVAILABLE_PLACEHOLDER} #{ISSN_PLACEHOLDER}#{ISSN_TOKEN}, #{PUB_URL_TOKEN}"
-
-  # conference citation template
-  CONFERENCE_CITATION_TEMPLATE =
-      "#{AUTHOR_LAST_NAME_TOKEN}, #{AUTHOR_FIRST_NAME_TOKEN}, #{OTHER_AUTHORS_TOKEN}. " +
-      "\"#{TITLE_TOKEN}\". #{CONFERENCE_TITLE_TOKEN}, #{CONFERENCE_LOCATION_TOKEN}. " +
-      "#{PUB_YEAR_TOKEN}."
-
   #
   # construct a citation field based on the information captured
   #
@@ -69,19 +15,14 @@ module CitationHelpers
     #citation = ''
     case payload[ :resource_type ]
       when 'article', 'article_reprint'
-        citation = render_template( payload, ARTICLE_CITATION_TEMPLATE )
+        citation = render_template( payload, 'article' )
       when 'book'
-        citation = render_template( payload, BOOK_CITATION_TEMPLATE )
+        citation = render_template( payload, 'book' )
       when 'book_part'
-        citation = render_template( payload, EDITED_BOOK_CITATION_TEMPLATE )
+        citation = render_template( payload, 'book_part' )
       when 'conference_paper'
-        citation = render_template( payload, CONFERENCE_CITATION_TEMPLATE )
-      else
-        return nil
+        citation = render_template( payload, 'conference_paper' )
     end
-
-    #puts "==> CITATION (before) [#{citation}]"
-    citation = cleanup( citation )
 
     puts "==> CITATION [#{citation}]"
     return citation
@@ -91,74 +32,55 @@ module CitationHelpers
 
   def render_template( payload, template )
 
-    citation = template
-    citation = substitute_token( citation, AUTHOR_LAST_NAME_TOKEN, payload[:authors ][0][:last_name] )
-    citation = substitute_token( citation, AUTHOR_FIRST_NAME_TOKEN, payload[:authors ][0][:first_name] )
-    citation = substitute_token( citation, TITLE_TOKEN, payload[:title ] )
-    citation = substitute_token( citation, PUBLISHER_TOKEN, payload[:publisher ] )
-    citation = substitute_token( citation, PUB_LOCATION_TOKEN, payload[:publish_location ] )
-    citation = substitute_token( citation, PUB_YEAR_TOKEN, payload[:publish_date ] )
-    citation = substitute_token( citation, ISBN_TOKEN, payload[:isbn ] )
-    citation = substitute_token( citation, ISSN_TOKEN, payload[:issn ] )
-    citation = substitute_token( citation, START_PAGE_TOKEN, payload[:start_page ] )
-    citation = substitute_token( citation, END_PAGE_TOKEN, payload[:end_page ] )
-    citation = substitute_token( citation, CONFERENCE_TITLE_TOKEN, payload[:conference_title ] )
-    citation = substitute_token( citation, CONFERENCE_LOCATION_TOKEN, payload[:conference_location ] )
-    citation = substitute_token( citation, PUB_URL_TOKEN, payload[:related_url ] )
-    citation = substitute_token( citation, JOURNAL_TITLE_TOKEN, payload[ :journal_title ] )
-    citation = substitute_token( citation, JOURNAL_VOLUME_TOKEN, payload[ :journal_volume ] )
-    citation = substitute_token( citation, JOURNAL_ISSUE_TOKEN, payload[ :journal_issue ] )
-    citation = substitute_token( citation, JOURNAL_PUB_YEAR_TOKEN, payload[ :journal_publication_year ] )
+    # setup the variables for the render process
+    vars = {
+     # common attributes
+     :author                   => comma_separate( payload[:authors ][0][:last_name], payload[:authors ][0][:first_name] ),
+     :other_authors            => construct_other_authors( payload[ :authors ] ),
+     :title                    => payload[:title],
+     :publication_year         => payload[:publish_date],
+     :publication_url          => payload[:related_url],
+     :publisher                => payload[:publisher],
+     :isbn                     => payload[:isbn],
+     :start_page               => payload[:start_page],
+     :end_page                 => payload[:end_page],
 
-    citation = substitute_token( citation, EDITOR_FIRST_NAME_TOKEN, payload[ :editor_first_name ] )
-    citation = substitute_token( citation, EDITOR_LAST_NAME_TOKEN, payload[ :editor_last_name ] )
-    citation = substitute_token( citation, BOOK_TITLE_TOKEN, payload[ :journal_title ] )
+    # book attributes
+     :book_title               => payload[:journal_title],
+     :publish_location         => payload[:publish_location],
+     :editor                   => space_separate( payload[:editor_first_name], payload[:editor_last_name] ),
 
-    # deal with some special cases
-    other_authors = construct_other_authors( payload[ :authors ] )
-    citation = substitute_token(citation, OTHER_AUTHORS_TOKEN, other_authors )
+     # article attributes
+     :journal_title            => payload[:journal_title],
+     :journal_volume           => payload[:journal_volume],
+     :journal_issue            => payload[:journal_issue],
+     :journal_publication_year => payload[:journal_publication_year],
+     :issn                     => payload[:issn],
 
-    # remove placeholder labels if their corresponding fields do not exist
-    if payload[ :isbn ].blank?
-      citation = delete_token(citation, ISBN_PLACEHOLDER )
-    end
-    if payload[ :issn ].blank?
-      citation = delete_token(citation, ISSN_PLACEHOLDER )
-    end
+     # conference attributes
+     :conference_details       => comma_separate( payload[:conference_title], payload[:conference_location] ),
+     :conference_date          => payload[:conference_date]
+    }
 
-    if payload[ :isbn ].blank? && payload[ :issn ].blank? && payload[:related_url ].blank?
-      citation = delete_token(citation, AVAILABLE_PLACEHOLDER )
-    end
+    # remove any blank attributes
+    vars = remove_blank_attributes( vars )
 
-    return citation
-  end
+    erb_file = "lib/citation_templates/#{template}.erb"
+    str = ERB.new( IO.read( File.join( Rails.root, erb_file ) ) ).result( binding )
 
-  def cleanup( citation )
-    cleaned = cleanup_pass( citation )
-    while true
-      again = cleanup_pass( cleaned )
-      return cleaned if cleaned == again
-      cleaned = again
-    end
-  end
+    # remove carriage returns
+    str = str.gsub( /\n/, '' )
 
-  def cleanup_pass( citation )
-     res = citation
-     res = res.gsub( ' :', ' ' )
-     res = res.gsub( ' , ', ' ' )
-     res = res.gsub( ', .', '.' )
-     res = res.gsub( ',,', ',' )
-     res = res.gsub( ' - .', '' )
-     res = res.gsub( '. . .', '.' )
-     res = res.gsub( '. .', '.' )
-     res = res.gsub( '..', '.' )
-     res = res.gsub( '()', '' )
-     res = res.gsub( ' . ', '. ' )
-     res = res.gsub( /:$/, '' )
-     res = res.gsub( /,$/, '' )
+    # squish remaining spaces
+    str = str.squish
 
-     # finally remove all duplicate spaces and strip trailing spaces
-     return res.gsub( '  ', ' ' ).rstrip
+    # remove leading spaces following punctuation
+    str = str.gsub( ' ,', ',' )
+    str = str.gsub( ' .', '.' )
+    str = str.gsub( ' :', ':' )
+
+    return( str )
+
   end
 
   #
@@ -166,33 +88,45 @@ module CitationHelpers
   #
   def construct_other_authors( authors )
 
-    oo = ''
-    return oo if authors.empty? || authors.length == 1
+    return nil if authors.empty? || authors.length == 1
 
+    oo = ''
     authors.each_with_index do|a, ix|
       next if ix == 0
       if a[:first_name].present? && a[:last_name].present?
-         oo += " and" if ix > 1
-         oo += " #{a[:first_name]} #{a[:last_name]}"
+         oo += ", and " if ix > 1
+         oo += "#{a[:first_name]} #{a[:last_name]}"
       end
     end
-    oo += '.'
     return oo
   end
 
   #
-  # delete the specified token
+  # remove blank attributes from a hash
   #
-  def delete_token( source, what )
-    return source.gsub( what, '' )
+  def remove_blank_attributes( vars )
+    res = {}
+    vars.keys.each do |k|
+      if vars[ k ].present?
+        res[ k ] = vars[ k ]
+      end
+    end
+    return( res )
   end
 
-  #
-  # make a substitution in the source from what to with
-  #
-  def substitute_token( source, what, with )
-    with = '' if with.nil?
-    return source.gsub( what, with )
+  def comma_separate( this, that )
+    return separate_with( this, that, ', ' )
+  end
+
+  def space_separate( this, that )
+    return separate_with( this, that, ' ' )
+  end
+
+  def separate_with( this, that, separator )
+    return "#{this}#{separator}#{that}" if this.present? && that.present?
+    return this if this.present?
+    return that if that.present?
+    return ''
   end
 
 end

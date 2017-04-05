@@ -568,26 +568,52 @@ module IngestHelpers
   end
 
   #
-  # fedora field extract
+  # fedora first field extract
   #
   def fedora_first_field_extract( fedora_doc, selector, the_type = nil )
 
-    node = fedora_node_extract( fedora_doc, selector, the_type )
+    node = fedora_first_node_extract(fedora_doc, selector, the_type )
     return nil if node.nil?
     return node.text if node.text.present?
     return nil
   end
 
   #
-  # fedora node extract
+  # fedora last field extract
   #
-  def fedora_node_extract( fedora_doc, selector, the_type = nil )
+  def fedora_last_field_extract( fedora_doc, selector, the_type = nil )
+
+    node = fedora_last_node_extract(fedora_doc, selector, the_type )
+    return nil if node.nil?
+    return node.text if node.text.present?
+    return nil
+  end
+
+  #
+  # fedora first node extract
+  #
+  def fedora_first_node_extract(fedora_doc, selector, the_type = nil )
 
     node_list = fedora_node_list_extract( fedora_doc, selector )
     return nil if node_list.nil?
-    node_list.each_with_index do |n, ix|
-       return n if ix == 0 && the_type == nil
-       return n if the_type != nil && n.attribute( 'type' ).value == the_type
+    node_list.each do |n|
+       return n if the_type == nil
+       return n if the_type != nil && n.attribute( 'type' ) != nil && n.attribute( 'type' ).value == the_type
+    end
+
+    return nil
+  end
+
+  #
+  # fedora last node extract
+  #
+  def fedora_last_node_extract(fedora_doc, selector, the_type = nil )
+
+    node_list = fedora_node_list_extract( fedora_doc, selector )
+    return nil if node_list.nil?
+    node_list.reverse_each do |n|
+      return n if the_type == nil
+      return n if the_type != nil && n.attribute( 'type' ) != nil && n.attribute( 'type' ).value == the_type
     end
 
     return nil

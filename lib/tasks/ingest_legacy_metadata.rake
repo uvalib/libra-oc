@@ -251,6 +251,8 @@ namespace :libraoc do
      payload[ :conference_title ] = conference_title if conference_title.present?
      conference_location = extract_conference_location( solr_doc, fedora_doc )
      payload[ :conference_location ] = conference_location if conference_location.present?
+     conference_date = extract_conference_date( solr_doc, fedora_doc )
+     payload[ :conference_date ] = conference_date if conference_date.present?
 
      # page attributes
      start_page = extract_start_page( solr_doc, fedora_doc )
@@ -427,7 +429,7 @@ namespace :libraoc do
   def extract_conference_name( solr_doc, fedora_doc )
 
     # for conferences
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem name', 'conference' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem name', 'conference' )
     return nil if node.nil?
     name = IngestHelpers.fedora_first_field_extract( node, 'namePart' )
     return name if name.present?
@@ -440,11 +442,25 @@ namespace :libraoc do
   def extract_conference_location( solr_doc, fedora_doc )
 
     # for conferences
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem name', 'conference' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem name', 'conference' )
     return nil if node.nil?
 
     location = IngestHelpers.fedora_first_field_extract( node, 'affiliation' )
     return location if location.present?
+    return nil
+  end
+
+  #
+  # Attempt to extract the conference date
+  #
+  def extract_conference_date( solr_doc, fedora_doc )
+
+    # for conferences
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem name', 'conference' )
+    return nil if node.nil?
+
+    date = IngestHelpers.fedora_last_field_extract( node, 'namePart', 'date' )
+    return date if date.present?
     return nil
   end
 
@@ -454,7 +470,7 @@ namespace :libraoc do
   def extract_journal_name( solr_doc, fedora_doc )
 
     # for journals
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
     return nil if node.nil?
 
     name = IngestHelpers.fedora_first_field_extract( node, 'titleInfo title' )
@@ -468,12 +484,12 @@ namespace :libraoc do
   def extract_journal_volume( solr_doc, fedora_doc )
 
     # for journals
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
     return nil if node.nil?
 
-    node = IngestHelpers.fedora_node_extract( node, 'part detail', 'volume' )
+    node = IngestHelpers.fedora_first_node_extract(node, 'part detail', 'volume' )
     return nil if node.nil?
-    node = IngestHelpers.fedora_node_extract( node, 'number' )
+    node = IngestHelpers.fedora_first_node_extract(node, 'number' )
     return nil if node.nil? || node.text.present? == false
     return node.text
   end
@@ -484,12 +500,12 @@ namespace :libraoc do
   def extract_journal_issue( solr_doc, fedora_doc )
 
     # for journals
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
     return nil if node.nil?
 
-    node = IngestHelpers.fedora_node_extract( node, 'part detail', 'number' )
+    node = IngestHelpers.fedora_first_node_extract(node, 'part detail', 'number' )
     return nil if node.nil?
-    node = IngestHelpers.fedora_node_extract( node, 'number' )
+    node = IngestHelpers.fedora_first_node_extract(node, 'number' )
     return nil if node.nil? || node.text.present? == false
     return node.text
   end
@@ -500,7 +516,7 @@ namespace :libraoc do
   def extract_journal_year( solr_doc, fedora_doc )
 
     # for journals
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
     return nil if node.nil?
 
     node_list = IngestHelpers.fedora_node_list_extract( node, 'part date' )
@@ -519,13 +535,13 @@ namespace :libraoc do
   def extract_editor_first_name( solr_doc, fedora_doc )
 
     # for book parts
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
     return nil if node.nil?
 
-    node = IngestHelpers.fedora_node_extract( node, 'name', 'personal' )
+    node = IngestHelpers.fedora_first_node_extract(node, 'name', 'personal' )
     return nil if node.nil?
 
-    role_node = IngestHelpers.fedora_node_extract( node, 'role roleTerm', 'text' )
+    role_node = IngestHelpers.fedora_first_node_extract(node, 'role roleTerm', 'text' )
     return nil if role_node.nil?
 
     if role_node.text == 'editor'
@@ -541,13 +557,13 @@ namespace :libraoc do
   def extract_editor_last_name( solr_doc, fedora_doc )
 
     # for book parts
-    node = IngestHelpers.fedora_node_extract( fedora_doc, 'mods relatedItem', 'host' )
+    node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
     return nil if node.nil?
 
-    node = IngestHelpers.fedora_node_extract( node, 'name', 'personal' )
+    node = IngestHelpers.fedora_first_node_extract(node, 'name', 'personal' )
     return nil if node.nil?
 
-    role_node = IngestHelpers.fedora_node_extract( node, 'role roleTerm', 'text' )
+    role_node = IngestHelpers.fedora_first_node_extract(node, 'role roleTerm', 'text' )
     return nil if role_node.nil?
 
     if role_node.text == 'editor'

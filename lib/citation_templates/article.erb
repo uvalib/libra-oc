@@ -1,0 +1,98 @@
+<% # template for rendering article citations %>
+<% # format: %>
+<% # <LastName>, <FirstName>. "<Title>." <Journal Title> <Volume>.<Issue> (<Publication Year>): <StartPage> - <EndPage>. Available:  ISSN:<ISSN>, <Publication URL>. %>
+
+<% # add author %>
+<% if vars[:author] %>
+    <%= "#{vars[:author]}" %>
+<% end %>
+
+<% # if we have other authors, add them here %>
+<% if vars[:author] %>
+    <% if vars[:other_authors] %>
+        <%= ", #{vars[:other_authors]}. " %>
+    <% else %>
+        <%= ". " %>
+    <% end %>
+<% end %>
+
+<% # quote the title %>
+<% if vars[:title] %>
+    <%= "\"#{vars[:title]}.\" " %>
+<% end %>
+
+<% # add journal title %>
+<% if vars[:journal_title] %>
+    <%= "#{vars[:journal_title]} " %>
+<% end %>
+
+<% # add journal volume %>
+<% if vars[:journal_volume] %>
+    <% if vars[:journal_issue] %>
+        <%= "#{vars[:journal_volume]}" %>
+    <% else %>
+        <%= "v#{vars[:journal_volume]}" %>
+    <% end %>
+<% end %>
+
+<% if vars[:journal_title] || vars[:journal_volume] %>
+    <%= "." %>
+<% end %>
+
+<% # add journal issue %>
+<% if vars[:journal_issue] %>
+    <% if vars[:journal_volume] %>
+        <%= "#{vars[:journal_issue]} " %>
+    <% else %>
+        <%= "i#{vars[:journal_issue]} " %>
+    <% end %>
+<% end %>
+
+<% # add journal publication year %>
+<% if vars[:journal_publication_year] %>
+    <%= "(#{vars[:journal_publication_year]})" %>
+<% end %>
+
+<% # if we have any more, add a delimiter %>
+<% if vars[:start_page] || vars[:end_page] || vars[:issn] || vars[:publication_url] %>
+    <%= ": " %>
+<% else %>
+    <%= "." %>
+<% end %>
+
+<% # add page number(s) %>
+<% if vars[:start_page] && vars[:end_page] %>
+   <%= "#{vars[:start_page]}-#{vars[:end_page]}. " %>
+<% else %>
+    <% if vars[:start_page] %>
+        <%= "#{vars[:start_page]} " %>
+    <% end %>
+
+    <% if vars[:end_page] %>
+        <%= "#{vars[:end_page]} " %>
+    <% end %>
+<% end %>
+
+<% # add a necessary token %>
+<% if vars[:issn] || vars[:publication_url] %>
+    <%= "Available: " %>
+<% end %>
+
+<% # add ISBN %>
+<% if vars[:issn] %>
+    <%= "ISSN:#{vars[:issn]}" %>
+<% end %>
+
+<% # add publish url %>
+<% if vars[:publication_url] %>
+    <% if vars[:issn] %>
+        <%= ", " %>
+    <% end %>
+    <%= "#{vars[:publication_url]}" %>
+<% end %>
+
+<% if vars[:isbn] || vars[:publication_url] %>
+    <%= "." %>
+<% end %>
+
+<% # end of template %>

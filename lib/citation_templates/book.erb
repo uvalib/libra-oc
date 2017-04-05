@@ -1,0 +1,69 @@
+<% # template for rendering book citations %>
+<% # format: %>
+<% # <LastName>, <FirstName>. <Title>. <Publisher location>: < Publisher>, <Publication Year>. Available: ISBN:<ISBN>, <Publication URL>. %>
+
+<% # add author %>
+<% if vars[:author] %>
+   <%= "#{vars[:author]}" %>
+<% end %>
+
+<% # if we have other authors, add them here %>
+   <% if vars[:author] %>
+      <% if vars[:other_authors] %>
+         <%= ", #{vars[:other_authors]}. " %>
+      <% else %>
+         <%= ". " %>
+   <% end %>
+<% end %>
+
+<% # add title %>
+<% if vars[:title] %>
+    <%= "#{vars[:title]}. " %>
+<% end %>
+
+<% # add publish location %>
+<% if vars[:publish_location] %>
+    <%= "#{vars[:publish_location]}: " %>
+<% end %>
+
+<% # add publisher %>
+<% if vars[:publisher] %>
+    <%= "#{vars[:publisher]}" %>
+<% end %>
+
+<% # add publish year %>
+<% if vars[:publication_year] %>
+    <% if vars[:publisher] %>
+        <%= ", " %>
+    <% end %>
+    <%= "#{vars[:publication_year]}" %>
+<% end %>
+
+<% # add a delimiter %>
+<% if vars[:publisher] || vars[:publication_year] %>
+    <%= ". " %>
+<% end %>
+
+<% # add a necessary token %>
+<% if vars[:isbn] || vars[:publication_url] %>
+    <%= "Available: " %>
+<% end %>
+
+<% # add ISBN %>
+<% if vars[:isbn] %>
+    <%= "ISBN:#{vars[:isbn]}" %>
+<% end %>
+
+<% # add publish url %>
+<% if vars[:publication_url] %>
+    <% if vars[:isbn] %>
+        <%= ", " %>
+    <% end %>
+    <%= "#{vars[:publication_url]}" %>
+<% end %>
+
+<% if vars[:isbn] || vars[:publication_url] %>
+    <%= "." %>
+<% end %>
+
+<% # end of template %>
