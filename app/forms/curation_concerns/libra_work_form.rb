@@ -16,7 +16,7 @@ module CurationConcerns
 
     def self.multiple?(field)
 
-      if [:title, :publisher, :abstract, :language].include? field.to_sym
+      if [:title, :publisher, :abstract, :language, :source_citation].include? field.to_sym
         false
       else
         super
