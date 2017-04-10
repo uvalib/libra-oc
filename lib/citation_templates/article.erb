@@ -26,24 +26,15 @@
     <%= "#{vars[:journal_title]} " %>
 <% end %>
 
-<% # add journal volume %>
-<% if vars[:journal_volume] %>
-    <% if vars[:journal_issue] %>
-        <%= "#{vars[:journal_volume]}" %>
-    <% else %>
+<% # add journal volume and issue %>
+<% if vars[:journal_volume] && vars[:journal_issue] %>
+    <%= "#{vars[:journal_volume]}.#{vars[:journal_issue]}" %>
+<% else %>
+    <% if vars[:journal_volume] %>
         <%= "v#{vars[:journal_volume]}" %>
     <% end %>
-<% end %>
 
-<% if vars[:journal_title] || vars[:journal_volume] %>
-    <%= "." %>
-<% end %>
-
-<% # add journal issue %>
-<% if vars[:journal_issue] %>
-    <% if vars[:journal_volume] %>
-        <%= "#{vars[:journal_issue]} " %>
-    <% else %>
+    <% if vars[:journal_issue] %>
         <%= "i#{vars[:journal_issue]} " %>
     <% end %>
 <% end %>
@@ -53,24 +44,22 @@
     <%= "(#{vars[:journal_publication_year]})" %>
 <% end %>
 
-<% # if we have any more, add a delimiter %>
-<% if vars[:start_page] || vars[:end_page] || vars[:issn] || vars[:publication_url] %>
-    <%= ": " %>
-<% else %>
-    <%= "." %>
-<% end %>
-
 <% # add page number(s) %>
 <% if vars[:start_page] && vars[:end_page] %>
-   <%= "#{vars[:start_page]}-#{vars[:end_page]}. " %>
+   <%= ": #{vars[:start_page]}-#{vars[:end_page]}. " %>
 <% else %>
     <% if vars[:start_page] %>
-        <%= "#{vars[:start_page]} " %>
+        <%= ": #{vars[:start_page]}. " %>
     <% end %>
 
     <% if vars[:end_page] %>
-        <%= "#{vars[:end_page]} " %>
+        <%= ": #{vars[:end_page]}. " %>
     <% end %>
+<% end %>
+
+<% # if we do not have page numbers, add a delimiter %>
+<% if !vars[:start_page] && !vars[:end_page] %>
+    <%= ". " %>
 <% end %>
 
 <% # add a necessary token %>

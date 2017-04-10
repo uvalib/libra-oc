@@ -7,7 +7,7 @@ module CitationHelpers
   #
   # construct a citation field based on the information captured
   #
-  def render( payload )
+  def construct( payload )
 
     # no citation if the work is not one of a known set of resources
     return nil if ['article', 'article_reprint', 'book', 'book_part', 'conference_paper' ].include?( payload[ :resource_type ] ) == false
@@ -48,7 +48,7 @@ module CitationHelpers
     # book attributes
      :book_title               => payload[:journal_title],
      :publish_location         => payload[:publish_location],
-     :editor                   => space_separate( payload[:editor_first_name], payload[:editor_last_name] ),
+     :editors                  => construct_editors( payload[ :editors ] ),
 
      # article attributes
      :journal_title            => payload[:journal_title],
@@ -94,11 +94,29 @@ module CitationHelpers
     authors.each_with_index do|a, ix|
       next if ix == 0
       if a[:first_name].present? && a[:last_name].present?
-         oo += ", and " if ix > 1
+         oo += ", " if ix > 1
+         oo += " and " if ix == authors.length - 1
          oo += "#{a[:first_name]} #{a[:last_name]}"
       end
     end
     return oo
+  end
+
+  #
+  # add editors to the citation
+  #
+  def construct_editors( editors )
+
+    return nil if editors.empty?
+
+    ed = ''
+    editors.each_with_index do|e, ix|
+      if e[:first_name].present? && e[:last_name].present?
+        ed += ", " if ix > 0
+        ed += "#{e[:first_name]} #{e[:last_name]}"
+      end
+    end
+    return ed
   end
 
   #
