@@ -1,7 +1,7 @@
 FROM ruby:2.4.1
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends bash tar git openjdk-7-jre imagemagick mysql-client \
+    apt-get install -y --no-install-recommends bash tar git openjdk-7-jre mysql-client \
     libxml2-dev libxslt-dev tzdata nodejs
 
 # Create the run user and group
