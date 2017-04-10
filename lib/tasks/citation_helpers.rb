@@ -112,7 +112,7 @@ module CitationHelpers
     ed = ''
     editors.each_with_index do|e, ix|
       if e[:first_name].present? && e[:last_name].present?
-        ed += ", " if ix > 0
+        ed += " and " if ix > 0
         ed += "#{e[:first_name]} #{e[:last_name]}"
       end
     end
