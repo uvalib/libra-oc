@@ -5,7 +5,7 @@ RUN apt-get update && \
     libxml2-dev libxslt-dev tzdata nodejs
 
 # Create the run user and group
-RUN useradd -UM webservice
+RUN useradd -Um webservice
 
 # set the timezone appropriatly
 ENV TZ=UTC
