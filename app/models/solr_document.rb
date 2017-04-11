@@ -97,6 +97,10 @@ class SolrDocument
     self[Solrizer.solr_name('abstract')]
   end
 
+  def email_status
+    self[Solrizer.solr_name('email_status')]
+  end
+
   private
 
   def person_display solr_name

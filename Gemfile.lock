@@ -232,6 +232,9 @@ GEM
       rdf (~> 2.0)
       sxp (~> 1.0)
     erubis (2.7.0)
+    exception_notification (4.2.1)
+      actionmailer (>= 4.0, < 6)
+      activesupport (>= 4.0, < 6)
     execjs (2.7.0)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
@@ -670,6 +673,7 @@ DEPENDENCIES
   curation_concerns (~> 1.7.6)!
   devise
   devise-guests
+  exception_notification
   fcrepo_wrapper
   hash_at_path
   jbuilder (~> 2.5)

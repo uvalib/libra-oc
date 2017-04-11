@@ -1,0 +1,9 @@
+<p>Dear <%= @recipient %>,</p>
+<p>Congratulations on successful deposit of your work to Libra, the University of Virginia's scholarly repository.</p>
+<p>You have opted to grant to users of your scholarship the following re-use rights: <%= @rights %>.</p>
+<p>The permanent location for your scholarship is <a href="<%= @doi_url %>"><%= @doi_url %></a>.</p>
+<p>Always provide this exact link when sharing your work with colleagues, collaborators, and on social media for the most accurate metrics on views and downloads.</p>
+<p></p>
+<p>Best Regards,</p>
+<p>Scholarly Repository Services, University of Virginia Library</p>
+<p><%= MAIL_SENDER %></p>

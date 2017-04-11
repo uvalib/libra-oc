@@ -14,9 +14,5 @@ module CurationConcerns
       super
     end
 
-    def save
-      super
-    end
-
   end
 end

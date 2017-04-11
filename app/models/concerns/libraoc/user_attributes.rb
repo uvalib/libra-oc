@@ -29,6 +29,14 @@ module Libraoc::UserAttributes
       return "#{cid}@virginia.edu"
     end
 
+    def self.displayname_from_email( em )
+      return '' if em.nil? || em.empty?
+      u = User.find_by_user_key( em )
+      return '' if u.nil?
+      return u.display_name if u.display_name.present?
+      return ''
+    end
+
     private
 
     def self.new_user( user_info, email )

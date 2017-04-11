@@ -61,10 +61,12 @@ gem 'rsolr'
 
 gem 'rest-client'
 
+# email interceptor
+gem 'exception_notification'
+
 # used for exporting/ingesting Libra content
 gem 'hash_at_path'
 gem 'oga'
-
 
 gem 'sentry-raven'
 

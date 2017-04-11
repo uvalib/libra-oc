@@ -4,6 +4,10 @@ class LibraWork < ActiveFedora::Base
   include ::CurationConcerns::WorkBehavior
   include Libraoc::BasicMetadata
   include Sufia::WorkBehavior
+
+  # support to manage email state
+  include Libraoc::EmailAttributes
+
   self.human_readable_type = 'Work'
 
     # specify the indexer used to create the SOLR document

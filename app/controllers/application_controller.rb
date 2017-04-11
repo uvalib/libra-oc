@@ -27,6 +27,13 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::RoutingError, :with => :render404
   rescue_from ActionView::MissingTemplate, :with => :render404
 
+  #rescue_from Exception do |exception|
+  #  puts "======> #{exception.class}"
+  #  puts "#{exception.message}"
+  #  puts "#{exception.backtrace}"
+  #  render404
+  #end
+
   def render404
     if user_signed_in?
       render :file => "#{Rails.root}/public/404.html", :status => :not_found, :layout => false

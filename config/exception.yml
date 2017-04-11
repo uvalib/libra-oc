@@ -1,0 +1,11 @@
+default: &default
+  exception_email_prefix: <%= ENV['EXCEPTION_EMAIL_PREFIX'] %>
+  exception_recipients: <%= ENV['EXCEPTION_RECIPIENTS'] %>
+  exception_sender_address: <%= ENV['EXCEPTION_SENDER_ADDRESS'] %>
+development:
+  <<: *default
+test:
+  <<: *default
+production:
+  <<: *default
+
