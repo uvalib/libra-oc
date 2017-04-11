@@ -45,4 +45,8 @@ Toggles.config do |config|
   ## do we expose the concept of lease visibility for works
   ## the default is true
   config[:expose_lease_visibility] = false
+
+  ## do we run the derivatives job?
+  ## default is true
+  config[:enable_derivatives] = false
 end
