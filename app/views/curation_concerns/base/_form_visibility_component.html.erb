@@ -14,7 +14,10 @@
               <%= t('curation_concerns.visibility.open.label_html') %>
             </span>
             <div class='togglePanel'>
-              <%= link_to "Libra Public Deposit License", Rails.application.routes.url_helpers.uva_public_license_path %>
+              <%= link_to "Libra Public Deposit License",
+                Rails.application.routes.url_helpers.uva_public_license_path,
+                target: '_blank'
+              %>
             </div>
           </label>
         </li>
@@ -27,7 +30,10 @@
                     institution: t('curation_concerns.institution.name')) %>
             </span>
             <div class="togglePanel">
-              <%= link_to "Libra UVA-only Deposit License", Rails.application.routes.url_helpers.uva_only_license_path %>
+              <%= link_to "Libra UVA-only Deposit License",
+                Rails.application.routes.url_helpers.uva_only_license_path,
+                target: '_blank'
+              %>
             </div>
           </label>
         </li>
