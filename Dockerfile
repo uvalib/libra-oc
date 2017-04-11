@@ -31,7 +31,7 @@ ADD . $APP_HOME
 RUN rake assets:precompile
 
 # Update permissions
-RUN chown -R webservice $APP_HOME && chgrp -R webservice $APP_HOME
+RUN chown -R webservice $APP_HOME /home/webservice && chgrp -R webservice $APP_HOME /home/webservice
 
 # Specify the user
 USER webservice
