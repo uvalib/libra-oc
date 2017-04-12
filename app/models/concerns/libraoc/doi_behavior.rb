@@ -8,6 +8,11 @@ module Libraoc::DoiBehavior
 
     before_save :allocate_doi, :if => :doi_unassigned?
 
+    def doi_url
+      return '' if self.doi.nil?
+      return "https://doi.org/#{self.doi.gsub('doi:', '')}"
+    end
+
     private
 
     def doi_unassigned?

@@ -167,9 +167,7 @@ module PublicViewHelper
   end
 
   def display_doi_link(work)
-    if work.doi
-      CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Persistent Link:", work.doi ).render
-    end
+    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Persistent Link:", work.doi_url ).render
   end
 
   def display_notes(notes)
