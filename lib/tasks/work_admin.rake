@@ -173,7 +173,7 @@ namespace :work do
       w.contributors << TaskHelpers.make_contributor( 'naw4t' )
 
       w.date_uploaded = CurationConcerns::TimeService.time_in_utc.to_s
-      w.date_created = CurationConcerns::TimeService.time_in_utc.to_s
+      #w.date_created = CurationConcerns::TimeService.time_in_utc.to_s
       #w.published_date = CurationConcerns::TimeService.time_in_utc.to_s
 
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC

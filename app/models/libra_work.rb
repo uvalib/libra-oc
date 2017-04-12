@@ -5,6 +5,9 @@ class LibraWork < ActiveFedora::Base
   include Libraoc::BasicMetadata
   include Sufia::WorkBehavior
 
+  # first time create behavior
+  include Libraoc::CreateBehavior
+
   # support to manage email state
   include Libraoc::EmailBehavior
 
