@@ -8,6 +8,9 @@ class LibraWork < ActiveFedora::Base
   # support to manage email state
   include Libraoc::EmailAttributes
 
+  # support for allocation of DOI
+  include Libraoc::DoiBehavior
+
   self.human_readable_type = 'Work'
 
     # specify the indexer used to create the SOLR document
@@ -100,7 +103,7 @@ class LibraWork < ActiveFedora::Base
   end
 
   #
-  # is this work visible within the institution?
+  # is this work private to the depositor?
   #
   def is_private?
     return true if visibility.nil?

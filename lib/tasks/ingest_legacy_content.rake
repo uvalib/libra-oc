@@ -52,6 +52,9 @@ namespace :libraoc do
       next
     end
 
+    # disable the allocate DOI callback for the ingest
+    LibraWork.skip_callback( :save, :before, :allocate_doi )
+
     success_count = 0
     error_count = 0
     total = ingests.size
@@ -59,6 +62,7 @@ namespace :libraoc do
       next if ix < start_ix
       ok = ingest_legacy_content( user, File.join( ingest_dir, dirname ), ix + 1, total )
       ok == true ? success_count += 1 : error_count += 1
+      break if ENV[ 'MAX_COUNT' ] && ENV[ 'MAX_COUNT' ].to_i == ( success_count + error_count )
     end
     puts "#{success_count} item(s) processed successfully, #{error_count} error(s) encountered"
 

@@ -6,11 +6,6 @@
 require_dependency 'tasks/task_helpers'
 include TaskHelpers
 
-#require_dependency 'libra2/app/helpers/service_helper'
-#include ServiceHelper
-
-require_dependency 'libraoc/serviceclient/entity_id_client'
-
 namespace :libraoc do
 
 namespace :work do
@@ -189,24 +184,13 @@ namespace :work do
       w.abstract = description
 
       w.publisher = LibraWork::DEFAULT_INSTITUTION
-      #w.department = 'Placeholder department'
-      #w.dddegree = 'Placeholder degree'
       w.notes = 'Placeholder notes'
       w.admin_notes << 'Placeholder admin notes'
-      w.language = 'English'
+      w.language = [ 'English' ]
 
       w.rights << 'http://creativecommons.org/licenses/by/3.0/us/'
       #w.license = LibraWork::DEFAULT_LICENSE
 
-      print 'getting DOI...'
-      status, id = ServiceClient::EntityIdClient.instance.newid( w )
-      if ServiceClient::EntityIdClient.instance.ok?( status )
-         w.doi = id
-      #   w.permanent_url = LibraWork.doi_url( id )
-         puts 'done'
-      else
-         puts 'error'
-      end
     end
 
     return work

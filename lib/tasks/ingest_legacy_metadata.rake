@@ -72,6 +72,9 @@ namespace :libraoc do
       next
     end
 
+    # disable the allocate DOI callback for the ingest
+    LibraWork.skip_callback( :save, :before, :allocate_doi )
+
     success_count = 0
     error_count = 0
     total = ingests.size
