@@ -8,34 +8,33 @@
       <ul class="visibility">
         <li class="radio">
           <label>
-            <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC, data: { 'target': '#collapsePublic' }  %>
+            <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+              class: 'toggle'  %>
             <span class="label label-success">
               <%= t('curation_concerns.visibility.open.label_html') %>
             </span>
-            <div class="collapse" id="collapsePublic">
-              <p>
-                <strong>Please note</strong>, making something visible to the world (i.e.
-                marking this as <%= t('curation_concerns.visibility.open.label_html') %>) may be
-                viewed as publishing which could impact your ability to:
-              </p>
-              <ul>
-                <li>Patent your work</li>
-                <li>Publish your work in a journal</li>
-              </ul>
-              <p>
-                Check out <a href="http://www.sherpa.ac.uk/romeo/">SHERPA/RoMEO</a> for more
-                information about publisher copyright policies.
-              </p>
+            <div class='togglePanel'>
+              <%= link_to "Libra Public Deposit License",
+                Rails.application.routes.url_helpers.uva_public_license_path,
+                target: '_blank'
+              %>
             </div>
           </label>
         </li>
         <li class="radio">
           <label>
-            <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED %>
+            <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED,
+              class: 'toggle' %>
             <span class="label label-warning">
               <%= t('curation_concerns.visibility.authenticated.label_html',
                     institution: t('curation_concerns.institution.name')) %>
             </span>
+            <div class="togglePanel">
+              <%= link_to "Libra UVA-only Deposit License",
+                Rails.application.routes.url_helpers.uva_only_license_path,
+                target: '_blank'
+              %>
+            </div>
           </label>
         </li>
 
@@ -73,7 +72,8 @@
 
         <li class="radio">
           <label>
-            <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE %>
+            <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE,
+          class: 'toggle' %>
             <span class="label label-danger">
               <%= t('curation_concerns.visibility.private.label_html') %>
             </span>

@@ -25,6 +25,7 @@
 //= require computing_id_lookup
 //= require openseadragon
 //= require orcid_widget
+//= require save_work_panel
 
 // require sufia last
 //= require sufia
