@@ -20,7 +20,7 @@ module Libraoc::EmailBehavior
       self.email_status = EMAIL_STATUS_SENT_NONE if self.email_status.nil?
 
       # time for an email?
-      if is_private? == false && depositor_email_pending? == true
+      if depositor_email_pending?
         WorkMailer.public_work_submitted( self, self.depositor, MAIL_SENDER ).deliver_later
         set_depositor_email_status( true )
         self.save!
@@ -32,7 +32,17 @@ module Libraoc::EmailBehavior
     # have we sent the depositor a success email yet?
     #
     def depositor_email_pending?
+
+      # no emails for private content
+      return false if is_private?
+
+      # no emails for migrated content
+      return false if is_legacy_content?
+
+      # no duplicate emails...
       return false if ( self.email_status & EMAIL_STATUS_SENT_DEPOSITOR ) == EMAIL_STATUS_SENT_DEPOSITOR
+
+      # send an email
       return true
     end
 
