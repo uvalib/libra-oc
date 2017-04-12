@@ -1,4 +1,4 @@
-module Libraoc::EmailAttributes
+module Libraoc::EmailBehavior
 
   extend ActiveSupport::Concern
 

@@ -6,7 +6,7 @@ class LibraWork < ActiveFedora::Base
   include Sufia::WorkBehavior
 
   # support to manage email state
-  include Libraoc::EmailAttributes
+  include Libraoc::EmailBehavior
 
   # support for allocation of DOI
   include Libraoc::DoiBehavior
