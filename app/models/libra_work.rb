@@ -11,6 +11,9 @@ class LibraWork < ActiveFedora::Base
   # support for allocation of DOI
   include Libraoc::DoiBehavior
 
+  # support for assignment of published date
+  include Libraoc::PublishBehavior
+
   self.human_readable_type = 'Work'
 
     # specify the indexer used to create the SOLR document
