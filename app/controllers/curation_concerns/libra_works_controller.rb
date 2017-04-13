@@ -5,6 +5,7 @@ module CurationConcerns
   class LibraWorksController < ApplicationController
     include CurationConcerns::CurationConcernController
     include Sufia::WorksControllerBehavior
+    include SufiaWorksOverrides
 
     self.curation_concern_type = LibraWork
     self.show_presenter = LibraWorkPresenter
