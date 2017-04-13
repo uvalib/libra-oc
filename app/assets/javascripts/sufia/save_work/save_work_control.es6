@@ -88,6 +88,7 @@ export default class SaveWorkControl {
       this.depositAgreement = new DepositAgreement(this.form, () => this.formStateChanged())
       this.requiredMetadata = new ChecklistItem(this.element.find('#required-metadata'))
       this.requiredFiles = new ChecklistItem(this.element.find('#required-files'))
+      this.hasExistingFiles = (this.form.find('#libra_work_has_existing_files').val() == 'true')
       new VisibilityComponent(this.element.find('.visibility'), this.adminSetWidget)
       this.preventSubmit()
       this.watchMultivaluedFields()
@@ -137,9 +138,9 @@ export default class SaveWorkControl {
 
   // sets the files indicator to complete/incomplete
   validateFiles() {
-    if (this.uploads.hasFiles) {
+    if (this.uploads.hasFiles || this.hasExistingFiles ) {
       this.requiredFiles.check()
-        return true
+      return true
     }
     this.requiredFiles.uncheck()
       return false
@@ -150,7 +151,7 @@ export default class SaveWorkControl {
     if (filesValid && this.uploads.hasNewFiles && this.depositAgreement.mustAgreeAgain && !optionalAgreement) {
       // Force the user to agree again
       this.depositAgreement.setNotAccepted()
-        return false
+      return false
     }
     return this.depositAgreement.isAccepted
   }

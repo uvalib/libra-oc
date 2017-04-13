@@ -2,3 +2,6 @@
   <%= render 'form_representative', f: f %>
   <%= render 'form_thumbnail', f: f %>
 <% end %>
+
+<%= f.hidden_field :has_existing_files, value: f.object.member_ids.present? %>
+

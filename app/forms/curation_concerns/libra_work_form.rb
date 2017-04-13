@@ -13,6 +13,7 @@ module CurationConcerns
     self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
     delegate :authors, to: :model
     delegate :contributors, to: :model
+    attr_reader :has_existing_files
 
     def initialize(model, current_ability)
       super
