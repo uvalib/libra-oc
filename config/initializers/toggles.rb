@@ -49,7 +49,7 @@ Toggles.config do |config|
   ## do we run the derivatives job?
   ## default is true
   config[:enable_derivatives] = false
-    
+
   ## do we show representative media and thumbnail selectors on the form?
   ## default is true
   config[:expose_thumbnail_form_select] = false

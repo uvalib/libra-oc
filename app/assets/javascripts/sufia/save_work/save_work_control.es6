@@ -137,7 +137,7 @@ export default class SaveWorkControl {
 
   // sets the files indicator to complete/incomplete
   validateFiles() {
-    if (!this.isNew || this.uploads.hasFiles) {
+    if (this.uploads.hasFiles) {
       this.requiredFiles.check()
         return true
     }
