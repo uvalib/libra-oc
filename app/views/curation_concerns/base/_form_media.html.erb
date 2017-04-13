@@ -1,0 +1,4 @@
+<% if Toggles.expose_thumbnail_form_select && f.object.persisted? && f.object.member_ids.present? %>
+  <%= render 'form_representative', f: f %>
+  <%= render 'form_thumbnail', f: f %>
+<% end %>
