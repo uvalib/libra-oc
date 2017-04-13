@@ -21,8 +21,8 @@ module LibraOc
 
     config.eager_load_paths << "#{Rails.root}/lib"
 
-    #config.active_job.queue_adapter = :sidekiq
-    config.active_job.queue_adapter = :inline
+    #config.active_job.queue_adapter = :inline
+    config.active_job.queue_adapter = :sidekiq
 
     # specify the name of the IP whitelist file
     config.ip_whitelist = "#{Rails.root}/data/ipwhitelist.txt"
