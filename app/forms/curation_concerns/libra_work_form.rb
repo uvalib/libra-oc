@@ -14,6 +14,11 @@ module CurationConcerns
     delegate :authors, to: :model
     delegate :contributors, to: :model
 
+    def initialize(model, current_ability)
+      super
+      @agreement_accepted = !model.new_record? && !(model.visibility == 'restricted' && model.doi.nil?)
+    end
+
     def self.multiple?(field)
 
       if [:title, :publisher, :abstract, :source_citation].include? field.to_sym

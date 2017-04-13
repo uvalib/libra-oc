@@ -9,11 +9,11 @@
         <li class="radio">
           <label>
             <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
-              class: 'toggle'  %>
+              data: {target: '#collapsePublic'}  %>
             <span class="label label-success">
               <%= t('curation_concerns.visibility.open.label_html') %>
             </span>
-            <div class='togglePanel'>
+            <div class="collapse" id='collapsePublic'>
               <%= link_to "Libra Public Deposit License",
                 Rails.application.routes.url_helpers.uva_public_license_path,
                 target: '_blank'
@@ -24,12 +24,12 @@
         <li class="radio">
           <label>
             <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED,
-              class: 'toggle' %>
+              data: {target: '#collapseAuthenticated'} %>
             <span class="label label-warning">
               <%= t('curation_concerns.visibility.authenticated.label_html',
                     institution: t('curation_concerns.institution.name')) %>
             </span>
-            <div class="togglePanel">
+            <div class="collapse" id="collapseAuthenticated">
               <%= link_to "Libra UVA-only Deposit License",
                 Rails.application.routes.url_helpers.uva_only_license_path,
                 target: '_blank'

@@ -1,10 +1,7 @@
 onLoad = ()->
 
-  $('.toggle').on('click', ()->
-    shownPanel = $(this).siblings('.togglePanel').slideDown(200)
-    $('.togglePanel').not(shownPanel).slideUp(200)
+  $("input[name='libra_work[visibility]']").on('change', ()->
+    $('input[name="agreement"]').change()
   )
-
-  $('.togglePanel').hide()
 
 $(window).bind('turbolinks:load', onLoad)
