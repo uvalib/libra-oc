@@ -19,7 +19,6 @@ module Toggles
       expose_batch_ingest: true,
       expose_embargo_visibility: true,
       expose_lease_visibility: true,
-      enable_derivatives: true,
       expose_thumbnail_form_select: true
     }
   end
