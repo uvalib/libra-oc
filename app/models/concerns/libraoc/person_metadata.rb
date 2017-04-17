@@ -1,13 +1,18 @@
 module Libraoc::PersonMetadata
   extend ActiveSupport::Concern
 
+  class_methods do
+    def sort unsorted_array
+      unsorted_array.sort {|a,b| a.index <=> b.index}
+    end
+  end
 
   included do
 
     type ::RDF::Vocab::FOAF.Person
 
-    property :order, predicate: ::RDF::URI.new('http://libra.virginia.edu/order'), multiple: false do |index|
-      index.as :symbol
+    property :index, predicate: ::RDF::URI.new('http://libra.virginia.edu/index'), multiple: false do |index|
+      index.as :sortable
     end
 
     property :first_name, predicate: ::RDF::Vocab::SCHEMA.givenName, multiple: false do |index|

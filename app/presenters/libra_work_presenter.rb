@@ -2,9 +2,7 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
   include ActionView::Helpers::TagHelper
 
   # add our custom fields to the presenter
-  delegate :authors,
-           :contributors,
-           :notes,
+  delegate :notes,
            :admin_notes,
            :sponsoring_agency,
            :license,
@@ -17,6 +15,13 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
 
 
      to: :solr_document
+
+  def authors
+    self.solr_document.authors.uniq
+  end
+  def contributors
+    self.solr_document.contributors.uniq
+  end
 
   def libra_permission_badge
     content_tag(:span, link_title, title: link_title, class: "label #{dom_label_class}")

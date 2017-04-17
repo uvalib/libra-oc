@@ -9,11 +9,11 @@
             <div id="document">
                <h1><%= raw(@work[:title].join(raw("<br>"))) %></h1>
                <% display_resource_type @work %>
-               <% display_authors( @work.authors ) %>
+               <% display_authors( Author.sort(@work.authors) ) %>
                <%= display_generic("Abstract", @work.abstract) %>
                <%= display_keywords( @work ) %>
                <%= display_rights(@work.rights) %>
-               <% display_contributors( @work.contributors ) %>
+               <% display_contributors( Contributor.sort(@work.contributors )) %>
                <%= display_language( @work.language ) %>
                <%= display_generic("Source Citation", @work.source_citation) %>
                <%= display_generic("Publisher", @work.publisher) %>
