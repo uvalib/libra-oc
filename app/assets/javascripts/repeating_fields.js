@@ -41,6 +41,8 @@ var HydraEditor = (function($) {
       var _this = this;
       this.element.on('click', '.remove', function (e) {
         var parent = $(this).closest("ul.listing"); // Have to get this before the action because the action removes the element.
+        var delete_tag = $(this).parents('li').find('.remove_field').val(1);
+        parent.append(delete_tag);
         _this.removeFromList(e);
         $("body").trigger("managed_field:change", { parent: parent, action: "remove" });
       });
@@ -93,6 +95,7 @@ var HydraEditor = (function($) {
         $(this).attr('for', newLabel);
       });
 
+
       $newField.find('select, input').each( function(){
         oldId = $(this).attr('id');
         newId = oldId.replace(new RegExp(/_[0-9]+_/), "_"+newIndex+"_" );
@@ -104,6 +107,7 @@ var HydraEditor = (function($) {
 
         $(this).val('').removeProp('required');
       });
+      $newField.find('input.order').val(newIndex)
 
 
       $newChildren.first().focus();
