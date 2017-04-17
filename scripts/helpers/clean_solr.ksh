@@ -10,11 +10,9 @@ case "$response" in
   * ) exit 1
 esac
 
-for i in libra2; do
+NAMESPACE=libra2
 
-   url="$SOLR_URL/$i/update?stream.body=<delete><query>*:*</query></delete>&commit=true"
-   curl "$url"
-
-done
+url="$SOLR_URL/$NAMESPACE/update?stream.body=<delete><query>*:*</query></delete>&commit=true"
+curl "$url"
 
 exit 0
