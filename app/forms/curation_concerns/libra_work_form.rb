@@ -76,7 +76,7 @@ module CurationConcerns
     end
 
     def self.permitted_people_params
-      [ :id, :_destroy, :first_name, :last_name, :computing_id, :institution, :department ]
+      [ :id, :_destroy, :first_name, :last_name, :computing_id, :institution, :department, :order ]
     end
 
   end

@@ -5,8 +5,9 @@
       <%= f.simple_fields_for name do |af| %>
         <li class="field-wrapper input-group input-append">
             <div class="person-group person-input"
-                 data-index="<%= af.options[:child_index] %>"
-                 data-persontype="<%= name %>" >
+                 data-persontype="<%= name %>"
+                 >
+              <%= af.hidden_field :order, value: af.options[:child_index], class: 'order' %>
               <div class="row form-group">
                 <div class="col-sm-6">
                   <%= af.input :computing_id, label: "Computing ID", input_html: {class: 'form-control id-lookup'}, required: false  %>

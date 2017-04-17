@@ -3,4 +3,6 @@ class Contributor < ActiveFedora::Base
 
   has_many :libra_works, inverse_of: :contributors, class_name: 'LibraWork'
 
+  default_scope {order("order_ssi ASC")}
+
 end

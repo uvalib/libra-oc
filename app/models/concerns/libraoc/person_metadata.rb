@@ -1,9 +1,14 @@
 module Libraoc::PersonMetadata
   extend ActiveSupport::Concern
 
+
   included do
 
     type ::RDF::Vocab::FOAF.Person
+
+    property :order, predicate: ::RDF::URI.new('http://libra.virginia.edu/order'), multiple: false do |index|
+      index.as :symbol
+    end
 
     property :first_name, predicate: ::RDF::Vocab::SCHEMA.givenName, multiple: false do |index|
       index.as :stored_searchable

@@ -107,6 +107,7 @@ var HydraEditor = (function($) {
 
         $(this).val('').removeProp('required');
       });
+      $newField.find('input.order').val(newIndex)
 
 
       $newChildren.first().focus();

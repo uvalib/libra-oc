@@ -106,7 +106,7 @@ class SolrDocument
   def person_display solr_name
     values = self[Solrizer.solr_name(solr_name)]
     return nil unless values.present?
-    values.map do |author|
+    values.sort!{|s1,s2| s1.order <=> s2.order}.map do |author|
       begin
         a = JSON.parse(author)
         email = User.email_from_cid( a['computing_id'] )
