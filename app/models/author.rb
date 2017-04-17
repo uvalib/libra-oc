@@ -3,5 +3,5 @@ class Author < ActiveFedora::Base
 
   has_many :libra_works, inverse_of: :authors, class_name: 'LibraWork'
 
-  default_scope {order("order_ssi ASC")}
+
 end
