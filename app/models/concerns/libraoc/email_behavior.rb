@@ -21,7 +21,7 @@ module Libraoc::EmailBehavior
 
       # time for an email?
       if depositor_email_pending?
-        WorkMailer.public_work_submitted( self, self.depositor, MAIL_SENDER ).deliver_later
+        WorkMailer.work_submitted( self, self.depositor, MAIL_SENDER ).deliver_later
         set_depositor_email_status( true )
         self.save!
       end
