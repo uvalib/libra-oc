@@ -6,7 +6,7 @@ module Libraoc::DoiBehavior
 
   included do
 
-    before_save :allocate_doi, :if => :doi_unassigned?
+    after_save :allocate_doi, :if => :doi_unassigned?
 
     def doi_url
       return '' if self.doi.nil?
@@ -29,15 +29,16 @@ module Libraoc::DoiBehavior
          if ServiceClient::EntityIdClient.instance.ok?( status )
 
            self.doi = id
-           #   self.permanent_url = LibraWork.doi_url( id )
 
            puts "Updating DOI metadata for #{id}..."
 
            # update the service metadata
            status = ServiceClient::EntityIdClient.instance.metadatasync( self )
-           if ServiceClient::EntityIdClient.instance.ok?( status ) == false
+           if ServiceClient::EntityIdClient.instance.ok?( status )
+             # save our new DOI
+             self.save!
+           else
              # clear the DOI and note the error
-             self.doi = ''
              puts "ERROR: DOI metadata update returns #{status}"
            end
          else

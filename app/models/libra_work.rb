@@ -8,14 +8,14 @@ class LibraWork < ActiveFedora::Base
   # first time create behavior
   include Libraoc::CreateBehavior
 
-  # support to manage email state
-  include Libraoc::EmailBehavior
+  # support for assignment of published date
+  include Libraoc::PublishBehavior
 
   # support for allocation of DOI
   include Libraoc::DoiBehavior
 
-  # support for assignment of published date
-  include Libraoc::PublishBehavior
+  # support to manage email state
+  include Libraoc::EmailBehavior
 
   self.human_readable_type = 'Work'
 
