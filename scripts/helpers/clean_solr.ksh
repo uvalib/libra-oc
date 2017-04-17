@@ -3,7 +3,7 @@ if [ -z "$SOLR_URL" ]; then
    exit 1
 fi
 
-read -r -p "$SOLR_URL: ARE YOU SURE? [Y/n]" response
+read -r -p "$SOLR_URL: ARE YOU SURE? [Y/n]? " response
 case "$response" in 
   y|Y ) echo "Cleaning $SOLR_URL ..."
   ;;
