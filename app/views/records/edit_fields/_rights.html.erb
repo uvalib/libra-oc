@@ -1,3 +1,5 @@
+<p>Libra lets you choose an open license when you post your work, and will prominently display the license you choose as part of the record for your work. See  <a href="https://creativecommons.org/share-your-work" target="_blank">Choose a Creative Commons License</a> for option details.</p>
+
 <% license_service = CurationConcerns::LicenseService.new %>
 <%= f.input :rights, as: :select,
   collection: license_service.select_active_options,
