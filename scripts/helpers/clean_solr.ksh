@@ -10,7 +10,7 @@ case "$response" in
   * ) exit 1
 esac
 
-NAMESPACE=libra2
+NAMESPACE=libraoc
 
 url="$SOLR_URL/$NAMESPACE/update?stream.body=<delete><query>*:*</query></delete>&commit=true"
 curl "$url"

@@ -1,8 +1,8 @@
 development:
-  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
+  url: <%= "#{ENV['SOLR_URL']}/libraoc" %>
 
 test:
-  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
+  url: <%= "#{ENV['SOLR_URL']}/libraoc" %>
 
 production:
-  url: <%= "#{ENV['SOLR_URL']}/libra2" %>
+  url: <%= "#{ENV['SOLR_URL']}/libraoc" %>
