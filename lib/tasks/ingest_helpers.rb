@@ -218,7 +218,8 @@ module IngestHelpers
 
       # authors
       payload[:authors].each do |a|
-        w.authors << Author.new( computing_id: a[:computing_id],
+        w.authors << Author.new( index: a[:index],
+                                 computing_id: a[:computing_id],
                                  first_name: a[:first_name],
                                  last_name: a[:last_name],
                                  department: a[:department],
@@ -227,12 +228,13 @@ module IngestHelpers
       end
 
       # advisors
-      payload[:contributors].each do |a|
-        w.contributors << Contributor.new( computing_id: a[:computing_id],
-                                           first_name: a[:first_name],
-                                           last_name: a[:last_name],
-                                           department: a[:department],
-                                           institution: a[:institution] )
+      payload[:contributors].each do |c|
+        w.contributors << Contributor.new( index: c[:index],
+                                           computing_id: c[:computing_id],
+                                           first_name: c[:first_name],
+                                           last_name: c[:last_name],
+                                           department: c[:department],
+                                           institution: c[:institution] )
 
       end
 
@@ -433,14 +435,16 @@ module IngestHelpers
   #
   # make a person struct from person attributes
   #
-  def make_person( computing_id, first_name, last_name, department, institution )
-    return { :computing_id => computing_id,
+  def make_person( index, computing_id, first_name, last_name, department, institution )
+    return { :index        => index,
+             :computing_id => computing_id,
              :first_name   => first_name,
              :last_name    => last_name,
              :department   => department,
              :institution  => institution
            }
   end
+
   #
   # extract a date from a fully specified date/time
   #

@@ -17,10 +17,10 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
      to: :solr_document
 
   def authors
-    self.solr_document.authors.uniq
+    return people_sort( self.solr_document.authors )
   end
   def contributors
-    self.solr_document.contributors.uniq
+    return people_sort( self.solr_document.contributors )
   end
 
   def libra_permission_badge
@@ -73,4 +73,21 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
     @solr_document.embargo_release_date.present?
   end
 
+  def people_sort( people )
+
+    return people if people.nil?
+    return people if people.empty?
+
+    # convert to JSON
+    sorted_people = []
+    people.each do |p|
+       sorted_people << JSON.parse( p )
+    end
+
+    # sort them
+    sorted_people.sort! {|a,b| a['index'] <=> b['index']}
+
+    # reconstruct the map correctly
+    return sorted_people.map {|p| JSON.generate( p )}
+  end
 end

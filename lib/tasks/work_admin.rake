@@ -131,8 +131,8 @@ namespace :work do
 
     work = create_libra_work( user, title, description )
 
-    filename = TaskHelpers.get_random_image( )
-    TaskHelpers.upload_file( user, work, filename, File.basename( filename ) )
+    #filename = TaskHelpers.get_random_image( )
+    #TaskHelpers.upload_file( user, work, filename, File.basename( filename ) )
 
     TaskHelpers.show_libra_work work
 
@@ -166,11 +166,13 @@ namespace :work do
       w.creator = [ user.email ]
 
       w.authors = []
-      w.authors << TaskHelpers.make_author( User.cid_from_email( user.email ) )
+      w.authors << TaskHelpers.make_author( User.cid_from_email( user.email ), 0 )
+      w.authors << TaskHelpers.make_author( 'naw4t', 1 )
 
       w.contributors = []
-      w.contributors << TaskHelpers.make_contributor( 'ecr2c' )
-      w.contributors << TaskHelpers.make_contributor( 'naw4t' )
+      w.contributors << TaskHelpers.make_contributor( 'ecr2c', 0 )
+      w.contributors << TaskHelpers.make_contributor( 'sah', 1 )
+      w.contributors << TaskHelpers.make_contributor( 'rwl', 2 )
 
       w.date_uploaded = CurationConcerns::TimeService.time_in_utc.to_s
       #w.date_created = CurationConcerns::TimeService.time_in_utc.to_s

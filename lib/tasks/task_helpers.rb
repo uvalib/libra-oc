@@ -121,11 +121,11 @@ module TaskHelpers
       end
     end
 
-    work.authors.each_with_index do |p, ix|
+    Author.sort( work.authors ).each_with_index do |p, ix|
        show_person( " author #{ix + 1}:", p )
     end
 
-    work.contributors.each_with_index do |p, ix|
+    Contributor.sort( work.contributors ).each_with_index do |p, ix|
       show_person( " contributor #{ix + 1}:", p )
     end
 
@@ -153,7 +153,9 @@ module TaskHelpers
   #
   def show_person( title, person )
 
-    puts "#{title} #{person}"
+    #puts "#{title} #{person}"
+    puts "#{title}"
+    show_field( 'ix', person.index, '   ' )
     show_field( 'cid', person.computing_id, '   ' )
     show_field( 'first_name', person.first_name, '   ' )
     show_field( 'last_name', person.last_name, '   ' )
@@ -244,12 +246,13 @@ module TaskHelpers
     return nil
   end
 
-  def make_author( cid )
+  def make_author( cid, ix )
 
     info = user_info_by_cid( cid )
     return nil if info.nil?
 
-    person = Author.new( first_name: info.first_name,
+    person = Author.new( index: ix,
+                         first_name: info.first_name,
                          last_name: info.last_name,
                          computing_id: cid,
                          department: info.department,
@@ -257,12 +260,13 @@ module TaskHelpers
     return( person )
   end
 
-  def make_contributor( cid )
+  def make_contributor( cid, ix )
 
     info = user_info_by_cid( cid )
     return nil if info.nil?
 
-    person = Contributor.new( first_name: info.first_name,
+    person = Contributor.new( index: ix,
+                              first_name: info.first_name,
                               last_name: info.last_name,
                               computing_id: cid,
                               department: info.department,

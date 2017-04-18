@@ -73,7 +73,7 @@ namespace :libraoc do
     end
 
     # disable the allocate DOI callback for the ingest
-    LibraWork.skip_callback( :save, :before, :allocate_doi )
+    LibraWork.skip_callback( :save, :after, :allocate_doi )
 
     success_count = 0
     error_count = 0
@@ -548,7 +548,7 @@ namespace :libraoc do
       dept = solr_doc.at_path( "mods_0_name_#{author_number}_description_t[0]" )
       ins = solr_doc.at_path( "mods_0_name_#{author_number}_institution_t[0]" )
 
-      return add_person( authors, cid, fn, ln, dept, ins )
+      return add_person( authors, author_number, cid, fn, ln, dept, ins )
     end
 
     # could not find the next author, we are done
@@ -563,7 +563,7 @@ namespace :libraoc do
      fn = solr_doc.at_path( "book_0_editor_#{editor_number}_first_name_t[0]" )
      ln = solr_doc.at_path( "book_0_editor_#{editor_number}_last_name_t[0]" )
 
-     return add_person( editors, '', fn, ln, '', '' ) if fn.present? && ln.present?
+     return add_person( editors, editor_number, '', fn, ln, '', '' ) if fn.present? && ln.present?
 
      # could not find the next editor, we are done
      return false, editors
@@ -582,7 +582,7 @@ namespace :libraoc do
     ln = solr_doc.at_path( "mods_0_book_0_editor_#{contributor_number}_last_name_t[0]" )
 
     if fn.blank? == false && ln.blank? == false
-      return add_person( contributors, '', fn, ln, '', '' )
+      return add_person( contributors, contributor_number, '', fn, ln, '', '' )
     end
 
     # could not find the next contributor, we are done
@@ -592,7 +592,7 @@ namespace :libraoc do
   #
   # adds another person to the person list if we have one
   #
-  def add_person( persons, cid, fn, ln, dept, ins )
+  def add_person( persons, index, cid, fn, ln, dept, ins )
 
     computing_id = IngestHelpers.field_supplied( cid ) ? cid : ''
     first_name = IngestHelpers.field_supplied( fn ) ? fn : ''
@@ -605,7 +605,8 @@ namespace :libraoc do
        last_name.blank? == false ||
        department.blank? == false ||
        institution.blank? == false
-       person = TaskHelpers.make_person( computing_id,
+       person = TaskHelpers.make_person( index,
+                                         computing_id,
                                          first_name,
                                          last_name,
                                          department,
