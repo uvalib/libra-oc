@@ -147,7 +147,7 @@ namespace :attach do
 
 end   # namespace attach
 
-end   # namespace libra2
+end   # namespace libraoc
 
 #
 # end of file
