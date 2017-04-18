@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 
   concern :exportable, Blacklight::Routes::Exportable.new
 
+  # health check and version endpoints
+  resources :healthcheck, only: [ :index ]
+  resources :version, only: [ :index ]
+
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
     concerns :exportable
   end
