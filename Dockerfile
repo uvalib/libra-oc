@@ -12,6 +12,13 @@ RUN rm -fr /tmp/ruby-2.4.1
 # install application dependancies
 RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel && yum -y install nodejs
 
+# install libreoffice
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/5.3.2/rpm/x86_64/LibreOffice_5.3.2_Linux_x86-64_rpm.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_5.3.2_Linux_x86-64_rpm.tar.gz
+RUN cd /tmp/LibreOffice_5.3.2.2_Linux_x86-64_rpm/RPMS/ && yum -y localinstall *.rpm
+RUN ln -s /opt/libreoffice5.3/program/soffice /usr/local/bin/soffice
+
+
 # Create the run user and group
 RUN groupadd -r webservice && useradd -r -g webservice webservice && mkdir /home/webservice
 

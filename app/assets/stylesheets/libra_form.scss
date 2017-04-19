@@ -15,4 +15,21 @@
     content: "\e107";
     color: orange;
   }
+
+  .visibility {
+    .radio {
+      padding-bottom: 5px;
+      border-bottom: 1px solid #ddd;
+    }
+    .radio.disabled {
+      .label {
+        opacity: 0.65;
+        filter: alpha(opacity=65);
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+  }
+
+
 }

@@ -38,11 +38,12 @@ class LibraWork < ActiveFedora::Base
 
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
-  accepts_nested_attributes_for :authors, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :authors, reject_if: all_blank_except(:index), allow_destroy: true
 
   has_and_belongs_to_many :contributors, predicate: ::RDF::Vocab::DC.contributor,
     class_name: 'Contributor', inverse_of: :libra_works
-  accepts_nested_attributes_for :contributors, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :contributors, reject_if: all_blank_except(:index), allow_destroy: true
+
 
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
