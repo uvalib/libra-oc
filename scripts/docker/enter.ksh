@@ -6,7 +6,7 @@ fi
 # set the definitions
 INSTANCE=libra-oc
 
-CID=$(docker ps -f name=$INSTANCE|grep "$INSTANCE:current"|tail -1|awk '{print $1}')
+CID=$(docker ps -f name=$INSTANCE$|tail -1|awk '{print $1}')
 if [ -n "$CID" ]; then
    docker exec -it $CID /bin/bash -l
 else
