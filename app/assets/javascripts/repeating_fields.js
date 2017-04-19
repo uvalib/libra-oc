@@ -44,7 +44,13 @@ var HydraEditor = (function($) {
         var delete_tag = $(this).parents('li').find('.remove_field').val(1);
         parent.append(delete_tag);
         _this.removeFromList(e);
+
         $("body").trigger("managed_field:change", { parent: parent, action: "remove" });
+
+        var last_field_controls = parent.find('.field-controls:last')
+        if (last_field_controls.find('.add').length == 0) {
+          last_field_controls.append(_this.adder);
+        }
       });
       this.element.on('click', '.add', function (e) {
         var parent = $(this).closest("ul.listing"); // Have to get this before the action because the action removes the element.
@@ -119,6 +125,7 @@ var HydraEditor = (function($) {
       var $removeControl = this.remover.clone();
       $activeFieldControls = $activeField.children('.field-controls');
       $('.add', $activeFieldControls).remove();
+      $('.remove', $activeFieldControls).remove();
       $activeFieldControls.prepend($removeControl);
     },
 
