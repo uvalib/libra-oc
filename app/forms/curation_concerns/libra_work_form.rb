@@ -61,6 +61,10 @@ module CurationConcerns
       model.contributors_attributes= attributes
     end
 
+    def private_visibility_disabled?
+      ( model.id.present? && !model.private_access? )
+    end
+
     protected
 
     def self.build_permitted_params

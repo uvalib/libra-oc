@@ -70,13 +70,17 @@
         </li>
         <% end %>
 
-        <li class="radio">
+        <li class="radio <%= f.object.private_visibility_disabled? ? 'disabled' : '' %>">
           <label>
             <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE,
-          class: 'toggle' %>
+              disabled: f.object.private_visibility_disabled?,
+              class: 'toggle' %>
             <span class="label label-danger">
               <%= t('curation_concerns.visibility.private.label_html') %>
             </span>
+              <% if f.object.private_visibility_disabled? %>
+                <p class="text-muted"> Contact libra@virginia.edu for this visibility change.</p>
+              <%end%>
           </label>
         </li>
       </ul>
