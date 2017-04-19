@@ -78,7 +78,7 @@ var HydraEditor = (function($) {
     },
 
     inputIsEmpty: function($activeField) {
-      return $activeField.children('input.multi-text-field').val() === '';
+      return $activeField.find('input[type!="hidden"],select,input.required').val() === '';
     },
 
     _newField: function ($activeField) {
@@ -136,13 +136,14 @@ var HydraEditor = (function($) {
 
     displayEmptyWarning: function () {
       $listing = $(this.listClass, this.element)
-      var $warningMessage  = $("<div class=\'message has-warning\'>cannot add new empty field</div>");
+      var $warningMessage  = $("<div class=\'message has-warning\'>Cannot add new empty field</div>");
       $listing.children(this.warningClass).remove();
       $listing.append($warningMessage);
     },
 
     removeFromList: function( event ) {
       event.preventDefault();
+      this.clearEmptyWarning();
 
       var field = $(event.target).parents(this.fieldWrapperClass)
       field.remove();
