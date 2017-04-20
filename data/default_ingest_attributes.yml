@@ -21,8 +21,3 @@ embargo_type: open
 # forever (130 years)
 #
 embargo_period: forever
-
-#
-# what type of resource is this
-#
-resource_type: Book
