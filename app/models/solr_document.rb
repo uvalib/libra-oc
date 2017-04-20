@@ -32,7 +32,17 @@ class SolrDocument
   #
 
   def authors
-    self[Solrizer.solr_name('authors')]
+    # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
+    values = self[Solrizer.solr_name('authors')]
+    values = values.uniq if values
+    return values
+  end
+
+  def contributors
+    # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
+    values = self[Solrizer.solr_name('contributors')]
+    values = values.uniq if values
+    return values
   end
 
   def authors_display
@@ -43,18 +53,9 @@ class SolrDocument
     person_display 'contributors'
   end
 
-  def contributors
-    self[Solrizer.solr_name('contributors')]
-  end
-
   def sponsoring_agency
     self[Solrizer.solr_name('sponsoring_agency')]
   end
-
-  def sponsoring_agency
-    self[Solrizer.solr_name('sponsoring_agency')]
-  end
-
 
   def notes
     self[Solrizer.solr_name('notes')]
@@ -103,9 +104,12 @@ class SolrDocument
   private
 
   def person_display solr_name
+    # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
     values = self[Solrizer.solr_name(solr_name)]
     return nil unless values.present?
-    values.sort!{|s1,s2| s1.index <=> s2.index}.map do |author|
+    values = values.uniq
+
+    results = values.sort!{|s1,s2| s1.index <=> s2.index}.map do |author|
       begin
         a = JSON.parse(author)
         email = User.email_from_cid( a['computing_id'] )
@@ -115,5 +119,6 @@ class SolrDocument
         author
       end
     end
+    return results
   end
 end
