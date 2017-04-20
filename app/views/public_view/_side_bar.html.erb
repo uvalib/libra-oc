@@ -1,7 +1,8 @@
 <div id="sidebar" class="col-xs-12 col-sm-3 col-sm-pull-9">
 
   <div id="metrics">
-     <span class="badge">0</span> <%= t("sufia.dashboard.stats.file_views").pluralize(0) %>
+     <% view_count = get_work_view_count( @work ) %>
+     <span class="badge"><%= view_count %></span> <%= t("sufia.dashboard.stats.file_views").pluralize( view_count ) %>
   </div>
 
   <% if can_download_files?( @work ) %>
@@ -9,8 +10,9 @@
     <div id="uploads">
       <% @work.file_sets.each do |file| %>
         <div class="file_asset_record">
+          <% download_count = get_file_download_count( file ) %>
           <p><%= link_to file.title.first, download_path(file), data: { turbolinks: false } %>&nbsp;&nbsp;
-          <span class="badge">0</span> <%= t("sufia.dashboard.stats.file_downloads").pluralize(0) %></p>
+          <span class="badge"><%= download_count %></span> <%= t("sufia.dashboard.stats.file_downloads").pluralize( download_count ) %></p>
           <p><span class="file_label">Uploaded:</span><%= date_formatter(file.date_uploaded) %></p>
         </div>
       <% end %>
