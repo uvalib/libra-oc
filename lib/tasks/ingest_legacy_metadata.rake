@@ -212,6 +212,9 @@ namespace :libraoc do
      # related URL's
      payload[ :related_url ] = extract_related_url( solr_doc, fedora_doc )
 
+     # sponsoring agency
+     payload[:sponsoring_agency] = extract_sponsoring_agency( solr_doc, fedora_doc )
+
      # resource type
      payload[ :resource_type ] = IngestHelpers.determine_resource_type( dirname )
 
@@ -348,6 +351,18 @@ namespace :libraoc do
     # general approach
     related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
     return related_url if related_url.present?
+
+    return nil
+  end
+
+  #
+  # Attempt to extract the sponsoring agency
+  #
+  def extract_sponsoring_agency( solr_doc, fedora_doc )
+
+    # general approach
+    sponsor = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_sponsor_sponsor_name_t')
+    return sponsor if sponsor.present?
 
     return nil
   end
