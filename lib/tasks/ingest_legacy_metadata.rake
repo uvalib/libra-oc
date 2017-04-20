@@ -9,6 +9,9 @@ include IngestHelpers
 require_dependency 'tasks/citation_helpers'
 include CitationHelpers
 
+require_dependency 'app/helpers/public_view_helper'
+include PublicViewHelper
+
 namespace :libraoc do
 
   namespace :ingest do
@@ -212,6 +215,9 @@ namespace :libraoc do
      # related URL's
      payload[ :related_url ] = extract_related_url( solr_doc, fedora_doc )
 
+     # sponsoring agency
+     payload[:sponsoring_agency] = extract_sponsoring_agency( solr_doc, fedora_doc )
+
      # resource type
      payload[ :resource_type ] = IngestHelpers.determine_resource_type( dirname )
 
@@ -305,11 +311,12 @@ namespace :libraoc do
   #
   def extract_abstract( solr_doc, fedora_doc )
 
-    # general approach
-    abstract = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_abstract_t' )
+    # document abstract (use the XML variant as it reflects the formatting better)
+    abstract = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods abstract' )
     return abstract if IngestHelpers.field_supplied( abstract )
 
-    abstract = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods abstract' )
+    # try the MODS record instead
+    abstract = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_abstract_t' )
     return abstract if IngestHelpers.field_supplied( abstract )
 
     return nil
@@ -348,6 +355,18 @@ namespace :libraoc do
     # general approach
     related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
     return related_url if related_url.present?
+
+    return nil
+  end
+
+  #
+  # Attempt to extract the sponsoring agency
+  #
+  def extract_sponsoring_agency( solr_doc, fedora_doc )
+
+    # general approach
+    sponsor = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_sponsor_sponsor_name_t')
+    return sponsor if sponsor.present?
 
     return nil
   end
@@ -652,6 +671,8 @@ namespace :libraoc do
           new_notes += "\n\n" if new_notes.blank? == false
 
           original_create_date = payload[ :create_date ]
+          dt = datetime_from_string( original_create_date )
+          original_create_date = dt.strftime( "%Y-%m-%d %H:%M:%S" ) if dt.nil? == false
           time_now = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d %H:%M:%S" )
           new_notes += "#{v.gsub( 'LIBRA1_CREATE_DATE', original_create_date ).gsub( 'CURRENT_DATE', time_now )}"
           payload[ :notes ] = new_notes

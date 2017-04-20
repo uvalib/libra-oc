@@ -191,6 +191,7 @@ module IngestHelpers
     # contributor(s)
     warnings << 'missing contributor(s)' if payload[ :contributors ].empty?
 
+    # other fields
     warnings << 'missing issued date' if payload[ :issued ].nil?
     warnings << 'missing abstract' if payload[ :abstract ].nil?
     warnings << 'missing keywords' if payload[ :keywords ].nil?
@@ -200,6 +201,9 @@ module IngestHelpers
     warnings << 'missing notes' if payload[ :notes ].nil?
     warnings << 'missing admin notes' if payload[ :admin_notes ].nil?
     warnings << 'missing citation' if payload[ :citation ].nil?
+
+    warnings << 'missing related url' if payload[ :related_url ].nil?
+    warnings << 'missing sponsors' if payload[ :sponsoring_agency ].nil?
 
     return errors, warnings
   end
@@ -264,7 +268,7 @@ module IngestHelpers
       w.resource_type = RESOURCE_TYPE_MAP[ payload[ :resource_type ] ] if payload[ :resource_type ]
 
       w.related_url = [ payload[ :related_url ] ] if payload[ :related_url ]
-
+      w.sponsoring_agency = [ payload[ :sponsoring_agency ] ] if payload[ :sponsoring_agency ]
       w.source_citation = payload[ :citation ] if payload[ :citation ]    end
 
     return ok, work

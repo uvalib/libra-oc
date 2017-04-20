@@ -4,7 +4,7 @@ module PublicViewHelper
 
   def date_formatter( date )
 
-    return "Unknown" if date.nil?
+    return 'Unknown' if date.nil?
 
     # flatten an array
     date = date[ 0 ] if date.kind_of?(Array)
@@ -18,7 +18,7 @@ module PublicViewHelper
 
     # unclear what this is, just return it if it is a string
     return date if date.kind_of?( String )
-    return "Unknown"
+    return 'Unknown'
   end
 
   #
@@ -30,13 +30,17 @@ module PublicViewHelper
 
       begin
 
+        # try yyyy-mm-ddThh:mm:ss...
+        dts = ts.match( /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/ )
+        return DateTime.strptime( dts[ 0 ], "%Y-%m-%dT%H:%M:%S") if dts
+
         # try yyyy-mm-dd...
-        dates = ts.match( /^(\d{4}-\d{2}-\d{2})/ )
-        return DateTime.strptime( dates[ 0 ], "%Y-%m-%d") if dates
+        dts = ts.match( /^(\d{4}-\d{2}-\d{2})/ )
+        return DateTime.strptime( dts[ 0 ], "%Y-%m-%d") if dts
 
         # try yyyy/mm/dd...
-        dates = ts.match( /^(\d{4}\/\d{2}\/\d{2})/ )
-        return DateTime.strptime( dates[ 0 ], "%Y/%m/%d") if dates
+        dts = ts.match( /^(\d{4}\/\d{2}\/\d{2})/ )
+        return DateTime.strptime( dts[ 0 ], "%Y/%m/%d") if dts
 
       rescue
         # not sure what format, return nothing
@@ -49,7 +53,7 @@ module PublicViewHelper
   end
 
   def date_presenter(date)
-    return "Unknown" if date.nil?
+    return 'Unknown' if date.nil?
     return date.strftime("%B %d, %Y") if date.kind_of?(DateTime)
     return date
   end
@@ -80,6 +84,11 @@ module PublicViewHelper
        end
     end
     concat raw('</div>')
+  end
+
+  def display_abstract( name, abstract )
+    return '' if abstract.nil?
+    return display_generic( name, simple_format( abstract ) )
   end
 
   def construct_person_span(person, want_orcid = false )
@@ -179,12 +188,6 @@ module PublicViewHelper
   def display_language( language )
     return '' if language.blank?
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Language:", language ).render )
-  end
-
-  def display_rights(rights)
-    return '' if rights.blank?
-    rights = rights.join(' ') if rights.kind_of?(Array)
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights ).render )
   end
 
   def display_rights(rights)

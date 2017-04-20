@@ -1,4 +1,4 @@
-require_dependency 'libraoc/helpers/statistics_helper'
+#require_dependency 'libraoc/helpers/statistics_helper'
 
 DownloadsController.class_eval do
 

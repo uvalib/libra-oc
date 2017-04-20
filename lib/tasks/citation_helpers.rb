@@ -24,7 +24,7 @@ module CitationHelpers
         citation = render_template( payload, 'conference_paper' )
     end
 
-    puts "==> CITATION [#{citation}]"
+    #puts "==> CITATION [#{citation}]"
     return citation
   end
 

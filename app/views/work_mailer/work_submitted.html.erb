@@ -1,7 +1,7 @@
 <p>Dear <%= @recipient %>,</p>
 <p>Congratulations on successful deposit of your work to Libra, the University of Virginia's scholarly repository.</p>
 <p>The work you have deposited in Libra will be available immediately for <%= @visibility %> access.
-   You have opted to grant to users of your scholarship the following re-use rights: <%= @rights %>.</p>
+   You have opted to grant to users of your scholarship the following re-use rights: <%= "#{@rights_name} #{@rights_link}" %>.</p>
 <p>The permanent location for your scholarship is <a href="<%= @doi_url %>"><%= @doi_url %></a>.</p>
 <p>Always provide this exact link when sharing your work with colleagues, collaborators, and on social media for the most accurate metrics on views and downloads.</p>
 <p>24 hours after deposit, you may check that your scholarship was successfully added to the Library's collection by searching for the work’s title or author name in VIRGO, the UVA online library catalog.</p>
