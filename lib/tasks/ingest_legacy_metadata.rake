@@ -311,11 +311,12 @@ namespace :libraoc do
   #
   def extract_abstract( solr_doc, fedora_doc )
 
-    # general approach
-    abstract = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_abstract_t' )
+    # document abstract (use the XML variant as it reflects the formatting better)
+    abstract = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods abstract' )
     return abstract if IngestHelpers.field_supplied( abstract )
 
-    abstract = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods abstract' )
+    # try the MODS record instead
+    abstract = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_abstract_t' )
     return abstract if IngestHelpers.field_supplied( abstract )
 
     return nil
