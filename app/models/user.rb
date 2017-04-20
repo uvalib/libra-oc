@@ -30,4 +30,8 @@ class User < ApplicationRecord
   def to_s
     email
   end
+
+  def computing_id
+    email[/^.*@/].chop
+  end
 end
