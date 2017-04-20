@@ -30,13 +30,17 @@ module PublicViewHelper
 
       begin
 
+        # try yyyy-mm-ddThh:mm:ss...
+        dts = ts.match( /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/ )
+        return DateTime.strptime( dts[ 0 ], "%Y-%m-%dT%H:%M:%S") if dts
+
         # try yyyy-mm-dd...
-        dates = ts.match( /^(\d{4}-\d{2}-\d{2})/ )
-        return DateTime.strptime( dates[ 0 ], "%Y-%m-%d") if dates
+        dts = ts.match( /^(\d{4}-\d{2}-\d{2})/ )
+        return DateTime.strptime( dts[ 0 ], "%Y-%m-%d") if dts
 
         # try yyyy/mm/dd...
-        dates = ts.match( /^(\d{4}\/\d{2}\/\d{2})/ )
-        return DateTime.strptime( dates[ 0 ], "%Y/%m/%d") if dates
+        dts = ts.match( /^(\d{4}\/\d{2}\/\d{2})/ )
+        return DateTime.strptime( dts[ 0 ], "%Y/%m/%d") if dts
 
       rescue
         # not sure what format, return nothing
