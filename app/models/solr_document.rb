@@ -107,11 +107,10 @@ class SolrDocument
     # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
     values = self[Solrizer.solr_name(solr_name)]
     return nil unless values.present?
-    values = values.uniq
-
-    results = values.sort!{|s1,s2| s1.index <=> s2.index}.map do |author|
+    values = values.map {|v| JSON.parse(v) }
+    values.uniq!
+    results = values.sort!{|s1,s2| s1['index'] <=> s2['index']}.map do |a|
       begin
-        a = JSON.parse(author)
         email = User.email_from_cid( a['computing_id'] )
         email = "(#{email})" if a['email'].present?
         "#{a['first_name']} #{a['last_name']} #{email}"
