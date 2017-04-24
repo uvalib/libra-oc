@@ -10,9 +10,9 @@ module CitationHelpers
   def construct( payload )
 
     # no citation if the work is not one of a known set of resources
-    return nil if ['article', 'article_reprint', 'book', 'book_part', 'conference_paper' ].include?( payload[ :resource_type ] ) == false
+    #return nil if ['article', 'article_reprint', 'book', 'book_part', 'conference_paper' ].include?( payload[ :resource_type ] ) == false
 
-    #citation = ''
+    citation = ''
     case payload[ :resource_type ]
       when 'article', 'article_reprint'
         citation = render_template( payload, 'article' )
@@ -22,6 +22,8 @@ module CitationHelpers
         citation = render_template( payload, 'book_part' )
       when 'conference_paper'
         citation = render_template( payload, 'conference_paper' )
+      else
+        puts "WARNING: unknown work type; no citation will be generated"
     end
 
     #puts "==> CITATION [#{citation}]"

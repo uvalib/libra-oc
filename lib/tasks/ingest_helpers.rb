@@ -275,14 +275,6 @@ module IngestHelpers
   end
 
   #
-  # based on the directory we are ingesting from, take a guess at the resource type
-  #
-  def determine_resource_type( dirname )
-    resource_type = File.basename( File.dirname( dirname ) )
-    return resource_type.blank? ? nil : resource_type
-  end
-
-  #
   # get the list of new items from the work directory
   #
   def get_ingest_list( dirname )
@@ -311,6 +303,29 @@ module IngestHelpers
     json_doc = TaskHelpers.load_json_doc( File.join( dirname, TaskHelpers::DOCUMENT_JSON_FILE ) )
     xml_doc = TaskHelpers.load_xml_doc( File.join( dirname, TaskHelpers::DOCUMENT_XML_FILE ) )
     return json_doc, xml_doc
+  end
+
+  #
+  # load the contents of a file specifying a list of reference works
+  #
+  def load_reference_works( filename )
+    works = []
+    begin
+      File.open( filename, 'r').each do |line|
+
+        # remove CR/LF
+        line.chomp!
+
+        # handle blank and commented lines
+        next if line.blank?
+        next if line[ 0 ] == '#'
+        works << line
+      end
+    rescue Errno::ENOENT
+      # do nothing, no files...
+    end
+
+    return works
   end
 
   #

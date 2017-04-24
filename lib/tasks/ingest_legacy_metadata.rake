@@ -219,7 +219,7 @@ namespace :libraoc do
      payload[:sponsoring_agency] = extract_sponsoring_agency( solr_doc, fedora_doc )
 
      # resource type
-     payload[ :resource_type ] = IngestHelpers.determine_resource_type( dirname )
+     payload[ :resource_type ] = determine_resource_type( solr_doc )
 
      #
      # handle optional fields
@@ -553,6 +553,33 @@ namespace :libraoc do
     end
     return nil
   end
+
+  #
+  # based on the directory we are ingesting from, take a guess at the resource type
+  #
+  def determine_resource_type( solr_doc )
+
+    resource_type = solr_doc.at_path( 'object_type_facet[0]' )
+    rt = nil
+    case resource_type
+      when 'Article'
+        rt = 'article'
+      when 'Article Preprint'
+          rt = 'article_reprint'
+      when 'Book'
+        rt = 'book'
+      when 'Part of Book'
+        rt = 'book_part'
+      when 'Chapter in an Edited Collection'
+        rt = 'book_part'
+      when 'Conference Proceeding', 'Conference Paper'
+        rt = 'conference_paper'
+      else
+         puts "==> Unknown resource type: #{resource_type}"
+    end
+    return rt
+  end
+
 
   #
   # adds another author if we can locate one

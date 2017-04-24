@@ -1,0 +1,65 @@
+#
+# Libra2 Work Type:   Articles
+#
+article/libra-oa:11808
+article/libra-oa:11876
+article/libra-oa:11816
+article/libra-oa:11787
+article/libra-oa:11884
+
+#
+# Libra2 Work Type:   Books
+#
+book/libra-oa:11882
+book/libra-oa:2778
+book/libra-oa:7927
+book/libra-oa:8359
+book/libra-oa:8357
+book/libra-oa:8354
+book/libra-oa:8361
+
+#
+# Libra2 Work Type:  Conference Proceeding
+#
+conference_paper/libra-oa:11888
+conference_paper/libra-oa:11847
+conference_paper/libra-oa:3480
+conference_paper/libra-oa:2926
+conference_paper/libra-oa:2630
+
+#
+# Libra2 Work Type:    Posters
+#
+conference_paper/libra-oa:11849
+conference_paper/libra-oa:8151
+conference_paper/libra-oa:7298
+conference_paper/libra-oa:2815
+conference_paper/libra-oa:469
+
+#
+# Libra2 Work Type:  Presentations
+#
+conference_paper/libra-oa:11676
+conference_paper/libra-oa:526
+
+#
+# Libra2 Work Type:   Reports
+#
+article/libra-oa:10931
+article/libra-oa:10933
+article/libra-oa:1386
+article_reprint/libra-oa:11920
+article_reprint/libra-oa:9620
+
+#
+# Libra2 Work Type:    Part of Book
+#
+book_part/libra-oa:9170
+book_part/libra-oa:6313
+book_part/libra-oa:854
+book_part/libra-oa:852
+book_part/libra-oa:876
+
+#
+# end of file
+#

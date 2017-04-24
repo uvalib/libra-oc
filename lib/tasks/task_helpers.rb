@@ -224,14 +224,19 @@ module TaskHelpers
   # load a file containing json data and return a hash
   #
   def load_json_doc( filename )
-    File.open( filename, 'r') do |file|
-      json_str = file.read( )
-      doc = JSON.parse json_str
-      return doc
+
+    begin
+      File.open( filename, 'r') do |file|
+        json_str = file.read( )
+        doc = JSON.parse json_str
+        return doc
+      end
+
+    rescue => ex
+       puts "ERROR: loading #{filename} (#{ex})"
+       return nil
     end
 
-    puts "ERROR: locding #{filename}"
-    return nil
   end
 
   #
@@ -242,7 +247,7 @@ module TaskHelpers
       return Oga.parse_xml( file )
     end
 
-    puts "ERROR: locding #{filename}"
+    puts "ERROR: loading #{filename}"
     return nil
   end
 

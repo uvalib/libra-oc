@@ -142,6 +142,7 @@ namespace :libraoc do
     puts "Loading file asset references..."
     assets.each do | dirname |
       doc = TaskHelpers.load_json_doc( File.join( asset_dir, dirname, TaskHelpers::DOCUMENT_JSON_FILE ) )
+      next if doc.nil?
 
       if doc[ 'id' ] && doc[ 'is_part_of_s' ] && doc[ 'system_create_dt' ] && doc[ 'title_t' ]
         doc[ 'is_part_of_s' ].each { |d|
@@ -171,6 +172,8 @@ namespace :libraoc do
     puts "processing #{dirname}..."
 
     json = TaskHelpers.load_json_doc( File.join( dirname, TaskHelpers::DOCUMENT_JSON_FILE ) )
+    return false if json.nil?
+
     id = json[ 'id' ]
     fname = File.join( dirname, TaskHelpers::DOCUMENT_FILES_LIST )
     f = File.new( fname, 'w:ASCII-8BIT' )
