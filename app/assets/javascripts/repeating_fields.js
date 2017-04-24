@@ -102,10 +102,12 @@ var HydraEditor = (function($) {
       });
 
 
-      $newField.find('select, input').each( function(){
+      $newField.find('input, select').each( function(){
         oldId = $(this).attr('id');
-        newId = oldId.replace(new RegExp(/_[0-9]+_/), "_"+newIndex+"_" );
-        $(this).attr('id', newId);
+        if (oldId != null) {
+          newId = oldId.replace(new RegExp(/_[0-9]+_/), "_"+newIndex+"_" );
+          $(this).attr('id', newId);
+        }
 
         oldName = $(this).attr('name');
         newName = oldName.replace(new RegExp(/\[[0-9]+\]/), "["+newIndex+"]" );

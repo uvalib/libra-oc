@@ -44,4 +44,3 @@
   $(window).bind('turbolinks:load', function() {
     initPage();
   });
-
