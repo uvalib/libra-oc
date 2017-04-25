@@ -102,8 +102,9 @@ module ServiceClient
        h['creator_lastname'] = author_lastname( work.authors ) if author_lastname( work.authors )
        h['creator_department'] = author_department( work.authors ) if author_department( work.authors )
        h['creator_institution'] = author_institution( work.authors ) if author_institution( work.authors )
-       h['publication_date'] = work.published_date if work.published_date
-       #h['publication_milestone'] = work.degree if work.degree
+       yyyymmdd = extract_yyyymmdd_from_datestring( work.published_date )
+       #puts "==> DATE OUT [#{yyyymmdd}]" if yyyymmdd
+       h['publication_date'] = yyyymmdd if yyyymmdd
        h['type'] = 'Text'
        return h.to_json
      end
@@ -146,5 +147,47 @@ module ServiceClient
        return nil
      end
 
+     #
+     # attempt to extract YYYY-MM-DD from a date string
+     #
+     def extract_yyyymmdd_from_datestring( date )
+
+       return nil if date.blank?
+
+       #puts "==> DATE IN [#{date}]"
+       begin
+
+         # try yyyy-mm-dd (at the start of the string)
+         dts = date.match( /^(\d{4}-\d{1,2}-\d{1,2})/ )
+         return dts[ 0 ] if dts
+
+         # try yyyy/mm/dd (at the start of the string)
+         dts = date.match( /^(\d{4}\/\d{1,2}\/\d{1,2})/ )
+         return dts[ 0 ].gsub( '/', '-' ) if dts
+
+         # try yyyy-mm (at the start of the string)
+         dts = date.match( /^(\d{4}-\d{1,2})/ )
+         return dts[ 0 ] if dts
+
+         # try yyyy/mm (at the start of the string)
+         dts = date.match( /^(\d{4}\/\d{1,2})/ )
+         return dts[ 0 ].gsub( '/', '-' ) if dts
+
+         # try mm/dd/yyyy (at the start of the string)
+         dts = date.match( /^(\d{1,2}\/\d{1,2}\/\d{4})/ )
+         return DateTime.strptime( dts[ 0 ], "%m/%d/%Y" ).strftime( "%Y-%m-%d" ) if dts
+
+         # try yyyy (anywhere in the string)
+         dts = date.match( /(\d{4})/ )
+         return dts[ 0 ] if dts
+
+       rescue => ex
+         #puts "==> EXCEPTION: #{ex}"
+         # do nothing...
+       end
+
+       # not sure what format
+       return nil
+     end
    end
 end
