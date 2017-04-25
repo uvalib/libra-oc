@@ -135,7 +135,8 @@ module IngestHelpers
       'not available',
       'No Abstract Found',
       'No abstract available',
-      'No abstract found'
+      'No abstract found',
+      'unknownComputingID'
   ]
 
   # how we map a work type to the predefined resource types (these are defined in the resource_type authority)
