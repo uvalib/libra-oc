@@ -8,6 +8,17 @@
   background: #f59a3a;
 }
 
+// add a table of existing files to the edit form
+#file-existing {
+  padding-top: 15px;
+  .uploaded-files {
+    margin-top: 15px;
+    .thumbnail {
+      width: 150px;
+    }
+  }
+}
+
 //
 // end of file
 //

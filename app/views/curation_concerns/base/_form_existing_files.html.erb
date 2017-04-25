@@ -1,0 +1,27 @@
+<div id="file-existing">
+<h2>Previously Uploaded Files</h2>
+<% if defined?(f.object.model.file_sets) && f.object.model.file_sets.present? %>
+    <fieldset id="uploaded-files">
+      <table role="presentation" class="table table-striped uploaded-files">
+        <tbody>
+        <tr>
+          <th><%= t('.thumbnail') %></th>
+          <th><%= t('.title') %></th>
+          <th><%= t('.date_uploaded') %></th>
+          <th><%= t('.visibility') %></th>
+        </tr>
+        <% f.object.model.file_sets.each do |fs| %>
+            <tr data-file-id="<%= fs.id %>">
+              <td class="thumbnail">
+                <%= image_tag "/downloads/#{fs.id}?file=thumbnail" %>
+              </td>
+              <td class="attribute filename"><%= fs.label %></td>
+              <td class="attribute date_uploaded"><%= date_formatter( fs.date_uploaded ) %></td>
+              <td class="attribute visibility"><%= render_visibility_label( fs ) %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </fieldset>
+<% end %>
+</div>
