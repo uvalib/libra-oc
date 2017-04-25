@@ -49,4 +49,8 @@ Toggles.config do |config|
   ## do we show representative media and thumbnail selectors on the form?
   ## default is true
   config[:expose_thumbnail_form_select] = false
+
+  ## do we show the file manager?
+  ## default is true
+  config[:expose_file_manager] = false
 end
