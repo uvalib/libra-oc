@@ -23,5 +23,14 @@ DownloadsController.class_eval do
     super
   end
 
+  #
+  # override so we can specify a different file set presenter
+  #
+  CurationConcerns::FileSetsController.class_eval do
+
+      self.show_presenter = LibraFileSetPresenter
+
+  end
+
 end
 
