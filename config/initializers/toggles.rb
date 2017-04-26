@@ -53,4 +53,8 @@ Toggles.config do |config|
   ## do we show the file manager?
   ## default is true
   config[:expose_file_manager] = false
+
+  # can we delete public work
+  ## default is true
+  config[:expose_public_delete] = false
 end

@@ -101,6 +101,13 @@ class SolrDocument
     self[Solrizer.solr_name('email_status')]
   end
 
+  #
+  # is this work private to the depositor?
+  #
+  def is_private?
+    return true if self.visibility.nil? || self.visibility == 'restricted'
+  end
+
   private
 
   def person_display solr_name
@@ -111,8 +118,10 @@ class SolrDocument
     values.uniq!
     results = values.sort!{|s1,s2| s1['index'] <=> s2['index']}.map do |a|
       begin
-        email = User.email_from_cid( a['computing_id'] )
-        email = "(#{email})" if a['email'].present?
+        #puts "==> person_display: #{a.inspect}"
+        email = ''
+        email = User.email_from_cid( a['computing_id'] ) if a['computing_id'].present?
+        email = "(#{email})" if email.present?
         "#{a['first_name']} #{a['last_name']} #{email}"
       rescue JSON::ParserError => e
         author

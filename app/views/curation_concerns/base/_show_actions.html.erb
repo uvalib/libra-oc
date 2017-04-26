@@ -5,10 +5,21 @@
   <% end %>
   <% if presenter.editor? %>
     <%= link_to "Edit", edit_polymorphic_path([main_app, presenter]), class: 'btn btn-default' %>
-    <%= link_to "Delete", [main_app, presenter], class: 'btn btn-danger', data: { confirm: "Delete this #{presenter.human_readable_type}?" }, method: :delete %>
-    <% if Toggles.expose_file_manager && presenter.member_presenters.size > 1 %>
+
+    <!-- determine if we can delete this work -->
+    <% can_delete = false %>
+    <% if Toggles.expose_public_delete || presenter.solr_document.is_private? %>
+      <% can_delete = true %>
+    <% end %>
+
+    <% if can_delete %>
+      <%= link_to "Delete", [main_app, presenter], class: 'btn btn-danger', data: { confirm: "Delete this #{presenter.human_readable_type}?" }, method: :delete %>
+    <% end %>
+
+      <% if Toggles.expose_file_manager && presenter.member_presenters.size > 1 %>
       <%= link_to t("file_manager.link_text"), polymorphic_path([main_app, :file_manager, presenter]), class: 'btn btn-default' %>
     <% end %>
+
   <% end %>
   <% if presenter.display_feature_link? %>
     <%= link_to "Feature", sufia.featured_work_path(presenter, format: :json),

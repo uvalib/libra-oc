@@ -20,7 +20,8 @@ module Toggles
       expose_embargo_visibility: true,
       expose_lease_visibility: true,
       expose_thumbnail_form_select: true,
-      expose_file_manager: true
+      expose_file_manager: true,
+      expose_public_delete: true
     }
   end
 
