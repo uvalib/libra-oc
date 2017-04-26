@@ -43,7 +43,7 @@ namespace :libraoc do
 
         begin
           gw = LibraWork.find( gw_solr['id'] )
-          if gw.is_legacy_thesis?
+          if gw.is_legacy_content?
             puts "#{gw.work_source} #{gw.doi || 'None'}"
             count += 1
           end
