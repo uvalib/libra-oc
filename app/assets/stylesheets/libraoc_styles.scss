@@ -19,6 +19,12 @@
   }
 }
 
+// style form fields that are incomplete
+.invalid-input {
+  border-color: #d9534f !important;
+  background-color: rgba(217, 83, 79, 0.05) !important;
+}
+
 //
 // end of file
 //
