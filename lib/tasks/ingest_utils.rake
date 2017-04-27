@@ -51,9 +51,8 @@ namespace :libraoc do
         end
 
       end
-
-      puts "Listed #{count} legacy work(s)"
     end
+    puts "Listed #{count} legacy work(s)"
 
   end
 
