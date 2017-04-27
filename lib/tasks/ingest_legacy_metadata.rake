@@ -12,9 +12,24 @@ include CitationHelpers
 require_dependency 'app/helpers/public_view_helper'
 include PublicViewHelper
 
+#require_dependency 'app/servivces/resource_types_service'
+#include ResourceTypesService
+
 namespace :libraoc do
 
   namespace :ingest do
+
+  #
+  # a list of the valid work resource types. We will populate this later using the resource_type authority
+  # configured in config/authorities/resource_types.yml
+  #
+  @valid_resource_types = []
+
+  #
+  # it is possible to 'override' the resource type because the possible list in libra-oc is more comprehensive
+  # than that of libra1
+  #
+  @resource_type_override = {}
 
   #
   # possible environment settings that affect the ingest behavior
@@ -219,7 +234,8 @@ namespace :libraoc do
      payload[:sponsoring_agency] = extract_sponsoring_agency( solr_doc, fedora_doc )
 
      # resource type
-     payload[ :resource_type ] = determine_resource_type( solr_doc )
+     rt = determine_resource_type( solr_doc )
+     payload[ :resource_type ] = rt if rt.present?
 
      #
      # handle optional fields
@@ -555,31 +571,57 @@ namespace :libraoc do
   end
 
   #
-  # based on the directory we are ingesting from, take a guess at the resource type
+  # take a guess at the resource type
   #
   def determine_resource_type( solr_doc )
 
+    # extract the resource type from the SOLR document
     resource_type = solr_doc.at_path( 'object_type_facet[0]' )
-    rt = nil
-    case resource_type
-      when 'Article'
-        rt = 'article'
-      when 'Article Preprint'
-          rt = 'article_reprint'
-      when 'Book'
-        rt = 'book'
-      when 'Part of Book'
-        rt = 'book_part'
-      when 'Chapter in an Edited Collection'
-        rt = 'book_part'
-      when 'Conference Proceeding', 'Conference Paper'
-        rt = 'conference_paper'
-      else
-         puts "==> Unknown resource type: #{resource_type}"
+    # check to see if we have an override specified
+    resource_type = check_for_resource_type_override( resource_type, solr_doc )
+    # ensure we have identified one
+    if resource_type.nil?
+       puts "ERROR: unable to determine resource type"
+       return nil
     end
-    return rt
+
+    # check it is valid
+
+    # initialize the resource types list if it is empty
+    @valid_resource_types = ResourceTypesService.authority.all.map { |e| e[:label] } if @valid_resource_types.empty?
+
+    if @valid_resource_types.include?( resource_type )
+      return resource_type
+    else
+      case resource_type
+        when 'Conference Paper'
+          return 'Conference Proceeding'
+        when 'Article Preprint'
+          return 'Article'
+        when 'Chapter in an Edited Collection'
+          return 'Part of Book'
+        else
+           puts "ERROR: unsupported resource type: #{resource_type}"
+           return nil
+      end
+    end
   end
 
+  #
+  # see if we have configured a resource type override
+  #
+  def check_for_resource_type_override( existing_resource_type, solr_doc )
+
+    @resource_type_override = IngestHelpers.load_resource_type_remap( 'data/reference_migration_dataset.txt' ) if @resource_type_override.empty?
+
+    id = solr_doc.at_path( 'id' )
+    if @resource_type_override[ id ].present? && @resource_type_override[id] != existing_resource_type
+      puts "==> remapping resource type: [#{existing_resource_type}] -> [#{@resource_type_override[id]}]"
+      return @resource_type_override[id]
+    end
+
+    return existing_resource_type
+  end
 
   #
   # adds another author if we can locate one

@@ -1,0 +1,65 @@
+#
+# Libra2 Work Type:   Articles
+#
+Article/libra-oa:11808
+Article/libra-oa:11876
+Article/libra-oa:11816
+Article/libra-oa:11787
+Article/libra-oa:11884
+
+#
+# Libra2 Work Type:   Books
+#
+Book/libra-oa:11882
+Book/libra-oa:2778
+Book/libra-oa:7927
+Book/libra-oa:8359
+Book/libra-oa:8357
+Book/libra-oa:8354
+Book/libra-oa:8361
+
+#
+# Libra2 Work Type:  Conference Proceeding
+#
+Conference Proceeding/libra-oa:11888
+Conference Proceeding/libra-oa:11847
+Conference Proceeding/libra-oa:3480
+Conference Proceeding/libra-oa:2926
+Conference Proceeding/libra-oa:2630
+
+#
+# Libra2 Work Type:    Posters
+#
+Poster/libra-oa:11849
+Poster/libra-oa:8151
+Poster/libra-oa:7298
+Poster/libra-oa:2815
+Poster/libra-oa:469
+
+#
+# Libra2 Work Type:  Presentations
+#
+Presentation/libra-oa:11676
+Presentation/libra-oa:526
+
+#
+# Libra2 Work Type:   Reports
+#
+Report/libra-oa:10931
+Report/libra-oa:10933
+Report/libra-oa:1386
+Report/libra-oa:11920
+Report/libra-oa:9620
+
+#
+# Libra2 Work Type:    Part of Book
+#
+Part of Book/libra-oa:9170
+Part of Book/libra-oa:6313
+Part of Book/libra-oa:854
+Part of Book/libra-oa:852
+Part of Book/libra-oa:876
+
+#
+# end of file
+#

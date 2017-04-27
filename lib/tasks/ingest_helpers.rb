@@ -139,15 +139,6 @@ module IngestHelpers
       'unknownComputingID'
   ]
 
-  # how we map a work type to the predefined resource types (these are defined in the resource_type authority)
-  RESOURCE_TYPE_MAP = {
-      'article' => 'Article',
-      'article_reprint' => 'Article',
-      'book' => 'Book',
-      'book_part' => 'Part of Book',
-      'conference_paper' => 'Conference Proceeding'
-  }
-
   #
   # validate the payload before we attempt to create a new work
   #
@@ -266,7 +257,7 @@ module IngestHelpers
       w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
       w.work_source = payload[ :work_source ] if payload[ :work_source ]
 
-      w.resource_type = RESOURCE_TYPE_MAP[ payload[ :resource_type ] ] if payload[ :resource_type ]
+      w.resource_type = payload[ :resource_type ] if payload[ :resource_type ]
 
       w.related_url = [ payload[ :related_url ] ] if payload[ :related_url ]
       w.sponsoring_agency = [ payload[ :sponsoring_agency ] ] if payload[ :sponsoring_agency ]
@@ -327,6 +318,18 @@ module IngestHelpers
     end
 
     return works
+  end
+
+  def load_resource_type_remap( filename)
+     res = {}
+     works = load_reference_works( filename )
+     works.each do |w|
+       tokens = w.split( '/' )
+       rt = tokens[ 0 ]
+       id = tokens[ 1 ]
+       res[id] = rt
+     end
+     return res
   end
 
   #

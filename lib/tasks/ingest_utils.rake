@@ -206,24 +206,37 @@ namespace :libraoc do
 
     reference_list.each_with_index do |w, ix|
 
-      work_type = File.dirname( w )
-      work_ref = File.basename( w )
+      parts = w.split( '/' )
+      resource_type = parts[ 0 ]
+      work_ref = parts[ 1 ]
 
       puts "Extracting #{ix + 1} of #{reference_list.length} (#{work_ref})..."
 
-      case work_type
-        when 'article'
+      case resource_type
+        when 'Article'
+           work_type = 'article'
            work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, articles )
-        when 'article_reprint'
-          work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, article_reprints )
-        when 'book'
-          work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, books )
-        when 'book_part'
-          work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, book_parts )
-        when 'conference_paper'
-          work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, conference_papers )
+        when 'Report'
+           # try articles first
+           work_type = 'article'
+           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, articles )
+
+           # then try reprints if we cannot locate it in articles
+           if work_item.nil?
+              work_type = 'article_reprint'
+              work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, article_reprints )
+           end
+        when 'Book'
+           work_type = 'book'
+           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, books )
+        when 'Part of Book'
+           work_type = 'book_part'
+           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, book_parts )
+        when 'Conference Proceeding', 'Poster', 'Presentation'
+           work_type = 'conference_paper'
+           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, conference_papers )
         else
-          puts "ERROR: unknown work type #{work_type}, skipping..."
+          puts "ERROR: unknown resource type #{resource_type}, skipping..."
           errors += 1
           next
       end
