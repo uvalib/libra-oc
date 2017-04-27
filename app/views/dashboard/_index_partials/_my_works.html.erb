@@ -65,6 +65,24 @@
                 <% end %>
               </li>
 
+              <!-- determine if we can delete this work -->
+              <% can_delete = false %>
+              <% if Toggles.expose_public_delete || document.is_private? %>
+                  <% can_delete = true %>
+              <% end %>
+
+              <% if can_delete %>
+                  <li role="menuitem" tabindex="-1">
+                    <%= link_to document,
+                                method: :delete,
+                                data: {
+                                    confirm: t("sufia.dashboard.my.action.work_confirmation", application_name: application_name) } do %>
+                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                        <span> <%= t("sufia.dashboard.my.action.delete_work") %> </span>
+                    <% end %>
+                  </li>
+              <% end %>
+
             </ul>
           </div>
         </td>
