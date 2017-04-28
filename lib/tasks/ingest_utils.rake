@@ -197,58 +197,31 @@ namespace :libraoc do
     puts "Loaded #{reference_list.length} reference work(s)..."
 
     # get all the available works
-    ok, articles, article_reprints, books, book_parts, conference_papers = load_all_ingest_data( ingest_dir )
-    next if ok == false
+    works = load_all_ingest_data( ingest_dir )
+    next if works.empty?
 
     errors = 0
     count = 0
 
     reference_list.each_with_index do |w, ix|
 
-      parts = w.split( '/' )
-      resource_type = parts[ 0 ]
-      work_ref = parts[ 1 ]
+      work_ref = w.split( '/' )[ 1 ]
 
       puts "Extracting #{ix + 1} of #{reference_list.length} (#{work_ref})..."
 
-      case resource_type
-        when 'Article'
-           work_type = 'article'
-           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, articles )
-        when 'Report'
-           # try articles first
-           work_type = 'article'
-           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, articles )
+      work_item_location = works[work_ref]
+      if work_item_location.present?
 
-           # then try reprints if we cannot locate it in articles
-           if work_item.nil?
-              work_type = 'article_reprint'
-              work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, article_reprints )
-           end
-        when 'Book'
-           work_type = 'book'
-           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, books )
-        when 'Part of Book'
-           work_type = 'book_part'
-           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, book_parts )
-        when 'Conference Proceeding', 'Poster', 'Presentation'
-           work_type = 'conference_paper'
-           work_item = locate_work_item( File.join( ingest_dir, work_type ), work_ref, conference_papers )
-        else
-          puts "ERROR: unknown resource type #{resource_type}, skipping..."
-          errors += 1
-          next
-      end
+        ok = copy_work_item( target_dir, work_item_location, count + 1 )
+        ok ? count += 1 : errors += 1
 
-      if work_item.nil?
-        puts "ERROR: cannot locate work item #{w}, skipping..."
+      else
+
+        puts "ERROR: cannot locate work item #{work_ref}, skipping..."
         errors += 1
         next
-      end
 
-      # copy the work item we located
-      ok = copy_work_item( target_dir, File.join( ingest_dir, work_type, work_item ), count + 1 )
-      ok ? count += 1 : errors += 1
+      end
 
     end
 
@@ -290,9 +263,8 @@ namespace :libraoc do
     puts "Loaded #{reference_list.length} reference work(s)..."
 
     # get all the available works
-    ok, articles, article_reprints, books, book_parts, conference_papers = load_all_ingest_data( ingest_dir )
-    next if ok == false
-
+    works = load_all_ingest_data( ingest_dir )
+    next if works.empty?
 
   end
 
@@ -308,48 +280,29 @@ namespace :libraoc do
     # get all the available works
     puts "Loading all ingestable works from #{ingest_root}..."
 
-    articles = IngestHelpers.get_legacy_ingest_list( File.join( ingest_root, 'article' ) )
-    article_reprints = IngestHelpers.get_legacy_ingest_list( File.join( ingest_root, 'article_reprint' ) )
-    books = IngestHelpers.get_legacy_ingest_list( File.join( ingest_root, 'book' ) )
-    book_parts = IngestHelpers.get_legacy_ingest_list( File.join( ingest_root, 'book_part' ) )
-    conference_papers = IngestHelpers.get_legacy_ingest_list( File.join( ingest_root, 'conference_paper' ) )
+    results = {}
 
-    load_count = 0
-    if articles.empty?
-      puts "ERROR: article list is empty, aborting"
-      return false, nil, nil, nil, nil, nil
-    else
-      load_count += articles.length
-    end
+    # specify all the interesting places to look for ingest content
+    interesting_ingests = [ 'article', 'article_reprint', 'book', 'book_part', 'conference_paper' ]
+    interesting_ingests.each do |dirname|
 
-    if article_reprints.empty?
-      puts "ERROR: article_reprint list is empty, aborting"
-      return false, nil, nil, nil, nil, nil
-    else
-      load_count += article_reprints.length
-    end
-    if books.empty?
-      puts "ERROR: book list is empty, aborting"
-      return false, nil, nil, nil, nil, nil
-    else
-      load_count += books.length
-    end
-    if book_parts.empty?
-      puts "ERROR: book_part list is empty, aborting"
-      return false, nil, nil, nil, nil, nil
-    else
-      load_count += book_parts.length
-    end
-    if conference_papers.empty?
-      puts "ERROR: conference_paper list is empty, aborting"
-      return false, nil, nil, nil, nil, nil
-    else
-      load_count += conference_papers.length
+      ingest_list = IngestHelpers.get_legacy_ingest_list( File.join( ingest_root, dirname ) )
+      if ingest_list.empty?
+        puts "ERROR: #{dirname} ingests is empty, aborting"
+        return {}
+      end
+      puts "Loaded #{ingest_list.length} work(s) from #{dirname}"
+      ingest_list.each do |w|
+
+        json_doc = TaskHelpers.load_json_doc( File.join( ingest_root, dirname, w, TaskHelpers::DOCUMENT_JSON_FILE ) )
+        next if json_doc.nil?
+        id = json_doc['id']
+        results[ id ] = File.join( ingest_root, dirname, w )
+      end
+
     end
 
-    puts "#{load_count} work(s) loaded"
-
-    return true, articles, article_reprints, books, book_parts, conference_papers
+    return results
 
   end
 

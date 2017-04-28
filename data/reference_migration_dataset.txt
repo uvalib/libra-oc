@@ -6,6 +6,9 @@ Article/libra-oa:11876
 Article/libra-oa:11816
 Article/libra-oa:11787
 Article/libra-oa:11884
+Article/libra-oa:7781
+Article/libra-oa:191
+Article/libra-oa:84
 
 #
 # Libra2 Work Type:   Books
@@ -50,6 +53,8 @@ Report/libra-oa:10933
 Report/libra-oa:1386
 Report/libra-oa:11920
 Report/libra-oa:9620
+Report/libra-oa:7360
+Report/libra-oa:3268
 
 #
 # Libra2 Work Type:    Part of Book
