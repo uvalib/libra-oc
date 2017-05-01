@@ -11,6 +11,7 @@
   </div>
 <% end %>
 
+<% if Toggles.expose_aggregate_metrics %>
 <div class="list-group-item">
   <span class="badge"><%= number_of_works(user) %></span>
   <span class="glyphicon glyphicon-upload"></span> <%= t("sufia.dashboard.stats.works") %>
@@ -20,3 +21,4 @@
       <li><span class="badge badge-optional"><%= user.total_file_downloads %></span> <%= t("sufia.dashboard.stats.file_downloads").pluralize(user.total_file_downloads) %></li>
   </ul>
 </div>
+<% end %>

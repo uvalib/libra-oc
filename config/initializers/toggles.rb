@@ -57,4 +57,8 @@ Toggles.config do |config|
   # can we delete public work
   ## default is true
   config[:expose_public_delete] = false
+
+  # do we show aggregate metrics on the profile page?
+  ## default is true
+  config[:expose_aggregate_metrics] = false
 end
