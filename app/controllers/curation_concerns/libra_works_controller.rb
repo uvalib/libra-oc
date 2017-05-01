@@ -27,6 +27,22 @@ module CurationConcerns
       end
     end
 
+    protected
+    def after_update_response
+      if permissions_changed? && curation_concern.file_sets.present?
+        # Taken from CurationConcerns::PermissionsController
+        # copy visibility
+        VisibilityCopyJob.perform_later(curation_concern)
+        # copy permissions
+        InheritPermissionsJob.perform_later(curation_concern)
+      end
+
+      respond_to do |wants|
+        wants.html { redirect_to [main_app, curation_concern] }
+        wants.json { render :show, status: :ok, location: polymorphic_path([main_app, curation_concern]) }
+      end
+    end
+
     private
     def new_files_notice
       if params.fetch(:uploaded_files, []).any?
