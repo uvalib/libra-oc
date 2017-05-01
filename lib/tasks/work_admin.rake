@@ -58,7 +58,7 @@ namespace :work do
     TaskHelpers.show_libra_work(work )
   end
 
-  desc "Summerize all works"
+  desc "Summerize all works by depositor"
   task summerize_all: :environment do |t, args|
 
     depositors = {}
