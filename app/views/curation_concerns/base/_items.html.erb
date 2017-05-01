@@ -1,5 +1,9 @@
 <h2><%= t('.header') %></h2>
 <% if presenter.member_presenters.present? %>
+  <% if flash[:has_new_files] %>
+    <div class="alert alert-success" role="alert"><%= t('sufia.works.create.after_create_html',
+                                                        application_name: application_name ) %></div>
+  <%end%>
   <table class="table table-striped related-files">
     <thead>
       <tr>
