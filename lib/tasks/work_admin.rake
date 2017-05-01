@@ -58,6 +58,36 @@ namespace :work do
     TaskHelpers.show_libra_work(work )
   end
 
+  desc "Summerize all works by depositor"
+  task summerize_all: :environment do |t, args|
+
+    depositors = {}
+    count = 0
+    LibraWork.search_in_batches( {} ) do |group|
+      group.each do |gw_solr|
+        begin
+          gw = LibraWork.find( gw_solr['id'] )
+          if depositors[ gw.depositor ].nil?
+            depositors[ gw.depositor ] = 1
+          else
+            depositors[ gw.depositor ] = depositors[ gw.depositor ] + 1
+          end
+        rescue => e
+          puts e
+        end
+      end
+
+      count += group.size
+    end
+
+    # output a summary...
+    depositors.keys.sort.each do |k|
+      puts " #{k}: #{depositors[k]} work(s)"
+    end
+
+    puts "Summerized #{count} work(s)"
+  end
+
   desc "Delete all works"
   task del_all: :environment do |t, args|
 
