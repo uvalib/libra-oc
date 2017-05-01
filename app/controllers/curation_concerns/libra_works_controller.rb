@@ -31,8 +31,8 @@ module CurationConcerns
     def new_files_notice
       if params.fetch(:uploaded_files, []).any?
         flash[:has_new_files] = true
-        flash[:notice] = nil
       end
+      flash[:notice] = nil
     end
   end
 end
