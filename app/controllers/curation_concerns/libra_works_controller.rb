@@ -5,10 +5,11 @@ module CurationConcerns
   class LibraWorksController < ApplicationController
     include CurationConcerns::CurationConcernController
     include Sufia::WorksControllerBehavior
-    include SufiaWorksOverrides
 
     self.curation_concern_type = LibraWork
     self.show_presenter = LibraWorkPresenter
+
+    after_action :new_files_notice, only: [:create, :update]
 
     def new
       super
@@ -23,6 +24,14 @@ module CurationConcerns
           department: resp['department'],
           institution: resp['institution'].blank? ? LibraWork::DEFAULT_INSTITUTION : resp['institution']
         )
+      end
+    end
+
+    private
+    def new_files_notice
+      if params.fetch(:uploaded_files, []).any?
+        flash[:has_new_files] = true
+        flash[:notice] = nil
       end
     end
   end
