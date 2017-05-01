@@ -21,7 +21,8 @@ module Toggles
       expose_lease_visibility: true,
       expose_thumbnail_form_select: true,
       expose_file_manager: true,
-      expose_public_delete: true
+      expose_public_delete: true,
+      expose_aggregate_metrics: true
     }
   end
 

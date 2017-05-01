@@ -103,7 +103,9 @@ module ServiceClient
        h['creator_department'] = author_department( work.authors ) if author_department( work.authors )
        h['creator_institution'] = author_institution( work.authors ) if author_institution( work.authors )
        yyyymmdd = extract_yyyymmdd_from_datestring( work.published_date )
-       #puts "==> DATE OUT [#{yyyymmdd}]" if yyyymmdd
+       #puts "==> PUB DATE OUT [#{yyyymmdd}]" if yyyymmdd
+       yyyymmdd = extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.nil?
+       #puts "==> CREATE DATE OUT [#{yyyymmdd}]" if yyyymmdd
        h['publication_date'] = yyyymmdd if yyyymmdd
        h['type'] = 'Text'
        return h.to_json
