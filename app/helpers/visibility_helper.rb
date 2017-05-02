@@ -91,6 +91,13 @@ module VisibilityHelper
   end
 
   #
+  # helper for restricted files
+  #
+  def restricted_notice
+    return 'This item is restricted to UVa only.'
+  end
+
+  #
   # helper to create radio buttons for the debug panel
   #
   def create_radio( name, value, label, is_default = false )
