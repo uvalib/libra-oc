@@ -5,8 +5,8 @@
     <span class="file_label"><%= "#{t("sufia.dashboard.stats.file_views").pluralize( view_count )}: " %></span><span class="badge"><%= view_count %></span>
   </div>
 
+  <h2>Files</h2>
   <% if can_download_files?( @work ) %>
-    <h2>Files</h2>
     <div id="uploads">
       <% @work.file_sets.each do |file| %>
         <div class="file_asset_record">
@@ -18,5 +18,9 @@
       <% end %>
 
     </div>
+  <% else %>
+      <% if @work.file_sets.empty? == false %>
+          <p class="file-notice"><%= restricted_notice %></p>
+      <% end %>
   <% end %>
 </div>

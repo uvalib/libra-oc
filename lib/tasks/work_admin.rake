@@ -58,8 +58,8 @@ namespace :work do
     TaskHelpers.show_libra_work(work )
   end
 
-  desc "Summerize all works by depositor"
-  task summerize_all: :environment do |t, args|
+  desc "Work counts by depositor"
+  task count_by_depositor: :environment do |t, args|
 
     depositors = {}
     count = 0
@@ -82,7 +82,7 @@ namespace :work do
 
     # output a summary...
     depositors.keys.sort.each do |k|
-      puts " #{k}: #{depositors[k]} work(s)"
+      puts " #{k} => #{depositors[k]} work(s)"
     end
 
     puts "Summerized #{count} work(s)"
