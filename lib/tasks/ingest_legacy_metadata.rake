@@ -77,16 +77,10 @@ namespace :libraoc do
     # load any default attributes
     defaults = IngestHelpers.load_config_file( defaults_file )
 
-    # load depositor information
-    depositor = Helpers.lookup_user( TaskHelpers::DEFAULT_USER )
-    if depositor.nil?
-      puts "ERROR: Cannot locate depositor info (#{TaskHelpers::DEFAULT_USER})"
-      next
-    end
-
-    user = User.find_by_email( depositor.email )
-    if user.nil?
-      puts "ERROR: Cannot lookup depositor info (#{depositor.email})"
+    # load default depositor information
+    default_depositor = TaskHelpers.lookup_and_create_account( TaskHelpers::DEFAULT_USER )
+    if default_depositor.nil?
+      puts "ERROR: Cannot lookup or create default depositor account (#{TaskHelpers::DEFAULT_USER})"
       next
     end
 
@@ -98,7 +92,7 @@ namespace :libraoc do
     total = ingests.size
     ingests.each_with_index do | dirname, ix |
       next if ix < start_ix
-      ok = ingest_legacy_metadata( defaults, user, File.join( ingest_dir, dirname ), ix + 1, total )
+      ok = ingest_legacy_metadata( defaults, default_depositor, File.join( ingest_dir, dirname ), ix + 1, total )
       ok == true ? success_count += 1 : error_count += 1
       break if ENV[ 'MAX_COUNT' ] && ENV[ 'MAX_COUNT' ].to_i == ( success_count + error_count )
     end
@@ -113,7 +107,7 @@ namespace :libraoc do
   #
   # convert a set of Libra extract assets into a new Libra metadata record
   #
-  def ingest_legacy_metadata( defaults, depositor, dirname, current, total )
+  def ingest_legacy_metadata( defaults, default_depositor, dirname, current, total )
 
      solr_doc, fedora_doc = IngestHelpers.load_legacy_ingest_content(dirname )
      id = solr_doc['id']
@@ -148,6 +142,9 @@ namespace :libraoc do
        puts " WARNING(S) identified for #{File.basename( dirname )} (#{id}), continuing anyway"
        puts " ==> #{warnings.join( "\n ==> " )}"
      end
+
+     # determine the appropriate depositor
+     depositor = identify_and_create_depositor( payload[ :authors ], default_depositor )
 
      # handle dry running
      return true if ENV[ 'DRY_RUN' ]
@@ -722,6 +719,28 @@ namespace :libraoc do
     return payload
   end
 
+  #
+  #
+  #
+  def identify_and_create_depositor( authors, default_depositor )
+    if authors.length >= 1 && authors[ 0 ][:computing_id].present?
+      depositor = TaskHelpers.lookup_and_create_account( authors[ 0 ][:computing_id] )
+      if depositor.present?
+         puts "Identified depositor (#{depositor.email})"
+         return( depositor )
+      else
+        puts "Lookup failure for #{authors[ 0 ][:computing_id]}, using default depositor (#{default_depositor.email})"
+      end
+    else
+      if authors.length == 0
+         puts "No authors, using default depositor (#{default_depositor.email})"
+      else
+        puts "No computing Id on first author, using default depositor (#{default_depositor.email})"
+      end
+    end
+
+    return( default_depositor )
+  end
   #
   # apply any default values and behavior to the standard payload
   #

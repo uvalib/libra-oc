@@ -92,6 +92,27 @@ module TaskHelpers
   end
 
   #
+  # lookup a user by computing id and create their account if we locate them
+  #
+  def lookup_and_create_account( id )
+
+    # lookup locally with the default email
+    user = User.find_by_email( User.email_from_cid( id ) )
+    return user if user.present?
+
+    # if we cannot find them, lookup in LDAP
+    user_info = user_info_by_cid( id )
+    return nil if user_info.nil?
+
+    # now look them up with the located email
+    user = User.find_by_email( user_info.email )
+    return user if user.present?
+
+    # create their account
+    return User.new_user( user_info, user_info.email )
+  end
+
+  #
   # batch process a group of SOLR works
   #
   def batched_process_solr_works( solr_works, &f )
@@ -128,13 +149,6 @@ module TaskHelpers
     Contributor.sort( work.contributors ).each_with_index do |p, ix|
       show_person( " contributor #{ix + 1}:", p )
     end
-
-#    show_field( 'visibility', work.visibility )
-    #show_field( 'embargo_end_date', work.embargo_end_date )
-    #show_field( 'embargo_release_date', work.embargo_end_date )
-#    show_field( 'registrar_computing_id', work.registrar_computing_id )
-#    show_field( 'sis_id', work.sis_id )
-#    show_field( 'sis_entry', work.sis_entry )
 
     if work.file_sets
       file_number = 1
