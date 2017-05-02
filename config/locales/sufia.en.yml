@@ -7,6 +7,8 @@ en:
     account_name:       "My Institution Account Id"
     directory:
       suffix:           "@virginia.edu"
+    dashboard:
+      create_work:      "New Work"
     footer:
       copyright_html: "<strong>Copyright &copy; 2016 Project Hydra</strong> Licensed under the Apache License, Version 2.0"
     active_consent_to_agreement: "By saving this work, I agree to the"
