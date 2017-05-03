@@ -87,6 +87,7 @@ task list_all_users: :environment do |t, args|
     puts "  department: #{user.department || 'None'}"
     puts "  ORCID:      #{user.orcid || 'None'}"
     puts "  created:    #{user.created_at}"
+    puts "  admin:      #{user.admin? ? 'Yes' : 'No'}"
     count += 1
   end
   puts "#{count} user(s) listed"

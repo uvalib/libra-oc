@@ -34,4 +34,11 @@ class User < ApplicationRecord
   def computing_id
     email[/^.*@/].chop
   end
+
+  #
+  # use the existing sufia role mapper to determine who is an admin
+  #
+  def admin?
+    groups.include?( 'admin' )
+  end
 end
