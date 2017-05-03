@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require turbolinks
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
@@ -26,6 +27,7 @@
 //= require openseadragon
 //= require orcid_widget
 //= require save_work_panel
+//= require export
 
 // require sufia last
 //= require sufia

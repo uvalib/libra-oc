@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   # libra-oc specific endpoints
+  get '/exports' => 'exports#index'
+  get '/exports/get' => 'exports#export'
   get '/computing_id' => 'ajax#computing_id'
   get '/orcid_search' => 'ajax#orcid_search'
   get '/test_email' => 'test_email#test_email'
