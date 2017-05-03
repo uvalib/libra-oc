@@ -89,7 +89,7 @@ class ExportsController < ApplicationController
   # render a csv response
   #
   def render_csv_works_response( the_type, works )
-    @works = [] #works
+    @works = works
     filename = "works-#{the_type}.csv"
     headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
     headers['Content-Type'] ||= 'text/csv'

@@ -39,9 +39,9 @@ module StatisticsHelper
   # get an aggregate count of work downloads
   #
   def get_work_download_count( work )
-    return 0 if work.filesets.blank?
+    return 0 if work.file_sets.blank?
     sum = 0
-    work.filesets.each { |fs|
+    work.file_sets.each { |fs|
       sum += get_file_download_count( fs )
     }
     return sum
@@ -51,11 +51,13 @@ module StatisticsHelper
   # get an aggregate size of the work files
   #
   def get_work_aggregate_size( work )
-    return 0 if work.filesets.blank?
+    return 0 if work.file_sets.blank?
     sum = 0
-    work.filesets.each { |fs|
-      sum += fs.file_size
-    }
+    # TODO: filesets dont have size in them
+    #work.file_sets.each { |fs|
+      #puts "==> FS: #{fs.inspect}"
+      #sum += fs.file_size
+    #}
     return sum
   end
 
