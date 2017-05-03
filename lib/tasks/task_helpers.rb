@@ -10,14 +10,14 @@ include Helpers
 module TaskHelpers
 
 # used for the extract/ingest processing
-  INGEST_ID_FILE = 'ingest.id'
-  DOCUMENT_FILES_LIST = 'filelist.txt'
-  DOCUMENT_JSON_FILE = 'data.json'
-  DOCUMENT_XML_FILE = 'data.xml'
+  INGEST_ID_FILE ||= 'ingest.id'
+  DOCUMENT_FILES_LIST ||= 'filelist.txt'
+  DOCUMENT_JSON_FILE ||= 'data.json'
+  DOCUMENT_XML_FILE ||= 'data.xml'
 
   # general definitions
-  DEFAULT_USER = 'dpg3k'
-  DEFAULT_DOMAIN = 'virginia.edu'
+  DEFAULT_USER ||= 'dpg3k'
+  DEFAULT_DOMAIN ||= 'virginia.edu'
 
   #
   # the default user for various admin activities

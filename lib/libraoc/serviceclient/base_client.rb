@@ -4,7 +4,7 @@ module ServiceClient
 
    class BaseClient
 
-     DEFAULT_RETRIES = 3
+     DEFAULT_RETRIES ||= 3
 
      def configuration
        @configuration
