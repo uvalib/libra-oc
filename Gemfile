@@ -70,3 +70,4 @@ gem 'oga'
 
 gem 'sentry-raven'
 
+gem 'meta-tags'

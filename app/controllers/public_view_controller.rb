@@ -9,6 +9,7 @@ class PublicViewController < ApplicationController
   def show
     @id = params[:id]
     @work = get_work_item
+    setup_meta_tags
 
     @can_view = helpers.can_view_work?( @work )
     if @can_view
@@ -33,6 +34,27 @@ class PublicViewController < ApplicationController
       return work[ 0 ]
     end
     return nil
+  end
+
+  def setup_meta_tags
+    set_meta_tags(
+      description: "TODO",
+      keywords: @work.keyword,
+
+      #for google scholar
+      "DC.title": :title,
+      "DC.creator": @work.authors.map(&:to_display),
+      "DC.contributor": @work.contributors.map(&:to_display),
+      "DC.subject": @work.subject.join("; "),
+      "DC.type": @work.resource_type,
+      "DC.identifier": @work.identifier,
+      "DC.rights": @work.license,
+      "DC.issued": (Date.parse(@work.date_created).try(:strftime, "%Y/%-m/%-d") if @work.date_created),
+      citation_online_date: @work.create_date.try(:strftime, "%Y/%-m/%-d"),
+      "DC.identifier": @work.identifier,
+      "DC.language": @work.language,
+      "DC.publisher":@work.publisher,
+    )
   end
 
 end
