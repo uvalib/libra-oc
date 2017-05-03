@@ -50,6 +50,14 @@ class ApplicationController < ActionController::Base
     render :file => "#{Rails.root}/public/404-public.html", :status => :not_found, :layout => false
   end
 
+  #
+  # ensure the current user is an administrator
+  #
+  def enforce_user_is_admin
+    return if user_signed_in? && current_user.admin?
+    raise CanCan::AccessDenied
+  end
+
   def set_debugging_override
 
     @grounds_override = false

@@ -1,6 +1,6 @@
 class ExportsController < ApplicationController
 
-  #skip_before_filter :require_auth
+  before_action :enforce_user_is_admin
 
   # # GET /exports
   def index
