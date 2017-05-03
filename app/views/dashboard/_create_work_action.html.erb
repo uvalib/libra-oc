@@ -6,13 +6,13 @@
     <% end %>
   </div>
 <% else %>
-  <div class="create-work-btn pull-right">
+  <div class="create-work-btn">
     <% create_work_presenter.first_model do |concern| %>
       <%= link_to(new_polymorphic_path([main_app, concern]),
                   class: "btn btn-primary btn-lg item-option contextual-quick-classify #{dom_class(concern, 'new').gsub('_', '-')}",
                   role: 'menuitem'
                  ) do %>
-                 <span class="glyphicon glyphicon-open-file"></span>
+                 <span class="glyphicon glyphicon-plus"></span>
                  <%= I18n.t("sufia.dashboard.create_work", work_type: concern.human_readable_type) %>
                <% end %>
              <% end %>
