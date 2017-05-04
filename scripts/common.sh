@@ -80,7 +80,7 @@ function is_active_host {
    fi
 
    # live means this endpoint resolves to our DOCKER_HOST name
-   local endpoint="librasis.lib.virginia.edu"
+   local endpoint="libraoc.lib.virginia.edu"
 
    # setup the appropriate commands depending on our environment
    if dockerized; then
