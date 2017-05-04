@@ -385,6 +385,8 @@ GEM
       carrierwave (>= 0.5.8)
       rails (>= 4.2.0)
     memoist (0.15.0)
+    meta-tags (2.4.0)
+      actionpack (>= 3.2.0, <= 5.1.0)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -564,6 +566,8 @@ GEM
     simple_form (3.4.0)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
+    sitemap_generator (5.3.1)
+      builder (~> 3.0)
     skydrive (1.2.0)
       activesupport
       httmultiparty
@@ -678,6 +682,7 @@ DEPENDENCIES
   hash_at_path
   jbuilder (~> 2.5)
   jquery-rails
+  meta-tags
   mysql2
   oga
   puma
@@ -689,6 +694,7 @@ DEPENDENCIES
   sentry-raven
   sidekiq
   sidekiq-failures
+  sitemap_generator
   solr_wrapper (>= 0.3)
   sufia (~> 7.3.0)
   turbolinks (~> 5)

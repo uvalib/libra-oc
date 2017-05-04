@@ -70,3 +70,5 @@ gem 'oga'
 
 gem 'sentry-raven'
 
+gem 'meta-tags'
+gem 'sitemap_generator'
