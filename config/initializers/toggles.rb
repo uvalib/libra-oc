@@ -61,4 +61,8 @@ Toggles.config do |config|
   # do we show aggregate metrics on the profile page?
   ## default is true
   config[:expose_aggregate_metrics] = false
+
+  # do we support the ability to feature works?
+  ## default is true
+  config[:expose_feature_work] = false
 end
