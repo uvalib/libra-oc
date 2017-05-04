@@ -117,7 +117,7 @@ Sufia.config do |config|
   end
 end
 
-Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
+Date::DATE_FORMATS[:standard] = '%Y-%m-%d'
 
 Qa::Authorities::Local.register_subauthority('subjects', 'Qa::Authorities::Local::TableBasedAuthority')
 #Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Local::TableBasedAuthority')

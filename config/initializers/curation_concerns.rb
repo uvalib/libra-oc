@@ -99,4 +99,4 @@ CurationConcerns.configure do |config|
   #   }
 end
 
-Date::DATE_FORMATS[:standard] = '%m/%d/%Y'
+Date::DATE_FORMATS[:standard] = '%Y-%m-%d'
