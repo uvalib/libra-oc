@@ -185,12 +185,16 @@ namespace :libraoc do
      modified_date = solr_doc.at_path( 'system_modified_dt' )
      payload[ :modified_date ] = modified_date if modified_date.present?
 
+     # resource type
+     rt = determine_resource_type( solr_doc )
+     payload[ :resource_type ] = rt if rt.present?
+
      # title
-     title = extract_title( solr_doc, fedora_doc )
+     title = extract_title( payload, solr_doc, fedora_doc )
      payload[ :title ] = title if title.present?
 
      # abstract
-     abstract = extract_abstract( solr_doc, fedora_doc )
+     abstract = extract_abstract( payload, solr_doc, fedora_doc )
      payload[ :abstract ] = abstract if abstract.present?
 
      # author
@@ -212,7 +216,7 @@ namespace :libraoc do
      end
 
      # issue date
-     issued_date = extract_issued_date( solr_doc, fedora_doc )
+     issued_date = extract_issued_date( payload, solr_doc, fedora_doc )
      payload[ :issued ] = issued_date if issued_date.present?
 
      # embargo attributes
@@ -225,14 +229,10 @@ namespace :libraoc do
      payload[ :work_source ] = solr_doc.at_path( 'id' )
 
      # related URL's
-     payload[ :related_url ] = extract_related_url( solr_doc, fedora_doc )
+     payload[ :related_url ] = extract_related_url( payload, solr_doc, fedora_doc )
 
      # sponsoring agency
-     payload[:sponsoring_agency] = extract_sponsoring_agency( solr_doc, fedora_doc )
-
-     # resource type
-     rt = determine_resource_type( solr_doc )
-     payload[ :resource_type ] = rt if rt.present?
+     payload[:sponsoring_agency] = extract_sponsoring_agency( payload, solr_doc, fedora_doc )
 
      #
      # handle optional fields
@@ -255,41 +255,41 @@ namespace :libraoc do
      payload[ :notes ] = notes if notes.present?
 
      # publisher attributes
-     publisher = extract_publisher( solr_doc, fedora_doc )
+     publisher = extract_publisher( payload, solr_doc, fedora_doc )
      payload[ :publisher ] = publisher if publisher.present?
-     publish_location = extract_publish_location( solr_doc, fedora_doc )
+     publish_location = extract_publish_location( payload, solr_doc, fedora_doc )
      payload[ :publish_location ] = publish_location if publish_location.present?
-     publish_date = extract_publish_date( solr_doc, fedora_doc )
+     publish_date = extract_publish_date( payload, solr_doc, fedora_doc )
      payload[ :publish_date ] = publish_date if publish_date.present?
 
      # ISBN & ISSN
-     isbn = extract_isbn( solr_doc, fedora_doc )
+     isbn = extract_isbn( payload, solr_doc, fedora_doc )
      payload[ :isbn ] = isbn if isbn.present?
-     issn = extract_issn( solr_doc, fedora_doc )
+     issn = extract_issn( payload, solr_doc, fedora_doc )
      payload[ :issn ] = issn if issn.present?
 
      # conference attributes
-     conference_title = extract_conference_name( solr_doc, fedora_doc )
+     conference_title = extract_conference_name( payload, solr_doc, fedora_doc )
      payload[ :conference_title ] = conference_title if conference_title.present?
-     conference_location = extract_conference_location( solr_doc, fedora_doc )
+     conference_location = extract_conference_location( payload, solr_doc, fedora_doc )
      payload[ :conference_location ] = conference_location if conference_location.present?
-     conference_date = extract_conference_date( solr_doc, fedora_doc )
+     conference_date = extract_conference_date( payload, solr_doc, fedora_doc )
      payload[ :conference_date ] = conference_date if conference_date.present?
 
      # page attributes
-     start_page = extract_start_page( solr_doc, fedora_doc )
+     start_page = extract_start_page( payload, solr_doc, fedora_doc )
      payload[ :start_page ] = start_page if start_page.present?
-     end_page = extract_end_page( solr_doc, fedora_doc )
+     end_page = extract_end_page( payload, solr_doc, fedora_doc )
      payload[ :end_page ] = end_page if end_page.present?
 
      # journal attributes
-     journal_title = extract_journal_name( solr_doc, fedora_doc )
+     journal_title = extract_journal_name( payload, solr_doc, fedora_doc )
      payload[ :journal_title ] = journal_title if journal_title.present?
-     journal_volume = extract_journal_volume( solr_doc, fedora_doc )
+     journal_volume = extract_journal_volume( payload, solr_doc, fedora_doc )
      payload[ :journal_volume ] = journal_volume if journal_volume.present?
-     journal_issue = extract_journal_issue( solr_doc, fedora_doc )
+     journal_issue = extract_journal_issue( payload, solr_doc, fedora_doc )
      payload[ :journal_issue ] = journal_issue if journal_issue.present?
-     journal_year = extract_journal_year( solr_doc, fedora_doc )
+     journal_year = extract_journal_year( payload, solr_doc, fedora_doc )
      payload[ :journal_publication_year ] = journal_year if journal_year.present?
 
      # edited book attributes
@@ -310,7 +310,7 @@ namespace :libraoc do
   #
   # Attempt to extract the title
   #
-  def extract_title( solr_doc, fedora_doc )
+  def extract_title( existing_payload, solr_doc, fedora_doc )
 
     # general approach
     title = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_title_info_t')
@@ -322,7 +322,7 @@ namespace :libraoc do
   #
   # Attempt to extract the abstract
   #
-  def extract_abstract( solr_doc, fedora_doc )
+  def extract_abstract( existing_payload, solr_doc, fedora_doc )
 
     # document abstract (use the XML variant as it reflects the formatting better)
     abstract = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods abstract' )
@@ -338,7 +338,7 @@ namespace :libraoc do
   #
   # Attempt to extract issue/publication date
   #
-  def extract_issued_date( solr_doc, fedora_doc )
+  def extract_issued_date( existing_payload, solr_doc, fedora_doc )
 
     # general approach
     issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'origin_info_date_issued_t' )
@@ -354,8 +354,9 @@ namespace :libraoc do
     return issued_date if issued_date.present?
 
     # try for conference papers
-    issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'conference_date_t' )
-    return issued_date if issued_date.present?
+    if resource_type( existing_payload ) == 'Conference Proceeding'
+       return existing_payload[:create_date] if existing_payload[:create_date].present?
+    end
 
     return nil
   end
@@ -363,7 +364,7 @@ namespace :libraoc do
   #
   # Attempt to extract the related URL
   #
-  def extract_related_url( solr_doc, fedora_doc )
+  def extract_related_url( existing_payload, solr_doc, fedora_doc )
 
     # general approach
     related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
@@ -375,7 +376,7 @@ namespace :libraoc do
   #
   # Attempt to extract the sponsoring agency
   #
-  def extract_sponsoring_agency( solr_doc, fedora_doc )
+  def extract_sponsoring_agency( existing_payload, solr_doc, fedora_doc )
 
     # general approach
     sponsor = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_sponsor_sponsor_name_t')
@@ -387,7 +388,7 @@ namespace :libraoc do
   #
   # Attempt to extract the start page
   #
-  def extract_start_page( solr_doc, fedora_doc )
+  def extract_start_page( existing_payload, solr_doc, fedora_doc )
 
     # for books and articles
     start_page = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods relatedItem part extent start' )
@@ -398,7 +399,7 @@ namespace :libraoc do
   #
   # Attempt to extract the end page
   #
-  def extract_end_page( solr_doc, fedora_doc )
+  def extract_end_page( existing_payload, solr_doc, fedora_doc )
 
     # for books and articles
     start_page = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods relatedItem part extent end' )
@@ -409,7 +410,7 @@ namespace :libraoc do
   #
   # Attempt to extract the publisher
   #
-  def extract_publisher( solr_doc, fedora_doc )
+  def extract_publisher( existing_payload, solr_doc, fedora_doc )
 
      # for books
      publisher = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods originInfo publisher' )
@@ -420,7 +421,7 @@ namespace :libraoc do
   #
   # Attempt to extract the publish location
   #
-  def extract_publish_location( solr_doc, fedora_doc )
+  def extract_publish_location( existing_payload, solr_doc, fedora_doc )
 
     # for books
     publish_location = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods originInfo place placeTerm' )
@@ -431,7 +432,13 @@ namespace :libraoc do
   #
   # Attempt to extract the publish date
   #
-  def extract_publish_date( solr_doc, fedora_doc )
+  def extract_publish_date( existing_payload, solr_doc, fedora_doc )
+
+    # for articles
+    node_list = IngestHelpers.fedora_node_list_extract( fedora_doc, 'relatedItem part date' )
+    node_list.each do |n|
+      return n.text if n.text.present?
+    end
 
     # for books
     publish_date = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods originInfo dateOther' )
@@ -442,7 +449,7 @@ namespace :libraoc do
   #
   # Attempt to extract the ISBN
   #
-  def extract_isbn( solr_doc, fedora_doc )
+  def extract_isbn( existing_payload, solr_doc, fedora_doc )
 
     # for books
     isbn = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods identifier', 'isbn' )
@@ -453,7 +460,7 @@ namespace :libraoc do
   #
   # Attempt to extract the ISSN
   #
-  def extract_issn( solr_doc, fedora_doc )
+  def extract_issn( existing_payload, solr_doc, fedora_doc )
 
     # for articles
     issn = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods identifier', 'issn' )
@@ -464,7 +471,7 @@ namespace :libraoc do
   #
   # Attempt to extract the conference name
   #
-  def extract_conference_name( solr_doc, fedora_doc )
+  def extract_conference_name( existing_payload, solr_doc, fedora_doc )
 
     # for conferences
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem name', 'conference' )
@@ -477,7 +484,7 @@ namespace :libraoc do
   #
   # Attempt to extract the conference location
   #
-  def extract_conference_location( solr_doc, fedora_doc )
+  def extract_conference_location( existing_payload, solr_doc, fedora_doc )
 
     # for conferences
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem name', 'conference' )
@@ -491,7 +498,7 @@ namespace :libraoc do
   #
   # Attempt to extract the conference date
   #
-  def extract_conference_date( solr_doc, fedora_doc )
+  def extract_conference_date( existing_payload, solr_doc, fedora_doc )
 
     # for conferences
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem name', 'conference' )
@@ -505,7 +512,7 @@ namespace :libraoc do
   #
   # Attempt to extract the journal name
   #
-  def extract_journal_name( solr_doc, fedora_doc )
+  def extract_journal_name( existing_payload, solr_doc, fedora_doc )
 
     # for journals
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
@@ -519,7 +526,7 @@ namespace :libraoc do
   #
   # Attempt to extract the journal volume
   #
-  def extract_journal_volume( solr_doc, fedora_doc )
+  def extract_journal_volume( existing_payload, solr_doc, fedora_doc )
 
     # for journals
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
@@ -535,7 +542,7 @@ namespace :libraoc do
   #
   # Attempt to extract the journal issue
   #
-  def extract_journal_issue( solr_doc, fedora_doc )
+  def extract_journal_issue( existing_payload, solr_doc, fedora_doc )
 
     # for journals
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
@@ -551,7 +558,7 @@ namespace :libraoc do
   #
   # Attempt to extract the journal year
   #
-  def extract_journal_year( solr_doc, fedora_doc )
+  def extract_journal_year( existing_payload, solr_doc, fedora_doc )
 
     # for journals
     node = IngestHelpers.fedora_first_node_extract(fedora_doc, 'mods relatedItem', 'host' )
@@ -701,6 +708,13 @@ namespace :libraoc do
       return true, persons << person
     end
     return false, persons
+  end
+
+  #
+  #
+  #
+  def resource_type( payload )
+      return payload[ :resource_type ]
   end
 
   #
