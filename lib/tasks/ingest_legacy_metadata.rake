@@ -353,6 +353,12 @@ namespace :libraoc do
     issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'book_origin_info_year_issued_t' )
     return issued_date if issued_date.present?
 
+    # try for articles
+    if resource_type( existing_payload ) == 'Article'
+      issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'journal_issue_publication_year_t' )
+      return issued_date if issued_date.present?
+    end
+
     # try for conference papers
     if resource_type( existing_payload ) == 'Conference Proceeding'
        return existing_payload[:create_date] if existing_payload[:create_date].present?
