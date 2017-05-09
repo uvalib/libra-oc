@@ -108,6 +108,9 @@ module ServiceClient
        #puts "==> CREATE DATE OUT [#{yyyymmdd}]" if yyyymmdd
        h['publication_date'] = yyyymmdd if yyyymmdd
        h['type'] = 'Text'
+
+       # open content uses the datacite schema
+       h['schema'] = 'datacite'
        return h.to_json
      end
 
