@@ -81,6 +81,9 @@
               <% if f.object.private_visibility_disabled? %>
                 <p class="text-muted"> Contact libra@virginia.edu for this visibility change.</p>
               <%end%>
+              <% if !f.object.private_access? && @current_user.admin? %>
+                <p class="text-muted">Admin Override</p>
+              <%end%>
           </label>
         </li>
       </ul>

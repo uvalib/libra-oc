@@ -63,7 +63,7 @@ module CurationConcerns
     end
 
     def private_visibility_disabled?
-      ( model.id.present? && !model.private_access? )
+      ( model.id.present? && !model.private_access? && !current_ability.current_user.admin?)
     end
 
     protected
