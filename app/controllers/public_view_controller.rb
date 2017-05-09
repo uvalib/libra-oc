@@ -37,24 +37,25 @@ class PublicViewController < ApplicationController
   end
 
   def setup_meta_tags
-    set_meta_tags(
-      description: "TODO",
-      keywords: @work.keyword,
+    if @work.present?
+      set_meta_tags(
+        description: "TODO",
+        keywords: @work.keyword,
 
-      #for google scholar
-      "DC.title": :title,
-      "DC.creator": @work.authors.map(&:to_display),
-      "DC.contributor": @work.contributors.map(&:to_display),
-      "DC.subject": @work.subject.join("; "),
-      "DC.type": @work.resource_type,
-      "DC.identifier": @work.identifier,
-      "DC.rights": @work.license,
-      "DC.issued": @work.published_date,
-      citation_online_date: (Date.parse(@work.date_created).try(:strftime, "%Y/%-m/%-d") if @work.date_created.present?),
-      "DC.identifier": @work.identifier,
-      "DC.language": @work.language,
-      "DC.publisher":@work.publisher,
-    )
+        #for google scholar
+        "DC.title": :title,
+        "DC.creator": @work.authors.map(&:to_display),
+        "DC.contributor": @work.contributors.map(&:to_display),
+        "DC.subject": @work.subject.join("; "),
+        "DC.type": @work.resource_type,
+        "DC.identifier": @work.identifier,
+        "DC.rights": @work.license,
+        "DC.issued": @work.published_date,
+        citation_online_date: (Date.parse(@work.date_created).try(:strftime, "%Y/%-m/%-d") if @work.date_created.present?),
+        "DC.language": @work.language,
+        "DC.publisher":@work.publisher,
+      )
+    end
   end
 
 end
