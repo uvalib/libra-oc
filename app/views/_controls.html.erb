@@ -13,7 +13,7 @@
           <%= link_to t(:'sufia.controls.contact'), sufia.contact_path %></li>
       </ul><!-- /.nav -->
       <% end %>
-      <% if Toggles.expose_search %>
+      <% if Toggles.expose_search && current_user && current_user.admin? %>
       <div class="searchbar-right navbar-right col-sm-7 col-md-6">
         <%= render partial: 'catalog/search_form' %>
       </div>
