@@ -50,5 +50,6 @@ module CurationConcerns
       end
       flash[:notice] = nil
     end
+
   end
 end

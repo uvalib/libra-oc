@@ -88,7 +88,7 @@ class LibraWork < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes') do |index|
+  property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes'), multiple: false do |index|
     index.type :text
     index.as :stored_searchable
   end

@@ -8,12 +8,13 @@ module CurationConcerns
                    :related_url, :source ]
     self.terms += [ :resource_type, :abstract, :authors,
                     :keyword, :contributors, :source_citation, :publisher, :published_date,
-                    :related_url, :sponsoring_agency, :notes
+                    :related_url, :sponsoring_agency, :notes, :admin_notes
     ]
     self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
     delegate :authors, to: :model
     delegate :contributors, to: :model
-    attr_reader :has_existing_files
+    delegate :admin_notes, to: :model
+    attr_reader :has_existing_files, :is_admin
 
     def initialize(model, current_ability)
       super
@@ -76,6 +77,7 @@ module CurationConcerns
       permitted << :rights
       permitted << :language
       permitted << :resource_type
+      permitted << :admin_notes
       permitted
     end
 

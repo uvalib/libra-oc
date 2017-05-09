@@ -24,7 +24,7 @@ export class DepositAgreement {
 
   setNotAccepted() {
     this.agreementCheckbox.prop("checked", false)
-      this.mustAgreeAgain = false
+    this.mustAgreeAgain = false
   }
 
   setAccepted() {
