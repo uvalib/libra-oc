@@ -350,11 +350,19 @@ namespace :libraoc do
   # update the metadata for the supplied work
   def update_work_metadata( work )
 
+    if work.doi.blank?
+      puts "WARNING: work #{work.id} does not have a DOI, ignoring"
+      return false
+    end
+
     status = ServiceClient::EntityIdClient.instance.metadatasync( work )
     if ServiceClient::EntityIdClient.instance.ok?( status ) == false
        puts "ERROR: metadata update returns #{status}, aborting"
        return false
     end
+
+    puts "Updated metadata for #{work.id} (#{work.doi})"
+
     return true
   end
 
