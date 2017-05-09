@@ -1,5 +1,6 @@
 <%- headers = ['Id',
                'Resource Type',
+               'Visibility',
                'DOI',
                'Depositor',
                'Authors',
@@ -27,6 +28,7 @@
 <%- @works.each do |rec| -%>
    <%= raw( CSV.generate_line( [ rec.id,
                                  rec.resource_type,
+                                 format_visibility( rec ),
                                  rec.doi,
                                  rec.depositor,
                                  format_persons( rec.authors ),

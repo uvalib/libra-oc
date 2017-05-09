@@ -5,4 +5,10 @@ module ExportsHelper
     persons.map { |p| p.to_display }.join( ', ' )
   end
 
+  def format_visibility( rec )
+    return 'private' if rec.is_private?
+    return 'UVa only' if rec.is_institution_visible?
+    return 'public' if rec.is_publicly_visible?
+    return 'unknown'
+  end
 end
