@@ -1,0 +1,4 @@
+<% if @current_user.admin? %>
+  <%= f.input :admin_notes, as: :text, input_html: { rows: '14' } %>
+  <%= f.input :is_admin, as: :hidden, input_html: {value: true} %>
+<%end%>

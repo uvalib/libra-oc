@@ -121,19 +121,19 @@ export default class SaveWorkControl {
   isValid() {
     // avoid short circuit evaluation. The checkboxes should be independent.
     let metadataValid = this.validateMetadata()
-      let filesValid = this.validateFiles()
-      let agreementValid = this.validateAgreement(filesValid)
-      return metadataValid  && agreementValid
+    let filesValid = this.validateFiles()
+    let agreementValid = this.validateAgreement(filesValid)
+    return metadataValid  && agreementValid
   }
 
   // sets the metadata indicator to complete/incomplete
   validateMetadata() {
     if (this.requiredFields.areComplete) {
       this.requiredMetadata.check()
-        return true
+      return true
     }
     this.requiredMetadata.uncheck()
-      return false
+    return false
   }
 
   // sets the files indicator to complete/incomplete
@@ -143,7 +143,7 @@ export default class SaveWorkControl {
       return true
     }
     this.requiredFiles.uncheck()
-      return false
+    return false
   }
 
   validateAgreement(filesValid) {
