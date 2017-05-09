@@ -16,6 +16,11 @@ en:
     deposit_agreement: "Libra Deposit Agreement"
     visibility:
       open: "Visible Worldwide"
+    search:
+      form:
+        option:
+          all:
+            label_long:   "All of Libra"
 
   curation_concerns:
     institution_name: "Restricted to UVa Only"

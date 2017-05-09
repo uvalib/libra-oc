@@ -26,6 +26,10 @@ Toggles.config do |config|
   ## the default is true
   config[:expose_search] = true
 
+  ## do we expose the search my works capability?
+  ## the default is true
+  config[:expose_search_my_works] = false
+
   ## do we expose the idea of proxies?
   ## the default is true
   config[:expose_proxies] = false
