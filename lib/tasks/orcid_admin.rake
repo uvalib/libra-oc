@@ -8,7 +8,7 @@ namespace :libraoc do
 
   namespace :orcid do
 
-  desc "List known ORCID's"
+  desc "List known ORCID's (from the ORCID service)"
   task list_orcids: :environment do |t, args|
 
     count = 0
@@ -109,6 +109,41 @@ namespace :libraoc do
     end
 
   end
+
+  #
+  # Send work metadata to the ORCID profiloe service
+  #
+  desc "Send work metadata to ORCID profile; must provide the work id"
+  task work_to_orcid: :environment do |t, args|
+
+    work_id = ARGV[ 1 ]
+    if work_id.nil?
+      puts "ERROR: no work id specified, aborting"
+      next
+    end
+
+    task work_id.to_sym do ; end
+
+    work = TaskHelpers.get_work_by_id( work_id )
+    if work.nil?
+      puts "ERROR: work #{work_id} does not exist, aborting"
+      next
+    end
+
+    depositor = User.find_by_user_key( work.depositor )
+    if depositor.nil?
+      puts "ERROR: depositor #{work.depositor} does not exist, aborting"
+      next
+    end
+
+    if depositor.orcid.blank?
+      puts "ERROR: depositor #{work.depositor} does not have an assigned ORCID, aborting"
+      next
+    end
+
+    puts "ERROR: Not implemented"
+  end
+
 
   def orcid_from_orcid_url( orcid_url )
     return '' if orcid_url.blank?
