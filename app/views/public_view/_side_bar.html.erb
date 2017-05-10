@@ -11,7 +11,10 @@
       <% @work.file_sets.each do |file| %>
         <div class="file_asset_record">
           <% download_count = get_file_download_count( file ) %>
-          <p><%= link_to file.title.first, download_path(file), data: { turbolinks: false } %>&nbsp;&nbsp;
+          <p><%= link_to file.title.first, download_path(file), class: 'piwikTrackContent',
+            data: { turbolinks: false,
+                    "content-name": "Public Page File Download", "content-piece": file.title.first
+                  } %>&nbsp;&nbsp;
           <p><span class="file_label">Uploaded:</span><%= date_formatter(file.date_uploaded) %></p>
           <p><span class="file_label"><%= "#{t("sufia.dashboard.stats.file_downloads").pluralize( download_count )}: " %></span><span class="badge"><%= download_count %></p>
         </div>
