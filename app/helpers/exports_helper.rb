@@ -11,4 +11,9 @@ module ExportsHelper
     return 'public' if rec.is_publicly_visible?
     return 'unknown'
   end
+
+  def format_array( array, delimiter )
+    return '' if array.blank?
+    return array.join( delimiter )
+  end
 end
