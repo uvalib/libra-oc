@@ -14,5 +14,17 @@ CurationConcerns::PermissionBadge.class_eval do
       end
     end
 
+    def link_title
+      if open_access_with_embargo?
+        'Open Access with Embargo'
+      elsif open_access?
+        'Visible Worldwide'
+      elsif registered?
+        'Restricted to UVa Only'
+      else
+        'Private'
+      end
+    end
+
 end
 
