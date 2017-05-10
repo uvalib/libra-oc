@@ -1,0 +1,28 @@
+
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-8">
+    <p>
+    <%= link_to "Previous", orcid_search_path(page: @prev_page, q: @q), class: 'orcid-pager btn btn-primary' if @prev_page %>
+    <%= link_to "Next", orcid_search_path(page: @next_page, q: @q), class: 'orcid-pager btn btn-primary' if @next_page %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class='col-xs-12'>
+    <table class="table">
+      <% @orcid_profiles.each do |p| %>
+        <tr>
+          <td><b><%= "#{p['first_name']} #{p['last_name']}" %></b></td>
+          <td><button class="btn btn-default btn-sm select-orcid"
+                      data-orcid-id='<%= p['orcid'] %>'
+                      data-orcid-name='<%= "#{p['first_name']} #{p['last_name']}" %>' >
+                      Select
+            </button>
+          </td>
+
+        </tr>
+      <%end%>
+    </table>
+  </div>
+</div>

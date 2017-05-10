@@ -34,7 +34,22 @@
     <% end %>
     <div class="col-xs-8">
        <% orcid = extract_orcid_for_display( @user.orcid ) %>
-       <input type="text" class="form-control orcid_widget" id="user_orcid" name="user[orcid]" readonly="true" value="<%= orcid %>" />
+       <div class="input-group">
+         <input type="text" class="form-control orcid_widget" id="user_orcid" name="user[orcid]" readonly="true" value="<%= orcid %>" />
+         <div class="input-group-btn">
+           <button type="button" class=" btn btn-danger" id='clear-orcid'>
+             <i class="glyphicon glyphicon-remove"></i>
+           </button>
+         </div>
+       </div>
+
+       <p id='orcid-name'><p>
+       <p>
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orcidSearch">
+           Search ORCID
+         </button>
+       </p>
+
     </div>
   </div><!-- .form-group -->
 
@@ -69,3 +84,5 @@
 <% if Toggles.expose_proxies %>
 <%= render 'dashboard/_index_partials/proxy_rights', user: @user %>
 <% end %>
+
+<%= render partial: 'orcid_modal' %>
