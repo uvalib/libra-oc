@@ -7,7 +7,7 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
       solr_doc[Solrizer.solr_name('contributors')] = object.contributors
       solr_doc[Solrizer.solr_name('contributors_display', :facetable)] = object.contributors.map &:to_display
       solr_doc[Solrizer.solr_name('notes', :searchable)] = object.notes
-      solr_doc[Solrizer.solr_name('thumbnail_url_display')] = object.thumbnail_url
+      solr_doc[Solrizer.solr_name('thumbnail_url_display', :displayable)] = object.thumbnail_url
     end
   end
 end
