@@ -6,6 +6,7 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
       solr_doc[Solrizer.solr_name('authors_display', :facetable)] = object.authors.map &:to_display
       solr_doc[Solrizer.solr_name('contributors')] = object.contributors
       solr_doc[Solrizer.solr_name('contributors_display', :facetable)] = object.contributors.map &:to_display
+      solr_doc[Solrizer.solr_name('notes', :searchable)] = object.notes
     end
   end
 end
