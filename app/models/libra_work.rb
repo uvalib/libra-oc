@@ -134,4 +134,20 @@ class LibraWork < ActiveFedora::Base
     return work_source.start_with? LibraWork::SOURCE_LEGACY
   end
 
+  #
+  # Thumbnail url for solr
+  # This requires ENV['BASE_URL'] in production
+  #
+  def thumbnail_url
+    # Just show defaults for now
+    ActionController::Base.helpers.image_url 'default.png'
+
+    # Actual thumbnails are ready to go below.
+    #if self.thumbnail.present?
+    #  Rails.application.routes.url_helpers.download_url(self.thumbnail.id, file: 'thumbnail')
+    #else
+    #  ActionController::Base.helpers.image_url 'default.png'
+    #end
+  end
+
 end
