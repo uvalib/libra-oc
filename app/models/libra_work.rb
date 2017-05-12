@@ -136,7 +136,6 @@ class LibraWork < ActiveFedora::Base
 
   #
   # Thumbnail url for solr
-  # This requires ENV['BASE_URL'] in production
   #
   def thumbnail_url
     # Just show defaults for now

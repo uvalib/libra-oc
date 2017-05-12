@@ -27,8 +27,10 @@ module LibraOc
     # specify the name of the IP whitelist file
     config.ip_whitelist = "#{Rails.root}/data/ipwhitelist.txt"
 
-    Rails.application.routes.default_url_options[:host] = ENV['BASE_URL']
-    config.action_controller.asset_host = ENV['BASE_URL']
+    require "#{config.root}/app/helpers/url_helper"
+    include UrlHelper
+    Rails.application.routes.default_url_options[:host] = public_site_url
+    config.action_controller.asset_host = public_site_url
 
   end
 end
