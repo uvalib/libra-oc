@@ -24,7 +24,8 @@ module Toggles
       expose_file_manager: true,
       expose_public_delete: true,
       expose_aggregate_metrics: true,
-      expose_feature_work: true
+      expose_feature_work: true,
+      expose_social: true
     }
   end
 

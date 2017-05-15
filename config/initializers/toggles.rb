@@ -69,4 +69,8 @@ Toggles.config do |config|
   # do we support the ability to feature works?
   ## default is true
   config[:expose_feature_work] = false
+
+  # do we support the social features?
+  ## default is true
+  config[:expose_social] = false
 end
