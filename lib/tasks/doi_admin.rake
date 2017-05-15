@@ -299,6 +299,79 @@ namespace :libraoc do
   end
 
   #
+  # revoke a DOI by the specified work id
+  #
+  desc "Revoke a DOI by id; must provide the work id"
+  task revoke_by_id: :environment do |t, args|
+
+    work_id = ARGV[ 1 ]
+    if work_id.nil?
+      puts "ERROR: no id specified, aborting"
+      next
+    end
+
+    task work_id.to_sym do ; end
+
+    work = TaskHelpers.get_work_by_id( work_id )
+    if work.nil?
+      puts "ERROR: work #{work_id} does not exist, aborting"
+      next
+    end
+
+    if work.doi.blank?
+      puts "ERROR: work #{work_id} does not have a DOI, aborting"
+      next
+    end
+
+    status = ServiceClient::EntityIdClient.instance.revoke( work.doi )
+    if ServiceClient::EntityIdClient.instance.ok?( status ) == false
+      puts "ERROR: EZID service returns #{status}, aborting"
+    else
+      # disable the allocate DOI callback for the ingest
+      LibraWork.skip_callback( :save, :after, :allocate_doi )
+
+      work.doi = nil
+      work.save!
+      puts "DOI successfully revoked"
+    end
+
+  end
+
+  #
+  # revoke a DOI by the specified work id
+  #
+  desc "Clear a DOI by id; must provide the work id"
+  task clear_by_id: :environment do |t, args|
+
+    work_id = ARGV[ 1 ]
+    if work_id.nil?
+      puts "ERROR: no id specified, aborting"
+      next
+    end
+
+    task work_id.to_sym do ; end
+
+    work = TaskHelpers.get_work_by_id( work_id )
+    if work.nil?
+      puts "ERROR: work #{work_id} does not exist, aborting"
+      next
+    end
+
+    if work.doi.blank?
+      puts "ERROR: work #{work_id} does not have a DOI, aborting"
+      next
+    end
+
+    # disable the allocate DOI callback for the ingest
+    LibraWork.skip_callback( :save, :after, :allocate_doi )
+
+    work.doi = nil
+    work.save!
+    puts "DOI successfully cleared"
+
+  end
+
+  #
   # helper methods
   #
 

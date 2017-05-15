@@ -8,6 +8,14 @@ module ServiceClient
      # get the helpers
      include UrlHelper
 
+     DC_RESOURCE_TYPE_TEXT ||= 'Text'
+     DC_RESOURCE_TYPE_SOUND ||= 'Sound'
+     DC_RESOURCE_TYPE_IMAGE ||= 'Image'
+     DC_RESOURCE_TYPE_COLLECTION ||= 'Collection'
+     DC_RESOURCE_TYPE_EVENT ||= 'Event'
+     DC_RESOURCE_TYPE_AUDIOVISUAL ||= 'Audiovisual'
+     DC_RESOURCE_TYPE_OTHER ||= 'Other'
+
      #
      # configure with the appropriate configuration file
      #
@@ -43,7 +51,7 @@ module ServiceClient
        url = "#{self.url}/#{self.shoulder}?auth=#{self.authtoken}"
        payload =  self.construct_payload( work )
        status, response = rest_post( url, payload )
-
+       #puts "==> #{status}: #{response}"
        return status, response['details']['id'] if ok?( status ) && response['details'] && response['details']['id']
        return status, ''
      end
@@ -95,22 +103,34 @@ module ServiceClient
      #
      def construct_payload( work )
        h = {}
-       h['url'] = fully_qualified_work_url( work.id ) # 'http://google.com'
-       h['title'] = work.title.join( ' ' ) if work.title
-       h['publisher'] = work.publisher if work.publisher
-       h['creator_firstname'] = author_firstname( work.authors ) if author_firstname( work.authors )
-       h['creator_lastname'] = author_lastname( work.authors ) if author_lastname( work.authors )
-       h['creator_department'] = author_department( work.authors ) if author_department( work.authors )
-       h['creator_institution'] = author_institution( work.authors ) if author_institution( work.authors )
-       yyyymmdd = extract_yyyymmdd_from_datestring( work.published_date )
-       #puts "==> PUB DATE OUT [#{yyyymmdd}]" if yyyymmdd
-       yyyymmdd = extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.nil?
-       #puts "==> CREATE DATE OUT [#{yyyymmdd}]" if yyyymmdd
-       h['publication_date'] = yyyymmdd if yyyymmdd
-       h['type'] = 'Text'
+       #h['creator_firstname'] = author_firstname( work.authors ) if author_firstname( work.authors )
+       #h['creator_lastname'] = author_lastname( work.authors ) if author_lastname( work.authors )
+       #h['creator_department'] = author_department( work.authors ) if author_department( work.authors )
+       #h['creator_institution'] = author_institution( work.authors ) if author_institution( work.authors )
 
        # open content uses the datacite schema
-       h['schema'] = 'datacite'
+       schema = 'datacite'
+       h['schema'] = schema
+       h[schema] = {}
+
+       # needed for datacite schema
+       h[schema]['abstract'] = work.abstract if work.abstract.present?
+       h[schema]['creators'] = work.authors if work.authors.present?
+       h[schema]['contributors'] = work.contributors if work.contributors.present?
+       h[schema]['keywords'] = work.keyword if work.keyword.present?
+       h[schema]['rights'] = work.rights[ 0 ] if work.rights.present?
+       h[schema]['sponsors'] = work.sponsoring_agency if work.sponsoring_agency.present?
+       h[schema]['type'] = resource_type( work.resource_type )
+
+       yyyymmdd = extract_yyyymmdd_from_datestring( work.published_date )
+       yyyymmdd = extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.nil?
+       h[schema]['publication_date'] = yyyymmdd if yyyymmdd
+       h[schema]['url'] = fully_qualified_work_url( work.id ) # 'http://google.com'
+       h[schema]['title'] = work.title.join( ' ' ) if work.title.present?
+       h[schema]['publisher'] = work.publisher if work.publisher.present?
+
+       #puts "==> #{h.to_json}"
+
        return h.to_json
      end
 
@@ -150,6 +170,27 @@ module ServiceClient
      def author_institution( authors )
        return authors[ 0 ].institution if authors && authors[ 0 ] && authors[ 0 ].institution.present?
        return nil
+     end
+
+     def resource_type( resource_type )
+
+       return DC_RESOURCE_TYPE_TEXT if resource_type.blank?
+       case resource_type
+         when 'Audio'
+           return DC_RESOURCE_TYPE_SOUND
+         when 'Image'
+           return DC_RESOURCE_TYPE_IMAGE
+         when 'Journal'
+           return DC_RESOURCE_TYPE_COLLECTION
+         when 'Map', 'Poster', 'Other'
+           return DC_RESOURCE_TYPE_OTHER
+         when 'Presentation'
+           return DC_RESOURCE_TYPE_EVENT
+         when 'Video'
+           return DC_RESOURCE_TYPE_AUDIOVISUAL
+         else
+           return DC_RESOURCE_TYPE_TEXT
+       end
      end
 
      #
