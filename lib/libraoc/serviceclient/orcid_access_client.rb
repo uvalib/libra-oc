@@ -61,12 +61,13 @@ module ServiceClient
      end
 
      #
-     # set specified user's ORCID
+     # search ORCIDs
+     # returns entire response
      #
      def search( search, start, max )
        url = "#{self.url}/orcid?q=#{search}&start=#{start}&max=#{max}&auth=#{self.authtoken}"
        status, response = rest_get( url )
-       return status, response['results'] if ok?( status ) && response['results']
+       return status, response if ok?( status ) && response['results']
        return status, ''
      end
 

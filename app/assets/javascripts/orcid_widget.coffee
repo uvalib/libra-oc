@@ -41,4 +41,6 @@ onLoad = ()->
   endProgress = ()->
     Turbolinks.controller.adapter.progressBar.hide();
     Turbolinks.controller.adapter.progressBar.setValue(100);
+    $('[data-toggle="popover"]').popover()
+
 $(window).bind('turbolinks:load', onLoad)
