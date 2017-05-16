@@ -8,13 +8,13 @@ module ServiceClient
      # get the helpers
      include UrlHelper
 
-     DC_RESOURCE_TYPE_TEXT ||= 'Text'
-     DC_RESOURCE_TYPE_SOUND ||= 'Sound'
-     DC_RESOURCE_TYPE_IMAGE ||= 'Image'
-     DC_RESOURCE_TYPE_COLLECTION ||= 'Collection'
-     DC_RESOURCE_TYPE_EVENT ||= 'Event'
-     DC_RESOURCE_TYPE_AUDIOVISUAL ||= 'Audiovisual'
-     DC_RESOURCE_TYPE_OTHER ||= 'Other'
+     DC_GENERAL_TYPE_TEXT ||= 'Text'
+     DC_GENERAL_TYPE_SOUND ||= 'Sound'
+     DC_GENERAL_TYPE_IMAGE ||= 'Image'
+     DC_GENERAL_TYPE_COLLECTION ||= 'Collection'
+     DC_GENERAL_TYPE_EVENT ||= 'Event'
+     DC_GENERAL_TYPE_AUDIOVISUAL ||= 'Audiovisual'
+     DC_GENERAL_TYPE_OTHER ||= 'Other'
 
      #
      # configure with the appropriate configuration file
@@ -120,7 +120,8 @@ module ServiceClient
        h[schema]['keywords'] = work.keyword if work.keyword.present?
        h[schema]['rights'] = work.rights[ 0 ] if work.rights.present?
        h[schema]['sponsors'] = work.sponsoring_agency if work.sponsoring_agency.present?
-       h[schema]['type'] = resource_type( work.resource_type )
+       h[schema]['resource_type'] = work.resource_type if work.resource_type.present?
+       h[schema]['general_type'] = dc_general_type( work.resource_type ) if work.resource_type.present?
 
        yyyymmdd = extract_yyyymmdd_from_datestring( work.published_date )
        yyyymmdd = extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.nil?
@@ -172,24 +173,24 @@ module ServiceClient
        return nil
      end
 
-     def resource_type( resource_type )
+     def dc_general_type( resource_type )
 
-       return DC_RESOURCE_TYPE_TEXT if resource_type.blank?
+       return DC_GENERAL_TYPE_TEXT if resource_type.blank?
        case resource_type
          when 'Audio'
-           return DC_RESOURCE_TYPE_SOUND
+           return DC_GENERAL_TYPE_SOUND
          when 'Image'
-           return DC_RESOURCE_TYPE_IMAGE
+           return DC_GENERAL_TYPE_IMAGE
          when 'Journal'
-           return DC_RESOURCE_TYPE_COLLECTION
+           return DC_GENERAL_TYPE_COLLECTION
          when 'Map', 'Poster', 'Other'
-           return DC_RESOURCE_TYPE_OTHER
+           return DC_GENERAL_TYPE_OTHER
          when 'Presentation'
-           return DC_RESOURCE_TYPE_EVENT
+           return DC_GENERAL_TYPE_EVENT
          when 'Video'
-           return DC_RESOURCE_TYPE_AUDIOVISUAL
+           return DC_GENERAL_TYPE_AUDIOVISUAL
          else
-           return DC_RESOURCE_TYPE_TEXT
+           return DC_GENERAL_TYPE_TEXT
        end
      end
 
