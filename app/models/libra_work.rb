@@ -4,6 +4,7 @@ class LibraWork < ActiveFedora::Base
   include ::CurationConcerns::WorkBehavior
   include Libraoc::BasicMetadata
   include Sufia::WorkBehavior
+  include UrlHelper
 
   # first time create behavior
   include Libraoc::CreateBehavior
@@ -139,7 +140,7 @@ class LibraWork < ActiveFedora::Base
   #
   def thumbnail_url
     # Just show defaults for now
-    ActionController::Base.helpers.image_url 'default.png'
+    ActionController::Base.helpers.image_url 'default.png', host: public_site_url
 
     # Actual thumbnails are ready to go below.
     #if self.thumbnail.present?
