@@ -30,3 +30,6 @@ env.*
 hostfs
 !hostfs/*/*.keep
 fits.log
+
+# if we use the asset pipeline
+public/assets
