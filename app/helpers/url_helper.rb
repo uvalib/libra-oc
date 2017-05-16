@@ -17,12 +17,12 @@ module UrlHelper
   private
 
   def hostname
-    return Socket.gethostname unless Rails.env.to_s == 'development'
+    return Socket.gethostname unless Rails.env.development?
     return 'localhost:3000'
   end
 
   def protocol
-    return 'https' unless Rails.env.to_s == 'development'
+    return 'https' unless Rails.env.development?
     return 'http'
   end
 end
