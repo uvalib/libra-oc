@@ -21,7 +21,7 @@ class AjaxController < ApplicationController
 
   # GET /orcid_search
   def orcid_search
-    per_page = 15
+    per_page = 5
     params[:max] = per_page
     @page = params[:page].to_i
 
@@ -42,11 +42,13 @@ class AjaxController < ApplicationController
 
     respond_to do |wants|
       wants.json {
-        render json: resp, status: :ok
+        render json: resp['results'], status: :ok
       }
       wants.html {
-        @orcid_profiles = resp
+        @orcid_profiles = resp['results']
         @q = params[:q]
+
+        @total_pages = (resp['total'] / per_page).ceil if resp['total']
         @next_page = nil if @orcid_profiles.count < per_page
         @prev_page = nil if @prev_page < 0
 
