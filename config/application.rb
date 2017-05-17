@@ -30,7 +30,6 @@ module LibraOc
     require "#{config.root}/app/helpers/url_helper"
     include UrlHelper
     Rails.application.routes.default_url_options[:host] = public_site_url
-    config.action_controller.asset_host = public_site_url
 
   end
 end
