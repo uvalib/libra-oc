@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207163915) do
+ActiveRecord::Schema.define(version: 20170516080000) do
+
+  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "work_id",    limit: 16,    null: false
+    t.string   "user_id",    limit: 16,    null: false
+    t.string   "field",      limit: 32,    null: false
+    t.text     "before",     limit: 65535, null: false
+    t.text     "after",      limit: 65535, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
+    t.index ["user_id"], name: "index_audits_on_user_id", using: :btree
+    t.index ["work_id"], name: "index_audits_on_work_id", using: :btree
+  end
 
   create_table "bookmarks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_id",                     null: false
