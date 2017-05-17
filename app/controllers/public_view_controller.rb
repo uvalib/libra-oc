@@ -38,15 +38,19 @@ class PublicViewController < ApplicationController
 
   def setup_meta_tags
     if @work.present?
+      author_names = @work.authors.map {|a| a.to_display(email: false) }
+      contributor_names = @work.contributors.map {|a| a.to_display(email: false) }
+      title = @work.title.first.to_s
       set_meta_tags(
-        description: "TODO",
-        keywords: @work.keyword,
+        title: title,
+        description: "Libra Open Content: #{title} | Authors: #{author_names.join(', ')} #{@work.abstract}",
+        keywords: "UVA Libra Open #{author_names.join(' ')} #{@work.keyword.join(' ')}",
 
         #for google scholar
-        "DC.title": :title,
-        "DC.creator": @work.authors.map(&:to_display),
-        "DC.contributor": @work.contributors.map(&:to_display),
-        "DC.subject": @work.subject.join("; "),
+        "DC.title": title,
+        "DC.creator": author_names.join('; '),
+        "DC.contributor": contributor_names.join('; '),
+        "DC.subject": @work.keyword.join("; "),
         "DC.type": @work.resource_type,
         "DC.identifier": @work.identifier,
         "DC.rights": @work.license,
