@@ -1,6 +1,7 @@
 ---
 :queues:
   - default
-  - ingest
+  - audit
   - event
+  - ingest
   - mailers
