@@ -8,6 +8,7 @@ module Libraoc::PersonMetadata
   end
 
   included do
+    before_save :index_as_integer
 
     type ::RDF::Vocab::FOAF.Person
 
@@ -50,5 +51,11 @@ module Libraoc::PersonMetadata
        email = "(#{email})" if email.present?
        return "#{self.first_name} #{self.last_name} #{email}"
     end
+
+    private
+    def index_as_integer
+      self.index = index.try :to_i if index.present?
+    end
+  end
 
 end

@@ -10,6 +10,8 @@ module CurationConcerns
     self.show_presenter = LibraWorkPresenter
 
     after_action :new_files_notice, only: [:create, :update]
+    after_action :apply_orcid, only: [:create, :update]
+
 
     def new
       super
@@ -69,6 +71,12 @@ module CurationConcerns
         # do noting
       end
       return nil
+    end
+
+    def apply_orcid
+      if user_author = @curation_concern.authors.to_a.find {|a| a.computing_id == @current_user.computing_id}
+        @current_user.update(orcid: user_author.orcid) if user_author.orcid.present?
+      end
     end
 
   end

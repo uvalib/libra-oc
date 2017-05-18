@@ -7,7 +7,7 @@
             <div class="person-group person-input"
                  data-persontype="<%= name %>"
                  >
-              <%= af.hidden_field :index, value: af.options[:child_index], class: 'index' %>
+              <%= af.hidden_field :index, value: af.options[:child_index],  class: 'index' %>
               <div class="row form-group">
                 <div class="col-sm-6">
                   <%= af.input :computing_id, label: "Computing ID", input_html: {class: 'form-control id-lookup'},
@@ -30,6 +30,26 @@
                   <%= af.input :institution, input_html: {class: 'form-control'}, required: false %>
                 </div>
               </div>
+            <% if name == 'authors' %>
+              <div class="row form-group">
+                <div class="col-sm-7">
+                  <% my_orcid = extract_orcid_for_display( current_user.orcid ) %>
+                  <%= af.label :orcid, class: 'control-label' do %>
+                    <%= orcid_label %> <br/> <a target="_blank" href="https://orcid.org/register">Get an ORCID</a>
+                  <%end%>
+                  <div class="input-group">
+                    <%= af.text_field :orcid, class: 'form-control orcid_widg',
+                      readonly: true, value: my_orcid, id: 'user_orcid' %>
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#orcidSearch">
+                        Search
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+              </div>
+            <%end%>
             </div>
             <%= af.hidden_field :_destroy, value: nil, class: 'remove_field' %>
             <hr />
