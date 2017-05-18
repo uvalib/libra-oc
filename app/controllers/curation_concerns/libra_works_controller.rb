@@ -30,12 +30,11 @@ module CurationConcerns
     end
 
     def update
-      before = get_current_work( params['id'] )
+      before = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
       super
 
       # kick off the work audit task
-      WorkAuditJob.perform_later( current_user.computing_id || 'none',
-                                  WorkAuditJob.serialize_work( before ),
+      WorkAuditJob.perform_later( current_user.computing_id || 'none', before,
                                   WorkAuditJob.serialize_work( curation_concern ) )
     end
 

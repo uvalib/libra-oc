@@ -6,8 +6,8 @@ class WorkAuditJob < ActiveJob::Base
     AUDIT_FIELDS ||= {
         'abstract'           => :string,
         'admin_notes'        => :string,
-#        'authors'            => :person_array,
-#        'contributors'       => :person_array,
+        'authors'            => :person_array,
+        'contributors'       => :person_array,
 #        'file_sets'          => :files,
         'keyword'            => :string_array,
         'language'           => :string_array,
@@ -20,9 +20,9 @@ class WorkAuditJob < ActiveJob::Base
         'source_citation'    => :string,
         'sponsoring_agency'  => :string_array,
         'title'              => :string_array,
-#        'visibility'         => :string
     }
 
+    # fields used to audit a person record
     AUDIT_PERSON_FIELDS ||= [
        'first_name',
        'last_name',
@@ -31,18 +31,20 @@ class WorkAuditJob < ActiveJob::Base
        'institution',
     ]
 
+    # some special cases
     ID_FIELD_NAME ||= 'id'
-    PRIVATE_FIELD_NAME ||= 'private'
+    VISIBILITY_FIELD_NAME ||= 'visibility'
 
     def self.serialize_work( work )
        ret = {}
-       #return ret if work.nil?
+       return ret.to_json if work.nil?
        AUDIT_FIELDS.keys.each do |k|
          ret[ k ] = work[ k ]
        end
+
        # handle the special case
        ret[ ID_FIELD_NAME ] = work.id
-       ret[ PRIVATE_FIELD_NAME ] = work.is_private?
+       ret[ VISIBILITY_FIELD_NAME ] = work.visibility
 
        return ret.to_json
     end
@@ -65,10 +67,10 @@ class WorkAuditJob < ActiveJob::Base
       end
 
       # do not audit if this work is private
-      return if after[ PRIVATE_FIELD_NAME ]
+      return if after[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
 
       # dont audit the transition from private to non-private
-      return if before[ PRIVATE_FIELD_NAME ]
+      #return if before[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
 
       # enumerate each field and see if we need to audit it
       work_id = after[ ID_FIELD_NAME ]
@@ -82,10 +84,14 @@ class WorkAuditJob < ActiveJob::Base
             audit_person_array_change( user_id, work_id, k, before[k], after[k] )
           #when :files
           #  audit_files_change( user_id, work_id, 'files', before.file_sets, after.file_sets )
-          #when :visibility
-          #  audit_string_change( user_id, work_id, k, before.visibility, after.visibility )
         end
       end
+
+      # handle special cases
+      audit_string_change( user_id, work_id,
+                           VISIBILITY_FIELD_NAME,
+                           before[VISIBILITY_FIELD_NAME],
+                           after[VISIBILITY_FIELD_NAME] )
     end
 
     def audit_string_change( user_id, work_id, field, before, after )
@@ -120,8 +126,8 @@ class WorkAuditJob < ActiveJob::Base
       if before != after
         puts "** AUDIT ** field #{field} was [#{before}], now [#{after}]"
         Audit.audit( work_id, user_id, field, before, after )
-      #else
-      #  puts "** WARNING ** field #{field} unchanged - before [#{before}], after [#{after}]"
+      else
+        puts "** WARNING ** field #{field} unchanged - before [#{before}], after [#{after}]"
       end
 
     end
