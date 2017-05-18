@@ -126,8 +126,8 @@ class WorkAuditJob < ActiveJob::Base
       if before != after
         puts "** AUDIT ** field #{field} was [#{before}], now [#{after}]"
         Audit.audit( work_id, user_id, field, before, after )
-      else
-        puts "** WARNING ** field #{field} unchanged - before [#{before}], after [#{after}]"
+      #else
+      #  puts "** WARNING ** field #{field} unchanged - before [#{before}], after [#{after}]"
       end
 
     end
