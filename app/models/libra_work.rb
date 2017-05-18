@@ -18,9 +18,6 @@ class LibraWork < ActiveFedora::Base
   # support to manage email state
   include Libraoc::EmailBehavior
 
-  # support for work auditing
-  include Libraoc::AuditBehavior
-
   self.human_readable_type = 'Work'
 
     # specify the indexer used to create the SOLR document

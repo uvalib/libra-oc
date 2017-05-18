@@ -27,6 +27,16 @@ module CurationConcerns
       end
     end
 
+    def update
+      before = get_current_work( params['id'] )
+      super
+
+      # kick off the work audit task
+      WorkAuditJob.perform_later( current_user.computing_id || 'none',
+                                  WorkAuditJob.serialize_work( before ),
+                                  WorkAuditJob.serialize_work( curation_concern ) )
+    end
+
     protected
     def after_update_response
       if permissions_changed? && curation_concern.file_sets.present?
@@ -44,11 +54,21 @@ module CurationConcerns
     end
 
     private
+
     def new_files_notice
       if params.fetch(:uploaded_files, []).any?
         flash[:has_new_files] = true
       end
       flash[:notice] = nil
+    end
+
+    def get_current_work( id )
+      begin
+        return LibraWork.find( id )
+      rescue => ex
+        # do noting
+      end
+      return nil
     end
 
   end
