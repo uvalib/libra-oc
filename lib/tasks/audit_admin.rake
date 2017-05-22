@@ -6,6 +6,17 @@ namespace :libraoc do
 
 namespace :audit do
 
+    desc "Show the full audit history"
+    task all: :environment do |t, args|
+
+      audits = Audit.all.order( created_at: :desc )
+      audits.each do |a|
+        puts a
+      end
+      puts "Displayed #{audits.length} audit record(s)"
+
+    end
+
     desc "Show audit history for a specified user; must provide the user id"
     task by_user: :environment do |t, args|
 
