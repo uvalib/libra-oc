@@ -10,4 +10,7 @@ class Audit < ActiveRecord::Base
     audit.save!
   end
 
+  def to_s
+    return "#{created_at}: #{user_id}/#{work_id} '#{field}' #{before} -> #{after}"
+  end
 end

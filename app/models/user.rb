@@ -41,4 +41,13 @@ class User < ApplicationRecord
   def admin?
     groups.include?( 'admin' )
   end
+
+  #
+  # history of audits for this user
+  #
+  def audit_history
+    return [] if computing_id.blank?
+    return Audit.where( user_id: computing_id ).order( created_at: :desc )
+  end
+
 end

@@ -136,6 +136,14 @@ class LibraWork < ActiveFedora::Base
   end
 
   #
+  # history of audits for this work
+  #
+  def audit_history
+    return [] if id.blank?
+    return Audit.where( work_id: id ).order( created_at: :desc )
+  end
+
+  #
   # Thumbnail url for solr
   #
   def thumbnail_url
