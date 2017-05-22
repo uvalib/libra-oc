@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/computing_id' => 'ajax#computing_id'
   get '/orcid_search' => 'ajax#orcid_search'
   get '/test_email' => 'test_email#test_email'
+  get '/orcid_landing' => 'users/orcid#landing'
 
   resources :public_view, only: [:show]
 

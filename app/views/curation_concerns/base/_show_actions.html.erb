@@ -33,4 +33,14 @@
   <% end %>
   <!-- COinS hook for Zotero -->
   <span class="Z3988" title="<%= export_as_openurl_ctx_kev(presenter) %>"></span>
+
+  <% if Toggles.expose_orcid_oauth %>
+    <div class="row">
+      <div class="col-xs-12">
+        <button id='connect-orcid-button' data-redirect-url="<%= Rails.application.routes.url_helpers.orcid_landing_url %>">
+          <%= image_tag 'orcid.png' %> Create or Connect your ORCID ID
+        </button>
+      </div>
+    </div>
+  <%end%>
 </div>

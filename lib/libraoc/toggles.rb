@@ -25,7 +25,8 @@ module Toggles
       expose_public_delete: true,
       expose_aggregate_metrics: true,
       expose_feature_work: true,
-      expose_social: true
+      expose_social: true,
+      expose_orcid_oauth: true
     }
   end
 
