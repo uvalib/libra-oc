@@ -66,6 +66,7 @@ module CurationConcerns
       ( model.id.present? && !model.private_access? && !current_ability.current_user.admin?)
     end
 
+
     protected
 
     def self.build_permitted_params

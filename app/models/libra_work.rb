@@ -45,7 +45,6 @@ class LibraWork < ActiveFedora::Base
     class_name: 'Contributor', inverse_of: :libra_works
   accepts_nested_attributes_for :contributors, reject_if: all_blank_except(:index), allow_destroy: true
 
-
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
 #  validates :title, presence: { message: 'Your work must have a title.' }
@@ -53,6 +52,8 @@ class LibraWork < ActiveFedora::Base
 # validates :publisher, presence: { message: 'Your work must have a publisher.' }
 # validates :resource_type, presence: { message: 'Your work must have a Resource Type.' }
 # validates :license, presence: { message: 'Your work must have a license.' }
+
+  before_save :format_admin_notes
 
 
   property :abstract, predicate: ::RDF::Vocab::DC.abstract, multiple: false do |index|
@@ -89,7 +90,7 @@ class LibraWork < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes'), multiple: false do |index|
+  property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes') do |index|
     index.type :text
     index.as :stored_searchable
   end
@@ -148,6 +149,23 @@ class LibraWork < ActiveFedora::Base
     #else
     #  ActionController::Base.helpers.image_url 'default.png'
     #end
+  end
+
+  def format_admin_notes
+
+    # A UTF8 minus sign
+    date_marker = "\u{2212}"
+
+    formatted_admin_notes = admin_notes.map do |an|
+      if an.include? date_marker
+        an
+      else
+        date = DateTime.now.strftime "%F %R #{date_marker} "
+
+        date + an
+      end
+    end
+    self.admin_notes = formatted_admin_notes.compact.sort
   end
 
 end
