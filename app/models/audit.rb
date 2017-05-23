@@ -27,9 +27,9 @@ class Audit < ActiveRecord::Base
   def field_activity
     if field == 'files'
       if before.blank?
-        return "added #{after}"
+        return "added file #{after}"
       else
-        return "removed #{before}"
+        return "removed file #{before}"
       end
     else
       return "#{field} was '#{before.truncate( 32 )}', now '#{after.truncate( 32 )}'"

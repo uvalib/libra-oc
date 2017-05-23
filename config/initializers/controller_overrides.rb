@@ -24,12 +24,29 @@ DownloadsController.class_eval do
   end
 
   #
-  # override so we can specify a different file set presenter
+  # override so we can specify a different file set presenter and generate an audit record when
+  # we destroy an existing fileset.
   #
   CurationConcerns::FileSetsController.class_eval do
 
-      self.show_presenter = LibraFileSetPresenter
+    self.show_presenter = LibraFileSetPresenter
 
+    def destroy
+      create_audit( params[ 'id' ] )
+      super
+    end
+
+    private
+
+    def create_audit( id )
+      begin
+        fs = FileSet.find( id )
+        work_id = fs.in_works.first.id
+        FilesetRemovedAuditJob.perform_later( work_id, fs.label, current_user )
+      rescue => ex
+        # do nothing...
+      end
+    end
   end
 
 end
