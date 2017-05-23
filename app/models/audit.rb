@@ -32,7 +32,11 @@ class Audit < ActiveRecord::Base
         return "removed file #{before}"
       end
     else
-      return "#{field} was '#{before.truncate( 32 )}', now '#{after.truncate( 32 )}'"
+      bf = 'empty'
+      af = 'empty'
+      bf = "'#{before.truncate( 32 )}'" unless before.blank?
+      af = "'#{after.truncate( 32 )}'" unless after.blank?
+      return "#{field} was #{bf}, now #{af}"
     end
   end
 
