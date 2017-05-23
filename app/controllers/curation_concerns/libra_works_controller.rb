@@ -33,8 +33,8 @@ module CurationConcerns
       super
 
       # kick off the work audit task
-      WorkAuditJob.perform_later( current_user.computing_id || 'none', before,
-                                  WorkAuditJob.serialize_work( curation_concern ) )
+      after = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
+      WorkAuditJob.perform_later( current_user.computing_id || 'none', before, after )
     end
 
     protected
