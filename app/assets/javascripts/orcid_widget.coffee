@@ -35,15 +35,6 @@ onLoad = ()->
     $('#orcid-name').html('')
   )
 
-
-  # ORCID Oauth
-  $('#connect-orcid-button').on('click', (e)->
-    redirect_url = $(this).data('redirect-url')
-    oauthWindow = window.open("https://orcid.org/oauth/authorize?client_id=APP-X2CN5ENN10EFYL9G&response_type=code&scope=/authenticate&redirect_uri=" + redirect_url,
-     "_blank", "toolbar=no, scrollbars=yes, width=500, height=600, top=500, left=500");
-
-  )
-
   startProgress = ()->
     Turbolinks.controller.adapter.progressBar.setValue(0);
     Turbolinks.controller.adapter.progressBar.show();
