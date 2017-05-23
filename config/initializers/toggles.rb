@@ -73,4 +73,8 @@ Toggles.config do |config|
   # do we support the social features?
   ## default is true
   config[:expose_social] = false
+
+  # do we support the social features?
+  ## default is true
+  config[:expose_orcid_oauth] = true
 end

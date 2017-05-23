@@ -14,6 +14,14 @@ module UrlHelper
     return "#{protocol}://#{hostname}"
   end
 
+  def orcid_oauth_url
+    redirect = Rails.application.routes.url_helpers.orcid_landing_url
+    orcid_client_id = ENV['ORCID_CLIENT_ID']
+
+    "https://orcid.org/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}"
+
+  end
+
   private
 
   def hostname

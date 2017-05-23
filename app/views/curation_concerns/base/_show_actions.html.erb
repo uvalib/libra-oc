@@ -33,4 +33,14 @@
   <% end %>
   <!-- COinS hook for Zotero -->
   <span class="Z3988" title="<%= export_as_openurl_ctx_kev(presenter) %>"></span>
+
+  <% if Toggles.expose_orcid_oauth %>
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="<%= orcid_oauth_url %>" id='connect-orcid-button' rel='nofollow'>
+          <%= image_tag 'orcid.png' %> Create or Connect your ORCID ID
+        </a>
+      </div>
+    </div>
+  <%end%>
 </div>
