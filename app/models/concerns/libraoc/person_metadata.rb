@@ -46,10 +46,14 @@ module Libraoc::PersonMetadata
     #
     # helper to allow us to display Person information in a consistent manner
     #
-    def to_display
-       email = User.email_from_cid( self.computing_id )
-       email = "(#{email})" if email.present?
-       return "#{self.first_name} #{self.last_name} #{email}"
+    def to_display(opt = {email: true})
+      if opt[:email]
+        email = User.email_from_cid( self.computing_id )
+        email = "(#{email})" if email.present?
+        "#{self.first_name} #{self.last_name} #{email}"
+      else
+        "#{self.first_name} #{self.last_name}"
+      end
     end
 
     private
