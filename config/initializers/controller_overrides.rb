@@ -1,14 +1,12 @@
-#require_dependency 'libraoc/helpers/statistics_helper'
-
+#
+# override so we can generate a download event whenever a file is downloaded
+# standard sufia uses google analytics for this and this approach was easier
+# than integrating with piwik
+#
 DownloadsController.class_eval do
 
   include StatisticsHelper
 
-  #
-  # override so we can generate a download event whenever a file is downloaded
-  # standard sufia uses google analytics for this and this approach was easier
-  # than integrating with piwik
-  #
   def show
 
     #
@@ -23,31 +21,30 @@ DownloadsController.class_eval do
     super
   end
 
-  #
-  # override so we can specify a different file set presenter and generate an audit record when
-  # we destroy an existing fileset.
-  #
-  CurationConcerns::FileSetsController.class_eval do
+end
 
-    self.show_presenter = LibraFileSetPresenter
+#
+# override so we can specify a different file set presenter and generate an audit record when
+# we destroy an existing fileset.
+#
+CurationConcerns::FileSetsController.class_eval do
 
-    def destroy
-      create_audit( params[ 'id' ] )
-      super
-    end
+  self.show_presenter = LibraFileSetPresenter
 
-    private
-
-    def create_audit( id )
-      begin
-        fs = FileSet.find( id )
-        work_id = fs.in_works.first.id
-        FilesetRemovedAuditJob.perform_later( work_id, fs.label, current_user )
-      rescue => ex
-        # do nothing...
-      end
-    end
+  def destroy
+    create_audit( params[ 'id' ] )
+    super
   end
 
+  private
+
+  def create_audit( id )
+    begin
+      fs = FileSet.find( id )
+      FilesetRemovedAuditJob.perform_later( fs, current_user )
+    rescue => ex
+      # do nothing...
+    end
+  end
 end
 
