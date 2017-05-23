@@ -113,8 +113,9 @@ class WorkAuditJob < ActiveJob::Base
       # short cut...
       return if before.blank? && after.blank?
 
-      before_people = before.map{ |p| person_hash_to_audit( p )} || []
-      after_people = after.map{ |p| person_hash_to_audit( p ) } || []
+      # TODO: another case where weappear to get duplicates sometimes
+      before_people = before.uniq.map{ |p| person_hash_to_audit( p )} || []
+      after_people = after.uniq.map{ |p| person_hash_to_audit( p ) } || []
       audit( user_id, work_id, field, before_people.join( ', ' ), after_people.join( ', ' ) )
     end
 

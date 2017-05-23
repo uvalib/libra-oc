@@ -32,14 +32,14 @@ class SolrDocument
   #
 
   def authors
-    # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
+    # TODO: for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
     values = self[Solrizer.solr_name('authors')]
     values = values.uniq if values
     return values
   end
 
   def contributors
-    # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
+    # TODO: for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
     values = self[Solrizer.solr_name('contributors')]
     values = values.uniq if values
     return values
@@ -118,7 +118,7 @@ class SolrDocument
   private
 
   def person_display solr_name
-    # for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
+    # TODO: for some reason, SOLR will sometimes receive duplicate values so de-duplicate here
     values = self[Solrizer.solr_name(solr_name)]
     return nil unless values.present?
     values = values.map {|v| JSON.parse(v) }
