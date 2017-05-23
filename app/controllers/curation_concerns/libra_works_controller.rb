@@ -12,7 +12,6 @@ module CurationConcerns
     after_action :new_files_notice, only: [:create, :update]
     after_action :apply_orcid, only: [:create, :update]
 
-
     def new
       super
 

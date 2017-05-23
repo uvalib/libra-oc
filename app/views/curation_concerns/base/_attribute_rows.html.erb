@@ -11,7 +11,7 @@
 <%= show_line(presenter, :related_url, 'Related Links', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :sponsoring_agency, 'Sponsoring Agency', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :notes, 'Notes', true, include_empty: true, catalog_search_link: false ) %>
-<%= show_line(presenter, :admin_notes, 'Admin Notes', true, include_empty: true, catalog_search_link: false ) if @current_user.admin? %>
+<%= presenter.attribute_to_html( :admin_notes, render_as: :sorted_list) if @current_user.admin? %>
 <%= CurationConcerns::Renderers::AttributeRenderer.new("Created Date", date_formatter( presenter.solr_document.date_created ), {include_empty: true}).render %>
 <%= presenter.attribute_to_html(:rights, render_as: :rights) %>
 <%= show_line(presenter, :audit_history, 'Audit', true, include_empty: false, catalog_search_link: false ) if @current_user.admin? %>
