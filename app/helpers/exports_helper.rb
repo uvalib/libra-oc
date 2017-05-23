@@ -14,6 +14,6 @@ module ExportsHelper
 
   def format_array( array, delimiter )
     return '' if array.blank?
-    return array.join( delimiter )
+    return array.sort.join( delimiter ).gsub(LibraWork::ADMIN_NOTE_DATE_MARKER, '-')
   end
 end

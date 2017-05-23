@@ -37,6 +37,10 @@ class LibraWork < ActiveFedora::Base
   # source definitions
   SOURCE_LEGACY = 'libra-oa'.freeze
 
+  # A UTF8 minus sign
+  ADMIN_NOTE_DATE_MARKER = "\u{2212}"
+
+
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
   accepts_nested_attributes_for :authors, reject_if: all_blank_except(:index), allow_destroy: true
@@ -161,14 +165,11 @@ class LibraWork < ActiveFedora::Base
 
   def format_admin_notes
 
-    # A UTF8 minus sign
-    date_marker = "\u{2212}"
-
     formatted_admin_notes = admin_notes.map do |an|
-      if an.include? date_marker
+      if an.include? ADMIN_NOTE_DATE_MARKER
         an
       else
-        date = DateTime.now.strftime "%F %R #{date_marker} "
+        date = DateTime.now.strftime "%F %R #{ADMIN_NOTE_DATE_MARKER} "
 
         date + an
       end
