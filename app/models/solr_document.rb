@@ -45,6 +45,13 @@ class SolrDocument
     return values
   end
 
+  #
+  # TODO: this does not really belong here...
+  #
+  def audit_history
+    return Audit.where( work_id: id ).order( created_at: :desc )
+  end
+
   def authors_display
     person_display 'authors'
   end

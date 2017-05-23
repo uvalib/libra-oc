@@ -15,13 +15,14 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
            :work_source,
            :abstract,
            :keywords,
-
+           :audit_history,
 
      to: :solr_document
 
   def authors
     return people_sort( self.solr_document.authors )
   end
+
   def contributors
     return people_sort( self.solr_document.contributors )
   end
@@ -29,6 +30,8 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
   def libra_permission_badge
     permission_label( self.solr_document )
   end
+
+  private
 
   def people_sort( people )
 

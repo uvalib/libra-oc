@@ -11,15 +11,15 @@ class Audit < ActiveRecord::Base
   end
 
   def to_s
-    return "#{created_at}: #{user_id}/#{work_id} '#{field}' #{before} -> #{after}"
+    return "#{created_at}: #{user_id} updated #{work_id} #{field_activity}"
   end
 
   def by_user
-    return "#{created_at}: updated work #{work_id} #{field_activity}"
+    return "#{created_at}: updated #{work_id} #{field_activity}"
   end
 
   def by_work
-    return "#{created_at}: user #{user_id} #{field_activity}"
+    return "#{created_at}: #{user_id} #{field_activity}"
   end
 
   private
