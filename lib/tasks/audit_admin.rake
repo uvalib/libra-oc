@@ -36,7 +36,7 @@ namespace :audit do
 
       audits = user.audit_history
       audits.each do |a|
-        puts a
+        puts a.by_user
       end
       puts "Displayed #{audits.length} audit record(s)"
 
@@ -61,13 +61,13 @@ namespace :audit do
 
       audits = work.audit_history
       audits.each do |a|
-        puts a
+        puts a.by_work
       end
       puts "Displayed #{audits.length} audit record(s)"
 
     end
 
-end   # namespace attach
+end   # namespace audit
 
 end   # namespace libraoc
 

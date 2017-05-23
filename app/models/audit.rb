@@ -13,4 +13,27 @@ class Audit < ActiveRecord::Base
   def to_s
     return "#{created_at}: #{user_id}/#{work_id} '#{field}' #{before} -> #{after}"
   end
+
+  def by_user
+    return "#{created_at}: updated work #{work_id} #{field_activity}"
+  end
+
+  def by_work
+    return "#{created_at}: user #{user_id} #{field_activity}"
+  end
+
+  private
+
+  def field_activity
+    if field == 'files'
+      if before.blank?
+        return "added #{after}"
+      else
+        return "removed #{before}"
+      end
+    else
+      return "#{field} was '#{before.truncate( 32 )}', now '#{after.truncate( 32 )}'"
+    end
+  end
+
 end
