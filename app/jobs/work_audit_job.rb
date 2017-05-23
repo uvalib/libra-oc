@@ -5,10 +5,9 @@ class WorkAuditJob < ActiveJob::Base
     # attributes we are auditing and their audit methods
     AUDIT_FIELDS ||= {
         'abstract'           => :string,
-        'admin_notes'        => :string,
+        'admin_notes'        => :string_array,
         'authors'            => :person_array,
         'contributors'       => :person_array,
-#        'file_sets'          => :files,
         'keyword'            => :string_array,
         'language'           => :string_array,
         'notes'              => :string,

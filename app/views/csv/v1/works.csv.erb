@@ -39,7 +39,7 @@
                                  rec.modified_date,
                                  rec.published_date,
                                  rec.notes,
-                                 rec.admin_notes,
+                                 format_array( rec.admin_notes, ', ' ),
                                  format_array( rec.rights, ' ' ),
                                  format_array( rec.keyword, ', ' ),
                                  format_array( rec.language, ', ' ),
