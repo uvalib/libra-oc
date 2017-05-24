@@ -1,0 +1,17 @@
+<table class="exports table table-striped table-bordered">
+
+  <thead>
+     <%= render 'header' %>
+  </thead>
+
+  <tbody>
+    <% @audits.each do |rec| %>
+      <%= render 'audit', audit: rec %>
+    <% end %>
+  </tbody>
+
+  <tfoot>
+     <%= render 'header' %>
+  </tfoot>
+
+</table>
