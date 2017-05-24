@@ -40,6 +40,12 @@ img.representative-media + a.btn {
   font-size: 14px;
   margin-top: 10px;
 }
+
+// admin button on the main masthead
+.admin-button {
+  z-index: 1001;
+  margin-top: 7px;
+}
 //
 // end of file
 //
