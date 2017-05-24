@@ -1,0 +1,17 @@
+<% if audits.present? %>
+  <table class="exports table table-striped table-bordered">
+
+    <thead>
+    <tr>
+      <th>Audit history</th>
+    </tr>
+    </thead>
+
+    <tbody>
+      <% audits.each do |rec| %>
+        <tr><td><%= rec.by_work %></td></tr>
+      <% end %>
+    </tbody>
+
+  </table>
+<% end %>
