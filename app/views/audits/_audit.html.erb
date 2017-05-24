@@ -3,6 +3,6 @@
   <td><%= audit.user_id %></td>
   <td><%= audit.work_id %></td>
   <td><%= audit.field %></td>
-  <td><%= audit.before %></td>
-  <td><%= audit.after %></td>
+  <td><%= truncate( audit.before, length: 32 ) %></td>
+  <td><%= truncate( audit.after, length: 32 ) %></td>
 </tr>
