@@ -1,4 +1,4 @@
-<table class="datatable audits table table-striped table-bordered">
+<table class="audits-table table table-striped table-bordered">
 
   <thead>
      <%= render 'header' %>
@@ -15,3 +15,12 @@
   </tfoot>
 
 </table>
+
+<script>
+  // configure the datatable explicitly instead of relying on the default initialization
+  $('.audits-table').DataTable({
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      "aaSorting": [ [ 0, "desc" ] ]
+  });
+
+</script>
