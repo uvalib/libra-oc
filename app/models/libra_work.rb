@@ -48,6 +48,7 @@ class LibraWork < ActiveFedora::Base
   has_and_belongs_to_many :contributors, predicate: ::RDF::Vocab::DC.contributor,
     class_name: 'Contributor', inverse_of: :libra_works
   accepts_nested_attributes_for :contributors, reject_if: all_blank_except(:index), allow_destroy: true
+  before_save :delete_empty_contributors
 
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
@@ -175,6 +176,15 @@ class LibraWork < ActiveFedora::Base
       end
     end
     self.admin_notes = formatted_admin_notes.compact.sort
+  end
+
+  def delete_empty_contributors
+    fields = [:first_name, :last_name, :computing_id, :department, :institution]
+    contributors.each do |c|
+      if fields.all? {|f| c.try(f).blank? }
+        c.mark_for_destruction
+      end
+    end
   end
 
 end
