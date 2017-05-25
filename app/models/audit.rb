@@ -11,15 +11,25 @@ class Audit < ActiveRecord::Base
   end
 
   def to_s
-    return "#{created_at}: #{user_id} updated #{work_id} #{field_activity}"
+    return "#{Audit.localtime( created_at )}: #{user_id} updated #{work_id} #{field_activity}"
   end
 
   def by_user
-    return "#{created_at}: updated #{work_id} #{field_activity}"
+    return "#{Audit.localtime( created_at )}: updated #{work_id} #{field_activity}"
   end
 
   def by_work
-    return "#{created_at}: #{user_id} #{field_activity}"
+    return "#{Audit.localtime( created_at )}: #{user_id} #{field_activity}"
+  end
+
+  def self.localtime( datetime )
+    return 'unknown' if datetime.blank?
+    begin
+      return datetime.localtime.strftime( '%Y-%m-%d %H:%M:%S %Z' )
+    rescue => ex
+      # do nothing
+    end
+    return datetime
   end
 
   private
@@ -27,9 +37,9 @@ class Audit < ActiveRecord::Base
   def field_activity
     if field == 'files'
       if before.blank?
-        return "added file #{after}"
+        return "added file '#{after}'"
       else
-        return "removed file #{before}"
+        return "removed file '#{before}'"
       end
     else
       bf = 'empty'
