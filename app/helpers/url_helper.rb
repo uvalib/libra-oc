@@ -14,11 +14,13 @@ module UrlHelper
     return "#{protocol}://#{hostname}"
   end
 
-  def orcid_oauth_url
+  def orcid_oauth_button
     redirect = Rails.application.routes.url_helpers.orcid_landing_url
     orcid_client_id = ENV['ORCID_CLIENT_ID']
 
-    "https://orcid.org/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}"
+    link_to "https://orcid.org/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}", id: 'connect-orcid-button', rel: 'nofollow' do
+      image_tag('orcid.png') + " Create or Connect Your ORCID ID"
+    end
 
   end
 

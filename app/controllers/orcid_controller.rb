@@ -1,4 +1,4 @@
-class Users::OrcidController < ApplicationController
+class OrcidController < ApplicationController
 
   def landing
     orcid_response = orcid_token_exchange
@@ -6,7 +6,18 @@ class Users::OrcidController < ApplicationController
     if orcid_response.code == 200
       redirect_to root_url, notice: "Your ORCID account info was received ----- #{body}"
     else
-      redirect_to root_url, alert: "There was an error linking your ORCID account ----- #{body}"
+      error = params['error_description'] || body
+      redirect_to root_url, alert: "There was an error linking your ORCID account ----- #{error}"
+    end
+  end
+
+  def destroy
+    if false && current_user.update(orcid: nil)
+      flash[:notice] = 'Your ORCID ID was successfully removed'
+      redirect_to sufia.profile_path(current_user)
+    else
+      flash[:error] = 'The was a problem removing your ORCID ID'
+      redirect_to sufia.edit_profile_path(current_user)
     end
   end
 
