@@ -12,9 +12,11 @@
       <li id="edit_descriptions_link" class="active">
         <a href="#descriptions_display" data-toggle="tab"><i class="fa fa-tags"></i> Descriptions</a>
       </li>
-      <li id="edit_versioning_link">
-        <a href="#versioning_display" data-toggle="tab"><i class="fa fa-sitemap"></i> Versions</a>
-      </li>
+      <% if Toggles.expose_file_versioning %>
+        <li id="edit_versioning_link">
+          <a href="#versioning_display" data-toggle="tab"><i class="fa fa-sitemap"></i> Versions</a>
+        </li>
+      <% end %>
     </ul>
     <div class="tab-content">
       <div id="descriptions_display" class="tab-pane active">
@@ -22,7 +24,9 @@
         <%= render "form" %>
       </div>
       <%# render "permission", file_set: curation_concern %>
-      <%= render "versioning", file_set: curation_concern %>
+      <% if Toggles.expose_file_versioning %>
+         <%= render "versioning", file_set: curation_concern %>
+      <% end %>
     </div>
   </div><!-- /.col-sm-8 -->
 </div><!-- /.row -->

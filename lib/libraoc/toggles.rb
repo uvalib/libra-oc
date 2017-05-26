@@ -27,7 +27,8 @@ module Toggles
       expose_feature_work: true,
       expose_social: true,
       expose_orcid_oauth: true,
-      expose_citations: true
+      expose_citations: true,
+      expose_file_versioning: true
     }
   end
 

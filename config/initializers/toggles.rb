@@ -81,4 +81,8 @@ Toggles.config do |config|
   # do we support the citations features?
   ## default is true
   config[:expose_citations] = false
+
+  # do we support the file version features?
+  ## default is true
+  config[:expose_file_versioning] = false
 end
