@@ -14,7 +14,8 @@ module Libraoc::OrcidBehavior
     # save an updated value
     #
     def save_orcid
-      update_orcid_service( User.cid_from_email( email ), orcid.gsub( 'http://orcid.org/', '' ) )
+      orcid_url = orcid.present? ? orcid.gsub( 'http://orcid.org/', '' ) : nil
+      update_orcid_service( User.cid_from_email( email ), orcid_url )
     end
 
     #
@@ -24,7 +25,7 @@ module Libraoc::OrcidBehavior
       return if cid.blank?
 
       # do we have an orcid to update
-      if orcid.blank? == false
+      if orcid.present?
          puts "==> setting #{cid} ORCID to: #{orcid}"
          status = ServiceClient::OrcidAccessClient.instance.set_by_cid( cid, orcid )
       else

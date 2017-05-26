@@ -5,9 +5,7 @@ Rails.application.routes.draw do
   get '/exports' => 'exports#index'
   get '/exports/get' => 'exports#export'
   get '/computing_id' => 'ajax#computing_id'
-  get '/orcid_search' => 'ajax#orcid_search'
   get '/test_email' => 'test_email#test_email'
-  get '/orcid_landing' => 'users/orcid#landing'
 
   resources :public_view, only: [:show]
 
@@ -57,6 +55,10 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions: 'users/sessions' }
 
+  namespace 'orcid' do
+    get :landing
+    delete :destroy
+  end
 
   mount CurationConcerns::Engine, at: '/'
   resources :welcome, only: 'index'

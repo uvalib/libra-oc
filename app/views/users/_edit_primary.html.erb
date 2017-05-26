@@ -32,29 +32,20 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :orcid, class: 'col-xs-4 control-label' do %>
-      <%= orcid_label %>
-    <% end %>
-    <div class="col-xs-8">
-       <% orcid = extract_orcid_for_display( @user.orcid ) %>
-       <div class="input-group">
-         <input type="text" class="form-control orcid_widget" id="user_orcid" name="user[orcid]" readonly="true" value="<%= orcid %>" />
-         <div class="input-group-btn">
-           <button type="button" class=" btn btn-danger" id='clear-orcid'>
-             <i class="glyphicon glyphicon-remove"></i>
-           </button>
-         </div>
-       </div>
-
-       <p id='orcid-name'><p>
-       <p>
-         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orcidSearch">
-           Search ORCID
-         </button>
-       </p>
-
+    <div class="col-xs-4 control-label">
+      <%= orcid_label('profile') %>
     </div>
-  </div><!-- .form-group -->
+    <div class="col-xs-8">
+      <% if @user.orcid.present? %>
+        <p>
+          <%= link_to @user.orcid, @user.orcid, { target: '_blank' } %>
+        </p>
+        <%= link_to "Remove My ORCID ID", orcid_destroy_path, method: :delete, class: 'btn btn-danger' if @user.orcid %>
+      <%else %>
+        <%= orcid_oauth_button %>
+      <% end %>
+    </div>
+  </div>
 
   <% if Toggles.expose_social %>
 
@@ -90,5 +81,3 @@
 <% if Toggles.expose_proxies %>
 <%= render 'dashboard/_index_partials/proxy_rights', user: @user %>
 <% end %>
-
-<%= render partial: 'orcid_modal' %>

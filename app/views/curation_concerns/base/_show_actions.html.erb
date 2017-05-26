@@ -37,9 +37,7 @@
   <% if Toggles.expose_orcid_oauth %>
     <div class="row">
       <div class="col-xs-12">
-        <a href="<%= orcid_oauth_url %>" id='connect-orcid-button' rel='nofollow'>
-          <%= image_tag 'orcid.png' %> Create or Connect your ORCID ID
-        </a>
+        <%= orcid_oauth_button unless current_user.orcid.present? %>
       </div>
     </div>
   <%end%>
