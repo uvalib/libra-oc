@@ -18,7 +18,8 @@ module UrlHelper
     redirect = Rails.application.routes.url_helpers.orcid_landing_url
     orcid_client_id = ENV['ORCID_CLIENT_ID']
 
-    link_to "https://orcid.org/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}", id: 'connect-orcid-button', rel: 'nofollow' do
+    # eventually add ' /activities/update' to scope
+    link_to "#{ENV['ORCID_BASE_URL']}/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}", id: 'connect-orcid-button', rel: 'nofollow' do
       image_tag('orcid.png') + " Create or Connect Your ORCID ID"
     end
 
