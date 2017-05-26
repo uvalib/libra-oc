@@ -18,7 +18,9 @@
     <% if Toggles.expose_social %>
        <% render 'social_media' %>
     <% end %>
-    <%= render 'citations', presenter: @presenter %>
+    <% if Toggles.expose_citations %>
+       <%= render 'citations', presenter: @presenter %>
+    <% end %>
   </div>
 </div>
 

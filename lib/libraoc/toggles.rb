@@ -26,7 +26,8 @@ module Toggles
       expose_aggregate_metrics: true,
       expose_feature_work: true,
       expose_social: true,
-      expose_orcid_oauth: true
+      expose_orcid_oauth: true,
+      expose_citations: true
     }
   end
 

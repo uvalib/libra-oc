@@ -77,4 +77,8 @@ Toggles.config do |config|
   # do we support the social features?
   ## default is true
   config[:expose_orcid_oauth] = true
+
+  # do we support the citations features?
+  ## default is true
+  config[:expose_citations] = false
 end
