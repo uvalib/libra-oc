@@ -1,5 +1,6 @@
 <div class="show-actions">
-  <%= link_to "Public View", Rails.application.routes.url_helpers.public_view_path(presenter.solr_document.id), class: 'btn btn-default' %>
+  <% public_label = presenter.solr_document.is_private? ? 'Public Preview' : 'Public View' %>
+  <%= link_to public_label, Rails.application.routes.url_helpers.public_view_path(presenter.solr_document.id), class: 'btn btn-default' %>
   <% if Sufia.config.analytics %>
     <%= link_to "Analytics", presenter.stats_path, id: 'stats', class: 'btn btn-default' %>
   <% end %>
