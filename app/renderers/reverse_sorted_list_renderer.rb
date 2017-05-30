@@ -1,6 +1,13 @@
-class SortedListRenderer < CurationConcerns::Renderers::AttributeRenderer
+class ReverseSortedListRenderer < CurationConcerns::Renderers::AttributeRenderer
   def initialize(field, values, options = {})
-    values.sort! if values.respond_to? 'sort!'
+
+    # if this is sortable
+    if values.respond_to? 'sort!'
+      values.sort!
+      values.reverse!
+    end
+
     super
   end
+
 end

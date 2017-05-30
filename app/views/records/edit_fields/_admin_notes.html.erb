@@ -2,7 +2,7 @@
   <%= f.input :admin_notes, as: :text, input_html: { rows: '1', value: '', name: 'libra_work[admin_notes][]'} %>
   <%= f.input :is_admin, as: :hidden, input_html: {value: true} %>
   <ul>
-  <% f.object.admin_notes.sort.each do |admin_note| %>
+  <% f.object.admin_notes.sort.reverse.each do |admin_note| %>
     <%= f.input :admin_notes, as: :hidden, input_html: {value: admin_note, name: 'libra_work[admin_notes][]' } %>
     <li><%= admin_note %></li>
   <%end%>
