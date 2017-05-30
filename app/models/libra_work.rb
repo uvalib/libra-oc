@@ -170,7 +170,7 @@ class LibraWork < ActiveFedora::Base
       if an.include? ADMIN_NOTE_DATE_MARKER
         an
       else
-        date = DateTime.now.strftime "%F %R #{ADMIN_NOTE_DATE_MARKER} "
+        date = DateTime.now.strftime "%F %T #{ADMIN_NOTE_DATE_MARKER} "
 
         date + an
       end
