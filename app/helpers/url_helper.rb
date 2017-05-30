@@ -19,10 +19,18 @@ module UrlHelper
     orcid_client_id = ENV['ORCID_CLIENT_ID']
 
     # eventually add ' /activities/update' to scope
-    link_to "#{ENV['ORCID_BASE_URL']}/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}", id: 'connect-orcid-button', rel: 'nofollow' do
+    button_html = link_to "#{ENV['ORCID_BASE_URL']}/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}",
+      id: 'connect-orcid-button', rel: 'nofollow' do
       image_tag('orcid.png') + " Create or Connect Your ORCID ID"
     end
+    more_info_html = tag(:br) + link_to("Learn more about ORCID", 'https://orcid.org/content/about-orcid',
+      target: '_blank')
 
+    concat button_html
+    concat more_info_html
+
+    # concat already renders to the page so we dont want to return anything here
+    nil
   end
 
   private
