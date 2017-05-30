@@ -2,7 +2,7 @@ class FilesetRemovedAuditJob < ActiveJob::Base
 
   def perform( fileset, user )
 
-    user_id = user.computing_id
+    user_id = user.computing_id unless user.nil?
     user_id = 'none' if user_id.blank?
     work = fileset.in_works.first
     return if work.nil?
