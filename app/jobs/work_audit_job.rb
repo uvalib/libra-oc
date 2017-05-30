@@ -33,7 +33,6 @@ class WorkAuditJob < ActiveJob::Base
     # some special cases
     ID_FIELD_NAME ||= 'id'
     VISIBILITY_FIELD_NAME ||= 'visibility'
-    #FILES_FIELD_NAME ||= 'files'
 
     def self.serialize_work( work )
        ret = {}
@@ -45,7 +44,6 @@ class WorkAuditJob < ActiveJob::Base
        # handle the special case
        ret[ ID_FIELD_NAME ] = work.id
        ret[ VISIBILITY_FIELD_NAME ] = work.visibility
-       #ret[ FILES_FIELD_NAME ] = work.file_sets.map { |fs| fs.label }
 
        return ret.to_json
     end
@@ -67,11 +65,10 @@ class WorkAuditJob < ActiveJob::Base
         return
       end
 
-      # do not audit if this work is private
-      return if after[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
-
-      # dont audit the transition from private to non-private
-      #return if before[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+      # do not audit if this work is was and continues to be private
+      return if
+          before[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE &&
+          after[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
 
       # enumerate each field and see if we need to audit it
       work_id = after[ ID_FIELD_NAME ]
@@ -92,11 +89,6 @@ class WorkAuditJob < ActiveJob::Base
                            before[VISIBILITY_FIELD_NAME],
                            after[VISIBILITY_FIELD_NAME] )
 
-      # handle special cases
-      #audit_files_array_change( user_id, work_id,
-      #                          FILES_FIELD_NAME,
-      #                          before[FILES_FIELD_NAME],
-      #                          after[FILES_FIELD_NAME] )
     end
 
     def audit_string_change( user_id, work_id, field, before, after )
@@ -124,27 +116,6 @@ class WorkAuditJob < ActiveJob::Base
       after_people = after.uniq.map{ |p| person_hash_to_audit( p ) } || []
       audit( user_id, work_id, field, before_people.join( ', ' ), after_people.join( ', ' ) )
     end
-
-#    def audit_files_array_change( user_id, work_id, field, before, after )
-#
-#      # short cut...
-#      return if before.blank? && after.blank?
-#
-#      # in case we have nil values
-#      before = [] if before.blank?
-#      after = [] if after.blank?
-#
-#      #
-#      # when filesets are removed from a work, it goes via a different controller so we do not see it here
-#      # we only need to account for *added* filesets
-#      #
-#      after.each do |fn|
-#        if before.include?( fn ) == false
-#          audit( user_id, work_id, field, '', fn )
-#        end
-#      end
-#
-#    end
 
     def audit( user_id, work_id, field, before, after )
       before = '' if before.nil?
