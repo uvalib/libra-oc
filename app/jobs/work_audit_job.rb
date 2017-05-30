@@ -48,7 +48,9 @@ class WorkAuditJob < ActiveJob::Base
        return ret.to_json
     end
 
-    def perform( user_id, before, after )
+    def perform( user, before, after )
+      user_id = user.computing_id unless user.nil?
+      user_id = 'none' if user_id.blank?
       audit_changes( user_id, before, after )
     end
 

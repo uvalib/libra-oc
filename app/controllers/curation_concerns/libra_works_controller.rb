@@ -34,7 +34,7 @@ module CurationConcerns
 
       # kick off the work audit task
       after = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
-      WorkAuditJob.perform_later( current_user.computing_id || 'none', before, after )
+      WorkAuditJob.perform_later( current_user, before, after )
     end
 
     protected
