@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '/computing_id' => 'ajax#computing_id'
   get '/test_email' => 'test_email#test_email'
 
+  get 'help' => redirect('http://www.library.virginia.edu/askalibrarian/')
+
   resources :public_view, only: [:show]
 
   concern :exportable, Blacklight::Routes::Exportable.new
