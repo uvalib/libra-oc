@@ -25,10 +25,13 @@ export default class SaveWorkControl {
       return
     }
     this.element = element
-      this.adminSetWidget = adminSetWidget
-      this.form = element.closest('form')
-      element.data('save_work_control', this)
-      this.activate();
+    this.adminSetWidget = adminSetWidget
+    this.form = element.closest('form')
+    element.data('save_work_control', this)
+    this.activate();
+    $('input').on('keyup', ()=>{
+      this.formStateChanged();
+    })
   }
 
   /**
@@ -83,28 +86,28 @@ export default class SaveWorkControl {
       return
     }
     this.requiredFields = new RequiredFields(this.form, () => this.formStateChanged())
-      this.uploads = new UploadedFiles(this.form, () => this.formStateChanged())
-      this.saveButton = this.element.find(':submit')
-      this.depositAgreement = new DepositAgreement(this.form, () => this.formStateChanged())
-      this.requiredMetadata = new ChecklistItem(this.element.find('#required-metadata'))
-      this.requiredFiles = new ChecklistItem(this.element.find('#required-files'))
-      this.hasExistingFiles = (this.form.find('#libra_work_has_existing_files').val() == 'true')
-      new VisibilityComponent(this.element.find('.visibility'), this.adminSetWidget)
-      this.preventSubmit()
-      this.watchMultivaluedFields()
-      this.formChanged()
+    this.uploads = new UploadedFiles(this.form, () => this.formStateChanged())
+    this.saveButton = this.element.find(':submit')
+    this.depositAgreement = new DepositAgreement(this.form, () => this.formStateChanged())
+    this.requiredMetadata = new ChecklistItem(this.element.find('#required-metadata'))
+    this.requiredFiles = new ChecklistItem(this.element.find('#required-files'))
+    this.hasExistingFiles = (this.form.find('#libra_work_has_existing_files').val() == 'true')
+    new VisibilityComponent(this.element.find('.visibility'), this.adminSetWidget)
+    this.preventSubmit()
+    this.watchMultivaluedFields()
+    this.formChanged()
   }
 
   preventSubmit() {
     this.preventSubmitUnlessValid()
-      this.preventSubmitIfAlreadyInProgress()
-      this.preventSubmitIfUploading()
+    this.preventSubmitIfAlreadyInProgress()
+    this.preventSubmitIfUploading()
   }
 
   // If someone adds or removes a field on a multivalue input, fire a formChanged event.
   watchMultivaluedFields() {
     $('.multi_value.form-group', this.form).bind('managed_field:add', () => this.formChanged())
-      $('.multi_value.form-group', this.form).bind('managed_field:remove', () => this.formChanged())
+    $('.multi_value.form-group', this.form).bind('managed_field:remove', () => this.formChanged())
   }
 
   // Called when a file has been uploaded, the deposit agreement is clicked or a form field has had text entered.

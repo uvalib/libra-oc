@@ -8,16 +8,17 @@ export class RequiredFields {
 
   // modified to decorate the required fields so we can style them
   get areComplete() {
-      var incomplete = 0
-      for( let value of this.requiredFields ) {
-          if( this.isValueEmpty( value ) === false ) {
-              $(value).removeClass( 'invalid-input' )
-          } else {
-              $(value).addClass( 'invalid-input' )
-              incomplete += 1
-          }
+    this.reload()
+    var incomplete = 0
+    for( let value of this.requiredFields ) {
+      if( this.isValueEmpty( value ) === false ) {
+        $(value).removeClass( 'invalid-input' )
+      } else {
+        $(value).addClass( 'invalid-input' )
+        incomplete += 1
       }
-      return incomplete === 0
+    }
+    return incomplete === 0
   }
 
   isValueEmpty(elem) {

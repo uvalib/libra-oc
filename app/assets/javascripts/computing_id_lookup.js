@@ -8,7 +8,7 @@
 
       function onSuccess(resp) {
         console.log(resp);
-        var elFirstName = outerForm.find(".libra_work_" + personType + "_first_name input");
+        var elFirstName = outerForm.find(".libra_work_" + personType + "_first_name input").change();
         var elLastName = outerForm.find(".libra_work_" + personType + "_last_name input");
         var elDepartment = outerForm.find(".libra_work_" + personType + "_department input");
         var elInstitution = outerForm.find(".libra_work_" + personType + "_institution input");

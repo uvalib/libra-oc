@@ -45,12 +45,12 @@ var HydraEditor = (function($) {
         parent.append(delete_tag);
         _this.removeFromList(e);
 
-        $("body").trigger("managed_field:change", { parent: parent, action: "remove" });
 
         var last_field_controls = parent.find('.field-controls:last')
         if (last_field_controls.find('.add').length == 0) {
           last_field_controls.append(_this.adder);
         }
+        $("body").trigger("managed_field:change", { parent: parent, action: "remove" });
       });
       this.element.on('click', '.add', function (e) {
         var parent = $(this).closest("ul.listing"); // Have to get this before the action because the action removes the element.
@@ -74,11 +74,14 @@ var HydraEditor = (function($) {
         var $listing = $(this.listClass, this.element);
         this.clearEmptyWarning();
         $listing.append(this._newField($activeField));
+        this.element.trigger("managed_field:add", $activeField);
       }
     },
 
     inputIsEmpty: function($activeField) {
-      return $activeField.find('input[type!="hidden"],select,input.required').val() === '';
+      return $activeField.find('input[type!="hidden"],select,input.required').filter(function() {
+        return $.trim(this.value).length != 0;
+      }).length == 0
     },
 
     _newField: function ($activeField) {
@@ -113,13 +116,11 @@ var HydraEditor = (function($) {
         newName = oldName.replace(new RegExp(/\[[0-9]+\]/), "["+newIndex+"]" );
         $(this).attr('name', newName);
 
-        $(this).val('').removeProp('required');
+        $(this).val('');
       });
       $newField.find('input.index').val(newIndex)
 
-
       $newChildren.first().focus();
-      this.element.trigger("managed_field:add", $newChildren.first());
       return $newField;
     },
 
