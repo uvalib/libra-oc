@@ -29,12 +29,19 @@ module CurationConcerns
     end
 
     def update
-      before = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
+
+      # snapshot of the work before updating
+      work_before = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
+
+      # call base class for actual update behavior
       super
 
       # kick off the work audit task
-      after = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
-      WorkAuditJob.perform_later( current_user, before, after )
+      work_after = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
+      WorkAuditJob.perform_later( current_user, work_before, work_after )
+
+      # kick off the file auditing task
+      FileAddedAuditJob.perform_later( current_user, work_before, work_after, params['uploaded_files'] ) unless params['uploaded_files'].blank?
     end
 
     protected
@@ -78,4 +85,5 @@ module CurationConcerns
     end
 
   end
+
 end

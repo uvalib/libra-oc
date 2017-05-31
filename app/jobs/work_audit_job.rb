@@ -67,7 +67,7 @@ class WorkAuditJob < ActiveJob::Base
         return
       end
 
-      # do not audit if this work is was and continues to be private
+      # do not audit if this work was and continues to be private
       return if
           before[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE &&
           after[ VISIBILITY_FIELD_NAME ] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE

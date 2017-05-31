@@ -1,5 +1,7 @@
 class FilesetRemovedAuditJob < ActiveJob::Base
 
+  queue_as :audit
+
   def perform( fileset, user )
 
     user_id = user.computing_id unless user.nil?
