@@ -22,6 +22,12 @@ en:
           all:
             label_long:   "All of Libra"
 
+    dashboard:
+      my:
+        action:
+          work_confirmation: "Deleting a work from %{application_name} is permanent. Click OK to delete this work and all associated files from %{application_name}, or click Cancel to retain this work."
+          file_confirmation: "Deleting a file from %{application_name} is permanent. Click OK to delete this file from %{application_name}, or click Cancel to retain this file."
+
   curation_concerns:
     institution_name: "Restricted to UVa Only"
     visibility:
