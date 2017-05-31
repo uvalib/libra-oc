@@ -38,8 +38,10 @@ class Audit < ActiveRecord::Base
     if field == 'files'
       if before.blank?
         return "added file '#{after}'"
-      else
+      elsif after.blank?
         return "removed file '#{before}'"
+      else
+        return "renamed file '#{before}' to '#{after}'"
       end
     else
       bf = 'empty'

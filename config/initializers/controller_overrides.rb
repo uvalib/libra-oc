@@ -31,14 +31,28 @@ CurationConcerns::FileSetsController.class_eval do
 
   self.show_presenter = LibraFileSetPresenter
 
+  def update
+    create_update_audit( params[ 'id' ], params['file_set'][ 'title' ][ 0 ] )
+    super
+  end
+
   def destroy
-    create_audit( params[ 'id' ] )
+    create_destroy_audit( params[ 'id' ] )
     super
   end
 
   private
 
-  def create_audit( id )
+  def create_update_audit( id, new_name )
+    begin
+      fs = FileSet.find( id )
+      FilesetRenamedAuditJob.perform_later( fs, new_name, current_user )
+    rescue => ex
+      # do nothing...
+    end
+  end
+
+  def create_destroy_audit( id )
     begin
       fs = FileSet.find( id )
       FilesetRemovedAuditJob.perform_later( fs, current_user )

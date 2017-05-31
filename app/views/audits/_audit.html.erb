@@ -2,17 +2,23 @@
   <td><%= Audit.localtime( audit.created_at ) %></td>
   <td><%= audit.user_id %></td>
   <td><%= audit.work_id %></td>
-  <td><%= audit.field %></td>
   <% if audit.field == 'files' %>
      <% if audit.before.blank? %>
+         <td>Added</td>
          <td></td>
-         <td>added file '<%= audit.after %>'</td>
+         <td>'<%= audit.after %>'</td>
+     <% elsif audit.after.blank? %>
+         <td>Removed</td>
+         <td>'<%= audit.before %>'</td>
+         <td></td>
      <% else %>
-         <td></td>
-         <td>removed file '<%= audit.before %>'</td>
+         <td>Renamed</td>
+         <td>'<%= audit.before %>'</td>
+         <td>'<%= audit.after %>'</td>
      <% end %>
   <% else %>
-  <td><%= truncate( audit.before, length: 32 ) %></td>
-  <td><%= truncate( audit.after, length: 32 ) %></td>
+     <td><%= audit.field %></td>
+     <td><%= truncate( audit.before, length: 32 ) %></td>
+     <td><%= truncate( audit.after, length: 32 ) %></td>
   <% end %>
 </tr>
