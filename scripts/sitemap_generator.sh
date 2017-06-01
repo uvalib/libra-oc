@@ -27,7 +27,7 @@ while true; do
    if is_active_host; then
 
       # starting message
-      logit "Beginning SIS export sequence"
+      logit "Beginning sitemap generator sequence"
 
       if [ $ENABLE_TEST_FEATURES == 'n' ]; then
         bundle exec rake sitemap:refresh >> $LOGGER 2>&1
