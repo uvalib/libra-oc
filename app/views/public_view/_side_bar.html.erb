@@ -8,14 +8,14 @@
   <h2>Files</h2>
   <% if can_download_files?( @work ) %>
     <div id="uploads">
-      <% @work.file_sets.each do |file| %>
+      <% filesets_sort( @work.file_sets ).each do |fs| %>
         <div class="file_asset_record">
-          <% download_count = get_file_download_count( file ) %>
-          <p><%= link_to file.title.first, download_path(file), class: 'piwikTrackContent',
-            data: { turbolinks: false,
-                    "content-name": "Public Page File Download", "content-piece": file.title.first
+          <% download_count = get_file_download_count( fs ) %>
+          <p><%= link_to fs.title.first, download_path(fs), class: 'piwikTrackContent',
+                         data: { turbolinks: false,
+                    "content-name": "Public Page File Download", "content-piece": fs.title.first
                   } %>&nbsp;&nbsp;
-          <p><span class="file_label">Uploaded:</span><%= date_formatter(file.date_uploaded) %></p>
+          <p><span class="file_label">Uploaded:</span><%= date_formatter(fs.date_uploaded) %></p>
           <p><span class="file_label"><%= "#{t("sufia.dashboard.stats.file_downloads").pluralize( download_count )}: " %></span><span class="badge"><%= download_count %></p>
         </div>
       <% end %>

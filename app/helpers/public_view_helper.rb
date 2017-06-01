@@ -207,5 +207,7 @@ module PublicViewHelper
     CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", field ).render
   end
 
-
+  def filesets_sort( filesets )
+    return filesets.sort { |x, y| x.date_uploaded <=> y.date_uploaded }
+  end
 end
