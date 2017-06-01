@@ -4,7 +4,7 @@ onLoad = ()->
     $('input[name="agreement"]').change()
   )
 
-  $("#fixedSaveWidget").affix({offset: {bottom: 500}})
+  $("#fixedSaveWidget").affix({offset: {bottom: 600}})
 
 
 $(window).bind('turbolinks:load', onLoad)
