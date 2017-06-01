@@ -29,7 +29,7 @@ export default class SaveWorkControl {
     this.form = element.closest('form')
     element.data('save_work_control', this)
     this.activate();
-    $('input').on('keyup', ()=>{
+    $(document).on('keyup', 'input', ()=>{
       this.formStateChanged();
     })
   }

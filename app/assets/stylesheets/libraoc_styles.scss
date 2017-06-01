@@ -55,6 +55,16 @@ form .help-block {
   font-style: italic;
   color: #aaaaaa;
 }
+
+#fixedsavewidget.affix {
+  right: 30px;
+}
+@media(max-width:992px){
+  #fixedsavewidget.affix {
+    position: relative;
+    right: inherit;
+  }
+}
 //
 // end of file
 //

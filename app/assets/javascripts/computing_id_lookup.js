@@ -8,7 +8,7 @@
 
       function onSuccess(resp) {
         console.log(resp);
-        var elFirstName = outerForm.find(".libra_work_" + personType + "_first_name input").change();
+        var elFirstName = outerForm.find(".libra_work_" + personType + "_first_name input");
         var elLastName = outerForm.find(".libra_work_" + personType + "_last_name input");
         var elDepartment = outerForm.find(".libra_work_" + personType + "_department input");
         var elInstitution = outerForm.find(".libra_work_" + personType + "_institution input");
@@ -24,6 +24,7 @@
           elDepartment.val("");
           elInstitution.val("");
         }
+        elFirstName.change();
         $("body").trigger("computing_id:change", { index: index });
       }
 
