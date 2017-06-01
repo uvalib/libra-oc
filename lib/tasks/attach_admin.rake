@@ -98,6 +98,41 @@ namespace :attach do
       puts "File number #{file_number} deleted from work id #{work_id}"
     end
 
+    desc "Remove all attachments from an existing work; must provide the work id"
+    task remove_all: :environment do |t, args|
+
+      work_id = ARGV[ 1 ]
+      if work_id.nil?
+        puts "ERROR: no work id specified, aborting"
+        next
+      end
+
+      task work_id.to_sym do ; end
+
+      work = TaskHelpers.get_work_by_id( work_id )
+      if work.nil?
+        puts "ERROR: work #{work_id} does not exist, aborting"
+        next
+      end
+
+      if work.file_sets.empty?
+        puts "ERROR: work #{work_id} does not have attached files, aborting"
+        next
+      end
+
+      user = User.find_by_email( TaskHelpers.default_user_email )
+      if user.nil?
+        puts "ERROR: default user #{TaskHelpers.default_user_email} is not available, aborting"
+        next
+      end
+
+      work.file_sets.each do |fs|
+         TaskHelpers.delete_fileset( user, fs )
+      end
+
+      puts "All files deleted from work id #{work_id}"
+    end
+
     desc "Replace attachments for an existing work; must provide the work id and file to attach"
     task replace: :environment do |t, args|
 

@@ -113,6 +113,20 @@ module TaskHelpers
   end
 
   #
+  # delete the specified file from the specified work on behalf of the specified user
+  #
+  def delete_fileset( user, fileset )
+
+    print "deleting file set #{fileset.id} (#{fileset.label})... "
+
+    file_actor = ::CurationConcerns::Actors::FileSetActor.new( fileset, user )
+    file_actor.destroy
+
+    puts "done"
+
+  end
+
+  #
   # batch process a group of SOLR works
   #
   def batched_process_solr_works( solr_works, &f )
