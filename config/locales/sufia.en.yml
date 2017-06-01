@@ -35,3 +35,12 @@ en:
         label_html: "Visible Worldwide"
       authenticated:
         label_html: "Restricted to UVa Only"
+
+  simple_form:
+    hints:
+      libra_work:
+        keyword: "Add one keyword or keyword phrase per line. Click \"More\" to add another keyword."
+        language: "The language of the work's content."
+        related_url: "Links to another version, another location with the file, website or other specific content (audio, video, PDF document) related to the work."
+        source_citation: "The bibliographic citation of the work that reflects where it was originally published."
+        person_fields: "Enter a UVA Computing ID to automatically fill the remaining fields for this person."
