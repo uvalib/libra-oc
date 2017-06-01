@@ -56,11 +56,11 @@ form .help-block {
   color: #aaaaaa;
 }
 
-#fixedsavewidget.affix {
+#fixedSaveWidget.affix {
   right: 30px;
 }
-@media(max-width:992px){
-  #fixedsavewidget.affix {
+@media(max-width:767px){
+  #fixedSaveWidget.affix {
     position: relative;
     right: inherit;
   }
