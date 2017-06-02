@@ -168,6 +168,54 @@ namespace :work do
 
   end
 
+  desc "Transfer ownership of work by id; must provide the work id and new depositor email"
+  task transfer_id: :environment do |t, args|
+
+    work_id = ARGV[ 1 ]
+    if work_id.nil?
+      puts "ERROR: no work id specified, aborting"
+      next
+    end
+
+    task work_id.to_sym do ; end
+
+    work = TaskHelpers.get_work_by_id( work_id )
+    if work.nil?
+      puts "ERROR: work #{work_id} does not exist, aborting"
+      next
+    end
+
+    who = ARGV[ 2 ]
+    if who.nil?
+      puts "ERROR: no depositor email specified, aborting"
+      next
+    end
+
+    task who.to_sym do ; end
+
+    # lookup user and exit if error
+    user = User.find_by_email( who )
+    if user.nil?
+      puts "ERROR: locating user #{who}, aborting"
+      next
+    end
+
+    if work.depositor == who
+      puts "ERROR: work is already owned by #{who}, aborting"
+      next
+    end
+
+#    ContentDepositorChangeEventJob.perform_now( work, who )
+    work.depositor = who
+    work.file_sets.each do |f|
+      f.apply_depositor_metadata( user )
+      f.save!
+    end
+    work.save!
+
+    puts "Work transfered to #{who}"
+  end
+
   #
   # helpers
   #
@@ -209,9 +257,6 @@ namespace :work do
       #w.published_date = CurationConcerns::TimeService.time_in_utc.to_s
 
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
-      #w.description = description
-
-      #w.work_type = work_type
 
       w.abstract = description
 
