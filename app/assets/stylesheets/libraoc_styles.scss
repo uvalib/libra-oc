@@ -13,8 +13,13 @@
   padding-top: 15px;
   .uploaded-files {
     margin-top: 15px;
+    table-layout: fixed;
+    word-wrap: break-word;
     .thumbnail {
-      width: 150px;
+      width: 100%;
+    }
+    button, .label {
+      white-space: normal;
     }
   }
 }
@@ -56,11 +61,11 @@ form .help-block {
   color: #aaaaaa;
 }
 
-#fixedsavewidget.affix {
+#fixedSaveWidget.affix {
   right: 30px;
 }
-@media(max-width:992px){
-  #fixedsavewidget.affix {
+@media(max-width:767px){
+  #fixedSaveWidget.affix {
     position: relative;
     right: inherit;
   }
