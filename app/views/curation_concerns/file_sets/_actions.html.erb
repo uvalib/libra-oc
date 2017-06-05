@@ -26,6 +26,7 @@
     <li role="menuitem" tabindex="-1">
       <%= link_to 'Delete', polymorphic_path([main_app, file_set]),
         method: :delete, title: "Delete #{file_set}",
+        class: 'delete-file',
         data: {confirm: t("sufia.dashboard.my.action.file_confirmation", application_name: application_name) } %>
     </li>
   <% end %>

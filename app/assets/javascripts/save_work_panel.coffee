@@ -10,6 +10,9 @@ onLoad = ()->
     $("#search-submit-header").on('click', (e)->
       leavingWarning(e)
     )
+    $deleteBtn = $("#uploaded-files .delete-file")
+    deleteMsg = $deleteBtn.data('confirm')
+    $deleteBtn.data('confirm', 'If you leave this page, any changes you made will be lost. ' + deleteMsg )
 
 
 $(window).bind('turbolinks:load', onLoad)
