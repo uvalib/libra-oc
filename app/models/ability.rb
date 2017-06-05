@@ -6,6 +6,13 @@ class Ability
 
   self.ability_logic += [:everyone_can_create_curation_concerns]
 
+  #
+  # admins can always edit a work
+  #
+  def edit_groups( id )
+    return super( id ) << 'admin'
+  end
+
   # Define any customized permissions here.
   def custom_permissions
     # Limits deleting objects to a the admin user
