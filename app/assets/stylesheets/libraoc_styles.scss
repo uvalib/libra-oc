@@ -60,6 +60,11 @@ form .help-block {
 
 #fixedSaveWidget.affix {
   right: 30px;
+  top: 20px;
+  max-width: 380px;
+  @media(min-width:1400px) {
+    right: 10%;
+  }
 }
 @media(max-width:767px){
   #fixedSaveWidget.affix {
