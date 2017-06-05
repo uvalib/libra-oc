@@ -8,7 +8,6 @@
         <th><%= t('.thumbnail') %></th>
         <th><%= t('.title') %></th>
         <th><%= t('.date_uploaded') %></th>
-        <th><%= t('.visibility') %></th>
         <th><%= t('.actions') %></th>
       </tr>
       <% f.object.model.file_sets.each do |fs| %>
@@ -18,7 +17,6 @@
             </td>
             <td class="attribute filename"><%= fs.label %></td>
             <td class="attribute date_uploaded"><%= date_formatter( fs.date_uploaded ) %></td>
-            <td class="attribute visibility"><%= render_visibility_label( fs ) %></td>
             <td>
             <%= render 'actions', member: fs %>
             </td>
