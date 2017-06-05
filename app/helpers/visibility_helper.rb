@@ -25,39 +25,51 @@ module VisibilityHelper
 
     # no work, no access
     if work.nil?
-      puts "==> undefined work; access is DENIED"
+      puts "==> work is undefined; access is DENIED"
       return false
     end
 
-
     # this work is owned by the current user regardless of visibility
     if current_user.present? && work.is_mine?( current_user.email )
-      puts "==> authenticated user and work is user owned; access is GRANTED"
+      puts "==> work is user owned; access is GRANTED"
       return true
     end
 
     # if this is a publicly visible work
     if work.is_publicly_visible?
-      puts "==> publicly visible work; access is GRANTED"
+      puts "==> work is publicly visible; access is GRANTED"
       return true
     end
 
-    # if this is an institution visible work
-    if work.is_institution_visible?
+    # check to see if we are on grounds or not...
+    on_grounds = is_on_grounds( )
 
-      # the work is not publicly visible and should only be visible on-grounds
-      if is_on_grounds
-        puts "==> institution visible and on grounds; access is GRANTED"
-        return true
-      else
-        puts "==> institution visible and not on grounds; access is DENIED"
-        return false
-      end
+    # if this is an institution visible work it should only be visible on-grounds
+    if work.is_institution_visible? && on_grounds == true
+      puts "==> work is institution visible and on grounds; access is GRANTED"
+      return true
     end
 
-    puts "==> work is private; access is DENIED"
-    return false
+    # if the current user is an admin
+    if current_user.present? && current_user.admin?
+       puts "==> user is an admin; access is GRANTED"
+       return true
+    end
 
+    # if this is an institution visible work it should only be visible if we are on-grounds
+    if work.is_institution_visible? && on_grounds == false
+       puts "==> work is institution visible and OFF grounds; access is DENIED"
+       return false
+    end
+
+    # if the work is private, we have already checked for an admin
+    if work.is_private?
+       puts "==> work is private; access is DENIED"
+       return false
+    end
+
+    puts "==> unclear; access is DENIED"
+    return false
   end
 
   #
