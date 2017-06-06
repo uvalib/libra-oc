@@ -11,8 +11,7 @@ onLoad = ()->
       leavingWarning(e)
     )
     $deleteBtn = $("#uploaded-files .delete-file")
-    deleteMsg = $deleteBtn.data('confirm')
-    $deleteBtn.data('confirm', 'If you leave this page, any changes you made will be lost. ' + deleteMsg )
+    $deleteBtn.data('confirm', 'If you have not saved recently, any changes you made could be lost. Before deleting this file, click Cancel, then Save your work in Libra.' )
 
 
 $(window).bind('turbolinks:load', onLoad)
