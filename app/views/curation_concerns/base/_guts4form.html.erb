@@ -36,6 +36,11 @@
           <div role="tabpanel" class="tab-pane" id="<%= tab %>">
         <% end %>
           <div class="form-tab-content">
+            <p class='checklist-link'>View the
+            <a href="http://www.library.virginia.edu/libra/open-access/oc-checklist/" target="_blank">
+              Libra Open Checklist
+            </a> for help.
+            </p>
             <%= yield "#{tab}_tab".to_sym if content_for? "#{tab}_tab".to_sym %>
             <%= render "form_#{tab}", f: f %>
           </div>
