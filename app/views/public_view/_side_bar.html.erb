@@ -2,7 +2,7 @@
 
   <div id="metrics">
      <% view_count = get_work_view_count( @work ) %>
-    <span class="file_label"><%= "#{t("sufia.dashboard.stats.file_views").pluralize( view_count )}: " %></span><span class="badge"><%= view_count %></span>
+    <span class="file_label"><%= "#{t("sufia.dashboard.stats.work_views")}: " %></span><span class="badge"><%= view_count %></span>
   </div>
 
   <h2>Files</h2>
@@ -16,7 +16,7 @@
                     "content-name": "Public Page File Download", "content-piece": fs.title.first
                   } %>&nbsp;&nbsp;
           <p><span class="file_label">Uploaded:</span><%= date_formatter(fs.date_uploaded) %></p>
-          <p><span class="file_label"><%= "#{t("sufia.dashboard.stats.file_downloads").pluralize( download_count )}: " %></span><span class="badge"><%= download_count %></p>
+          <p><span class="file_label"><%= "#{t("sufia.dashboard.stats.file_downloads")}: " %></span><span class="badge"><%= download_count %></p>
         </div>
       <% end %>
 
