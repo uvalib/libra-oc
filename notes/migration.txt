@@ -1,0 +1,12 @@
+Migration steps.
+
+1) Create tunnel to production L1. See notes in scripts/helpers/libra_oc_extract.txt
+
+2) To do a full L1 extract run the appropriate rake task. A helper is included in scripts/helpers/libra_oc_extract.ksh.
+The full extract includes articles, article_reprint, conference_paper, book, book_part
+
+3) Create the reference dataset
+rake libraoc:ingest:build_reference_works data/reference_migration_dataset.txt tmp/extract tmp/extract/reference
+
+4) Rename the reference works so they are not re-ingested when ingesting other extract trees
+rake libraoc:ingest:rename_reference_works data/reference_migration_dataset.txt tmp/extract
