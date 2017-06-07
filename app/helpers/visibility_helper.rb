@@ -4,7 +4,7 @@ module VisibilityHelper
   # can we view this work
   #
   def can_view_work?( work )
-    can_view = can_access?( work )
+    can_view = can_view?( work )
     puts "==> can_view_work = #{can_view}"
     return( can_view )
   end
@@ -13,7 +13,7 @@ module VisibilityHelper
   # can we download files from the work
   #
   def can_download_files?( work )
-    can_download = can_access?( work )
+    can_download = can_download?( work )
     puts "==> can_download_files = #{can_download}"
     return( can_download )
   end
@@ -21,23 +21,59 @@ module VisibilityHelper
   #
   # determine work visibility
   #
-  def can_access?( work )
+  def can_view?( work )
 
     # no work, no access
     if work.nil?
-      puts "==> work is undefined; access is DENIED"
+      puts "==> work is undefined; view access is DENIED"
       return false
     end
 
     # this work is owned by the current user regardless of visibility
     if current_user.present? && work.is_mine?( current_user.email )
-      puts "==> work is user owned; access is GRANTED"
+      puts "==> work is user owned; view access is GRANTED"
       return true
     end
 
     # if this is a publicly visible work
     if work.is_publicly_visible?
-      puts "==> work is publicly visible; access is GRANTED"
+      puts "==> work is publicly visible; view access is GRANTED"
+      return true
+    end
+
+    # if this is an institutional visible work
+    if work.is_institution_visible?
+      puts "==> work is institution visible; view access is GRANTED"
+      return true
+    end
+
+    # if the current user is an admin
+    if current_user.present? && current_user.admin?
+       puts "==> user is an admin; view access is GRANTED"
+       return true
+    end
+
+    # if the work is private, we have already checked for an admin
+    if work.is_private?
+       puts "==> work is private; view access is DENIED"
+       return false
+    end
+
+    puts "==> unclear work state; view access is DENIED"
+    return false
+  end
+
+  #
+  # determine files in work visibility
+  #
+  def can_download?( work )
+
+    # verify we can actually view this
+    return false unless can_view?( work )
+
+    # if the current user is an admin
+    if current_user.present? && current_user.admin?
+      puts "==> user is an admin; download access is GRANTED"
       return true
     end
 
@@ -46,30 +82,19 @@ module VisibilityHelper
 
     # if this is an institution visible work it should only be visible on-grounds
     if work.is_institution_visible? && on_grounds == true
-      puts "==> work is institution visible and on grounds; access is GRANTED"
+      puts "==> work is institution visible and on grounds; download access is GRANTED"
       return true
-    end
-
-    # if the current user is an admin
-    if current_user.present? && current_user.admin?
-       puts "==> user is an admin; access is GRANTED"
-       return true
     end
 
     # if this is an institution visible work it should only be visible if we are on-grounds
     if work.is_institution_visible? && on_grounds == false
-       puts "==> work is institution visible and OFF grounds; access is DENIED"
-       return false
+      puts "==> work is institution visible and OFF grounds; download access is DENIED"
+      return false
     end
 
-    # if the work is private, we have already checked for an admin
-    if work.is_private?
-       puts "==> work is private; access is DENIED"
-       return false
-    end
-
-    puts "==> unclear; access is DENIED"
-    return false
+    # no other reason to restrict (we know they can view the metadata) so they can download the files too
+    puts "==> no reason to restrict; download access is GRANTED"
+    return true
   end
 
   #
@@ -100,13 +125,6 @@ module VisibilityHelper
     }
 
     return uva_ip_ranges_list.map { |subnet| IPAddr.new subnet }
-  end
-
-  #
-  # helper for restricted files
-  #
-  def restricted_notice
-    return 'This item is restricted to UVa only.'
   end
 
   #
