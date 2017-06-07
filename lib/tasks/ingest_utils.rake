@@ -219,7 +219,6 @@ namespace :libraoc do
 
         puts "ERROR: cannot locate work item #{work_ref}, skipping..."
         errors += 1
-        next
 
       end
 
@@ -266,6 +265,30 @@ namespace :libraoc do
     works = load_all_ingest_data( ingest_dir )
     next if works.empty?
 
+    errors = 0
+    count = 0
+
+    reference_list.each_with_index do |w, ix|
+
+      work_ref = w.split( '/' )[ 1 ]
+
+      puts "Renaming #{ix + 1} of #{reference_list.length} (#{work_ref})..."
+
+      work_item_location = works[work_ref]
+      if work_item_location.present?
+
+        ok = rename_work_item( work_item_location, work_item_location.gsub( /extract\./, "reference."  ) )
+        ok ? count += 1 : errors += 1
+
+      else
+
+        puts "ERROR: cannot locate work item #{work_ref}, skipping..."
+        errors += 1
+
+      end
+    end
+
+    puts "#{count} work(s) renamed, #{errors} error(s) encountered"
   end
 
   #
@@ -328,7 +351,7 @@ namespace :libraoc do
   #
   def copy_work_item( base_target_dir, work_item, item_number )
 
-    puts "copying #{work_item}..."
+    puts " copying #{work_item}..."
 
     target_dir = File.join( base_target_dir, "extract.#{item_number}" )
     begin
@@ -341,13 +364,28 @@ namespace :libraoc do
          FileUtils.cp( File.join( work_item, f ), target_dir )
        end
 
-       #puts "  deleting #{work_item}..."
-       #FileUtils.rm_rf( work_item )
        return true
     rescue => ex
        puts "ERROR: #{ex}"
        return false
     end
+  end
+
+  #
+  # rename a work item
+  #
+  def rename_work_item( old_name, new_name )
+
+    puts " rename #{old_name} -> #{new_name}..."
+
+    begin
+      FileUtils.mv old_name, new_name
+      return true
+    rescue => ex
+      puts "ERROR: #{ex}"
+      return false
+    end
+
   end
 
   end   # namespace ingest
