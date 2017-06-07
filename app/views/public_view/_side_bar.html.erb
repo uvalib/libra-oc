@@ -2,28 +2,32 @@
 
   <div id="metrics">
      <% view_count = get_work_view_count( @work ) %>
-    <span class="file_label"><%= "#{t("sufia.dashboard.stats.work_views")}: " %></span><span class="badge"><%= view_count %></span>
+    <span class="file_label"><%= "#{t("sufia.public.stats.work_views")}: " %></span><span class="badge"><%= view_count %></span>
   </div>
 
   <h2>Files</h2>
-  <% if can_download_files?( @work ) %>
-    <div id="uploads">
-      <% filesets_sort( @work.file_sets ).each do |fs| %>
-        <div class="file_asset_record">
-          <% download_count = get_file_download_count( fs ) %>
-          <p><%= link_to fs.title.first, download_path(fs), class: 'piwikTrackContent',
-                         data: { turbolinks: false,
-                    "content-name": "Public Page File Download", "content-piece": fs.title.first
-                  } %>&nbsp;&nbsp;
-          <p><span class="file_label">Uploaded:</span><%= date_formatter(fs.date_uploaded) %></p>
-          <p><span class="file_label"><%= "#{t("sufia.dashboard.stats.file_downloads")}: " %></span><span class="badge"><%= download_count %></p>
-        </div>
-      <% end %>
 
-    </div>
+  <% if @work.file_sets.empty? %>
+      <p class="file-notice"><%= t("sufia.public.files.none") %></p>
   <% else %>
-      <% if @work.file_sets.empty? == false %>
-          <p class="file-notice"><%= restricted_notice %></p>
-      <% end %>
+
+    <% if can_download_files?( @work ) %>
+      <div id="uploads">
+        <% filesets_sort( @work.file_sets ).each do |fs| %>
+          <div class="file_asset_record">
+            <% download_count = get_file_download_count( fs ) %>
+            <p><%= link_to fs.title.first, download_path(fs), class: 'piwikTrackContent',
+                           data: { turbolinks: false,
+                      "content-name": "Public Page File Download", "content-piece": fs.title.first
+                    } %>&nbsp;&nbsp;
+            <p><span class="file_label">Uploaded:</span><%= date_formatter(fs.date_uploaded) %></p>
+            <p><span class="file_label"><%= "#{t("sufia.public.stats.file_downloads")}: " %></span><span class="badge"><%= download_count %></p>
+          </div>
+        <% end %>
+
+      </div>
+    <% else %>
+         <p class="file-notice"><%= t("sufia.public.files.restricted") %></p>
+    <% end %>
   <% end %>
 </div>
