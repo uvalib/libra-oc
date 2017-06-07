@@ -21,6 +21,9 @@ en:
         option:
           all:
             label_long:   "All of Libra"
+        q:
+          placeholder_my_scope: 'Search my works'
+          placeholder_all_scope: 'Search all works'
 
     dashboard:
       my:
