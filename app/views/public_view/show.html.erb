@@ -22,7 +22,7 @@
          <h1>Debugging</h1>
          <%= form_tag({}, {:method => :get}) do %>
             <%= create_radio("grounds", "off", "Off Grounds") %><br>
-            <%= create_radio("grounds", "on", "On Grounds", true) %><br>
+            <%= create_radio("grounds", "on", "On Grounds") %><br>
             <button name="button" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Override</button>
          <% end %>
       </div>
