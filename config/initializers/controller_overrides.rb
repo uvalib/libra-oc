@@ -21,6 +21,27 @@ DownloadsController.class_eval do
     super
   end
 
+  protected
+  def file_name
+    params[:filename] || title_name ||
+      file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
+  end
+
+  #
+  # Use custom title and include missing extension
+  #
+  def title_name
+    if asset.respond_to?(:title)
+      title = asset.title.first
+      extension = File.extname(file.file_name.first)
+      if title.ends_with? extension
+        title
+      else
+        title + extension
+      end
+    end
+  end
+
 end
 
 #
