@@ -29,7 +29,7 @@ module UrlHelper
     concat button_html
     concat more_info_html
 
-    # concat already renders to the page so we dont want to return anything here
+    # concat already renders to the page
     nil
   end
 
