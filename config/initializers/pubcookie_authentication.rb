@@ -4,6 +4,8 @@ module Pubcookie
   class CustomStrategy < Devise::Strategies::Authenticatable
 
     def valid?
+      puts "==> user valid? = #{request.env[pubcookie_user].present?} [#{request.env[pubcookie_user]}]"
+
       # We want this strategy to be valid for any request with this header set
       # so that we can use a custom response for an invalid request.
       # cookies['pubcookie_s_geoblacklight'].present?
@@ -45,7 +47,6 @@ module Pubcookie
 
     def authorized_user?
       user = request.env[pubcookie_user]
-
       # Checking for valid LDAP should go below
       # possibly returning the user instead of a boolean
       if user.present?
