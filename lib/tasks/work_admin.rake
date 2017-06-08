@@ -162,7 +162,7 @@ namespace :work do
     work = create_libra_work( user, title, description )
 
     #filename = TaskHelpers.get_random_image( )
-    #TaskHelpers.upload_file( user, work, filename, File.basename( filename ) )
+    #TaskHelpers.upload_file( user, work, filename, File.basename( filename ), work.visibility )
 
     TaskHelpers.show_libra_work work
 

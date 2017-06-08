@@ -46,7 +46,7 @@ namespace :attach do
         next
       end
 
-      TaskHelpers.upload_file( user, work, file_name, File.basename( file_name ) )
+      TaskHelpers.upload_file( user, work, file_name, File.basename( file_name ), work.visibility )
       puts "File #{file_name} attached to work id #{work_id}"
 
     end
@@ -175,7 +175,7 @@ namespace :attach do
         end
       end
 
-      TaskHelpers.upload_file( user, work, file_name, File.basename( file_name ) )
+      TaskHelpers.upload_file( user, work, file_name, File.basename( file_name ), work.visibility )
       puts "File #{file_name} attached to work id #{work_id}"
 
     end

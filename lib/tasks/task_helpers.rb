@@ -203,7 +203,7 @@ module TaskHelpers
   #
   # upload the specified file to the specified work on behalf of the specified user
   #
-  def upload_file( user, work, filename, title, visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC )
+  def upload_file( user, work, filename, title, visibility )
 
     print "uploading #{filename}... "
 

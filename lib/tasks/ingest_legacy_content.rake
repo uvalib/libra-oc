@@ -94,7 +94,7 @@ namespace :libraoc do
 
      # and upload each file
      assets.each do |asset|
-       fileset = TaskHelpers.upload_file( depositor, work, File.join( dirname, asset[ :title ] ), asset[ :title ] )
+       fileset = TaskHelpers.upload_file( depositor, work, File.join( dirname, asset[ :title ] ), asset[ :title ], work.visibility )
        fileset.date_uploaded = DateTime.parse( asset[ :timestamp ] )
        fileset.save!
      end
