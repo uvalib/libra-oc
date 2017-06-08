@@ -6,6 +6,7 @@
 DownloadsController.class_eval do
 
   include StatisticsHelper
+  include VisibilityHelper
 
   def show
 
@@ -21,7 +22,22 @@ DownloadsController.class_eval do
     super
   end
 
+  #
+  # we need to customize the determination on whether someone can download files associated with a work
+  #
+  def authorize_download!
+
+    # attempt to get the asset to determine if it is downloadable
+    if asset && asset.in_works.first
+       can_download =  can_download_files?( asset.in_works.first )
+       # if we can download, bail out here...
+       return if can_download
+    end
+    super
+  end
+
   protected
+
   def file_name
     params[:filename] || title_name ||
       file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
