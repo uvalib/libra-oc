@@ -46,6 +46,10 @@ module CurationConcerns
       super.first || ""
     end
 
+    def publisher
+      super.present? ? super : LibraWork::DEFAULT_PUBLISHER
+    end
+
     def authors
       model.authors.any? ? model.authors : [model.authors.build]
     end
