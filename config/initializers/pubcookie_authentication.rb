@@ -7,8 +7,10 @@ module Pubcookie
       # We want this strategy to be valid for any request with this header set
       # so that we can use a custom response for an invalid request.
       # cookies['pubcookie_s_geoblacklight'].present?
+
+      # we seem to have cases where this field is populated with the string '(null)'
+      # might be an Apache rewrite issue... anyway, check for it here...
       valid = request.env[pubcookie_user].present? && request.env[pubcookie_user] != '(null)'
-      puts "==> user valid? = #{valid} [#{request.env[pubcookie_user]}]"
       return valid
     end
 
