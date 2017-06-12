@@ -5,6 +5,7 @@ class WorkMailer < ActionMailer::Base
 	#
 	def work_submitted( work, to, from )
 		@recipient = User.displayname_from_email( to )
+		@title = work.title.first
     @visibility = work.is_publicly_visible? ? 'public' : 'UVa-only'
 		@rights_link = work.rights.first
     @rights_name = RightsService.label( @rights_link )
