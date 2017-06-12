@@ -156,6 +156,8 @@ module TaskHelpers
       end
     end
 
+    show_field( 'visibility', work.visibility, ' ' )
+
     Author.sort( work.authors ).each_with_index do |p, ix|
        show_person( " author #{ix + 1}:", p )
     end
