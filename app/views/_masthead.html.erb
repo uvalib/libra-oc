@@ -50,12 +50,6 @@
             <li>
               <%= link_to current_user.name, sufia.profile_path(current_user) %>
             </li>
-          <% else %>
-            <li>
-              <%= link_to main_app.new_user_session_path do %>
-                Sign in
-              <% end %>
-            </li>
           <% end %>
         </ul>
       </div><!--/.nav-collapse -->
