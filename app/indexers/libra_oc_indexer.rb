@@ -8,6 +8,14 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
       solr_doc[Solrizer.solr_name('contributors_display', :facetable)] = object.contributors.map &:to_display
       solr_doc[Solrizer.solr_name('notes', :searchable)] = object.notes
       solr_doc[Solrizer.solr_name('thumbnail_url_display', :displayable)] = object.thumbnail_url
+      solr_doc[Solrizer.solr_name('rights_display', :displayable)] = rights_labels(object)
+    end
+  end
+
+  private
+  def rights_labels doc
+    doc.rights.map do |r|
+      CurationConcerns.config.license_service_class.new.label(r)
     end
   end
 end
