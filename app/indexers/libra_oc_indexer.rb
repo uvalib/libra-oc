@@ -16,6 +16,6 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
   def rights_labels doc
     doc.rights.map do |r|
       CurationConcerns.config.license_service_class.new.label(r)
-    end
+    end if doc.rights.present?
   end
 end
