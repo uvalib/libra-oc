@@ -1,7 +1,7 @@
 #
 # values to use if these are not specified in the ingest
 #
-rights: 'All rights reserved (no additional license for public reuse)'
+rights: 'http://www.europeana.eu/portal/rights/rr-r.html'
 publisher: <%= LibraWork::DEFAULT_PUBLISHER %>
 institution: <%= LibraWork::DEFAULT_INSTITUTION %>
 license: <%= LibraWork::DEFAULT_LICENSE %>
