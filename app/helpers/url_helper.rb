@@ -36,7 +36,7 @@ module UrlHelper
   private
 
   def hostname
-    return Socket.gethostname unless Rails.env.development?
+    return ENV['SERVICE_CNAME'] unless Rails.env.development?
     return 'localhost:3000'
   end
 
