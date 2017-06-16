@@ -22,7 +22,6 @@
   padding: .3em;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 1px 1px 3px #999;
   cursor: pointer;
   color: #999;
   font-weight: bold;
@@ -36,6 +35,7 @@
 #connect-orcid-button:hover{
   border: 1px solid #338caf;
   color: #338caf;
+  text-decoration: none;
 }
 
 #orcid-id-logo{
