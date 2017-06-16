@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require turbolinks
+//= require polymer-shim
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require blacklight/blacklight

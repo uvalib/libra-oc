@@ -72,6 +72,14 @@ form .help-block {
     right: inherit;
   }
 }
+
+uvalib-footer-responsive {
+  #bottom-bar.uvalib-footer { height: 60px !important; }
+  .footer-extended {
+    background-color: initial;
+    height: 100%;
+  }
+}
 //
 // end of file
 //
