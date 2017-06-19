@@ -33,7 +33,7 @@ var HydraEditor = (function($) {
 
     _appendControls: function() {
       $(this.fieldWrapperClass, this.element).append(this.controls);
-      $(this.fieldWrapperClass+':not(:last-child) .field-controls', this.element).append(this.remover);
+      $(this.fieldWrapperClass+' .field-controls', this.element).append(this.remover);
       $('.field-controls:last', this.element).append(this.adder);
     },
 
