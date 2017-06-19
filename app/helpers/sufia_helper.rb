@@ -11,6 +11,14 @@ module SufiaHelper
       id: "permission_" + document.id, class: "visibility-link"
   end
 
+  # A Blacklight index field helper_method
+  # @param [Hash] options from blacklight helper_method invocation. Maps rights URIs to links with labels.
+  # @return [ActiveSupport::SafeBuffer] rights statement links, html_safe
+  def license_links(options)
+    service = CurationConcerns::LicenseService.new
+    options[:url].map { |right| link_to service.label(right), right }.to_sentence.html_safe
+  end
+
   private
 
   def render_visibility_label(document)

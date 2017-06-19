@@ -1,25 +1,33 @@
 terms:
-    - id: http://creativecommons.org/licenses/by/4.0/
+    - id: '0'
+      url: http://creativecommons.org/licenses/by/4.0/
       term: Attribution 4.0 International (CC BY)
       active: true
-    - id: http://creativecommons.org/licenses/by-nd/4.0
+    - id: '1'
+      url: http://creativecommons.org/licenses/by-nd/4.0
       term: Attribution-NoDerivatives 4.0 International (CC BY-ND)
       active: true
-    - id: http://creativecommons.org/licenses/by-sa/4.0/
+    - id: '2'
+      url: http://creativecommons.org/licenses/by-sa/4.0/
       term: Attribution-ShareAlike 4.0 International (CC BY-SA)
       active: true
-    - id: http://creativecommons.org/licenses/by-nc/4.0/
+    - id: '3'
+      url: http://creativecommons.org/licenses/by-nc/4.0/
       term: Attribution-NonCommercial 4.0 International (CC BY-NC)
       active: true
-    - id: http://creativecommons.org/licenses/by-nc-nd/4.0/
+    - id: '4'
+      url: http://creativecommons.org/licenses/by-nc-nd/4.0/
       term: Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND)
       active: true
-    - id: http://creativecommons.org/licenses/by-nc-sa/4.0
+    - id: '5'
+      url: http://creativecommons.org/licenses/by-nc-sa/4.0
       term: Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA)
       active: true
-    - id: http://creativecommons.org/publicdomain/zero/1.0/
+    - id: '6'
+      url: http://creativecommons.org/publicdomain/zero/1.0/
       term: CC0 1.0 Universal
       active: true
-    - id: http://www.europeana.eu/portal/rights/rr-r.html
+    - id: '7'
+      url:
       term: All rights reserved (no additional license for public reuse)
       active: true

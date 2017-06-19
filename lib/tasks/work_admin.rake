@@ -265,7 +265,7 @@ namespace :work do
       w.admin_notes << 'Placeholder admin notes'
       w.language = [ 'English' ]
 
-      w.rights << 'http://creativecommons.org/licenses/by/3.0/us/'
+      w.rights << '1'
       #w.license = LibraWork::DEFAULT_LICENSE
 
     end
