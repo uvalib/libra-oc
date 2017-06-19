@@ -187,4 +187,14 @@ class LibraWork < ActiveFedora::Base
     end
   end
 
+  def rights_display
+    value = self.rights.first
+    authority = CurationConcerns.config.license_service_class.new.authority
+    license = authority.find(value)
+    license = authority.search(value) unless license.present?
+    license = {'term' => value} unless license.present?
+
+    license['term']
+  end
+
 end
