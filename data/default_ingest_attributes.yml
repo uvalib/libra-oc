@@ -1,7 +1,7 @@
 #
 # values to use if these are not specified in the ingest
 #
-rights: 'http://www.europeana.eu/portal/rights/rr-r.html'
+rights: '7'
 publisher: <%= LibraWork::DEFAULT_PUBLISHER %>
 institution: <%= LibraWork::DEFAULT_INSTITUTION %>
 license: <%= LibraWork::DEFAULT_LICENSE %>
