@@ -28,7 +28,7 @@ class LibraWork < ActiveFedora::Base
   # defaults
   DEFAULT_INSTITUTION = 'University of Virginia'.freeze
   DEFAULT_PUBLISHER = DEFAULT_INSTITUTION
-  DEFAULT_LICENSE = 'None'.freeze
+  DEFAULT_RIGHTS = '7'.freeze
   DEFAULT_LANGUAGE = 'English'.freeze
 
   # embargo periods (only one)

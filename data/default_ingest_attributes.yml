@@ -1,10 +1,9 @@
 #
 # values to use if these are not specified in the ingest
 #
-rights: '7'
+rights: <%= LibraWork::DEFAULT_RIGHTS %>
 publisher: <%= LibraWork::DEFAULT_PUBLISHER %>
 institution: <%= LibraWork::DEFAULT_INSTITUTION %>
-license: <%= LibraWork::DEFAULT_LICENSE %>
 
 #
 # add to the existing admin notes record for informational purposes

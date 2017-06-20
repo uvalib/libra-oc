@@ -255,8 +255,7 @@ module IngestHelpers
       w.language = [ payload[ :language ] ] if payload[ :language ]
 
       w.notes = payload[ :notes ] if payload[ :notes ]
-      w.rights = [ payload[ :rights ] ] if payload[ :rights ]
-      w.license = LibraWork::DEFAULT_LICENSE
+      w.rights = payload[ :rights ] ?  [ payload[ :rights ] ] : LibraWork::DEFAULT_RIGHTS
 
       w.admin_notes = payload[ :admin_notes ] if payload[ :admin_notes ]
       w.work_source = payload[ :work_source ] if payload[ :work_source ]
