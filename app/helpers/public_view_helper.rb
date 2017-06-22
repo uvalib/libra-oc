@@ -76,11 +76,10 @@ module PublicViewHelper
     author_label = authors.one? ? "Author:" : "Authors:"
     concat content_tag(:span, author_label, class: 'document-label')
     authors.each do |author|
-      
        author_string = construct_person_span( author, true )
        unless author_string.blank?
           concat content_tag(:span, author_string,
-                             style: 'font-weight:normal', class:'document-value' )
+                             style: 'font-weight:normal; margin-bottom: 5px;', class:'document-value' )
        end
     end
     concat raw('</div>')
@@ -137,7 +136,7 @@ module PublicViewHelper
       contributor_string = construct_person_span(contributor, false )
       unless contributor_string.blank?
         concat content_tag(:span, contributor_string,
-                           style: 'font-weight:normal', class:'document-value' )
+                           style: 'font-weight:normal; margin-bottom: 5px;', class:'document-value' )
       end
     end
     concat raw('</div>')
@@ -167,12 +166,11 @@ module PublicViewHelper
 
   def display_related_links( links )
     return '' if links.blank?
-    a = []
-    links.each { |link|
-      display = links.length > 1 ? raw("&bull; #{link}") : link
-      a.push( display )
-    }
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Related Links:", raw( a.join( '<br>' ) ) ).render )
+    concat content_tag :b, "Related Links:"
+    links.each do |link|
+      concat content_tag :li, link_to(link)
+    end
+
   end
 
   def display_doi_link(work)
