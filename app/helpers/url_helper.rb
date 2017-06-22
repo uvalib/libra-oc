@@ -23,7 +23,7 @@ module UrlHelper
       id: 'connect-orcid-button', rel: 'nofollow' do
       image_tag('orcid.png') + " Create or Connect Your ORCID ID"
     end
-    more_info_html = tag(:br) + link_to("Learn more about ORCID", 'https://orcid.org/content/about-orcid',
+    more_info_html = tag(:br) + link_to("Learn more about ORCID", 'https://orcid.org/faq-page',
       target: '_blank')
 
     concat button_html
