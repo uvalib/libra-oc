@@ -1,6 +1,6 @@
 class OrcidController < ApplicationController
 
-  ORCID_MESSAGE= 'For more information about how Libra works with your ORCID ID, please read the <a href="http://www.library.virginia.edu/libra/open-access/oc-checklist/">Libra Open Deposit Checklist.</a>'
+  ORCID_MESSAGE= 'For more information about how Libra works with your ORCID ID, please read the <a href="http://www.library.virginia.edu/libra/open-access/oc-checklist/" target="_blank">Libra Open Deposit Checklist.</a>'
 
   def landing
     orcid_response = orcid_token_exchange
@@ -10,7 +10,7 @@ class OrcidController < ApplicationController
       redirect_to root_url, notice: "Your ORCID account was successfully linked."
     else
       error = params['error_description']
-      redirect_to root_url, alert: "There was a problem linking your ORCID account. #{error}" + ORCID_MESSAGE
+      redirect_to root_url, alert: "There was a problem linking your ORCID account. #{error}. " + ORCID_MESSAGE
     end
   end
 
