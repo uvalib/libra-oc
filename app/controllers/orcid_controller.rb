@@ -1,5 +1,7 @@
 class OrcidController < ApplicationController
 
+  ORCID_MESSAGE= 'For more information about how Libra works with your ORCID ID, please read the <a href="http://www.library.virginia.edu/libra/open-access/oc-checklist/">Libra Open Deposit Checklist.</a>'
+
   def landing
     orcid_response = orcid_token_exchange
     body = JSON.parse orcid_response.body
@@ -8,7 +10,7 @@ class OrcidController < ApplicationController
       redirect_to root_url, notice: "Your ORCID account was successfully linked."
     else
       error = params['error_description']
-      redirect_to root_url, alert: "There was a problem linking your ORCID account. #{error}"
+      redirect_to root_url, alert: "There was a problem linking your ORCID account. #{error}" + ORCID_MESSAGE
     end
   end
 
@@ -35,7 +37,7 @@ class OrcidController < ApplicationController
         redirect_uri: orcid_landing_url
       }, {accept: :json}
     )
-    rescue RestClient::InternalServerError => e
+    rescue RestClient::Exception => e
       return e.response
     end
   end
