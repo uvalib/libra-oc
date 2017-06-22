@@ -1,7 +1,7 @@
 #
 # values to use if these are not specified in the ingest
 #
-rights: <%= LibraWork::DEFAULT_RIGHTS %>
+rights: "<%= LibraWork::DEFAULT_RIGHTS %>"
 publisher: <%= LibraWork::DEFAULT_PUBLISHER %>
 institution: <%= LibraWork::DEFAULT_INSTITUTION %>
 

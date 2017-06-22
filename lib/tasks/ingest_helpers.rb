@@ -159,7 +159,7 @@ module IngestHelpers
     errors << 'missing publisher' if payload[ :publisher ].nil?
     errors << 'missing institution' if payload[ :institution ].nil?
     errors << 'missing work source' if payload[ :work_source ].nil?
-    errors << 'missing license' if payload[ :license ].nil?
+    #errors << 'missing license' if payload[ :license ].nil?
     errors << 'missing embargo' if payload[ :embargo_type ].nil?
     errors << 'missing resource_type' if payload[ :resource_type ].nil?
 
