@@ -19,7 +19,7 @@ module UrlHelper
     orcid_client_id = ENV['ORCID_CLIENT_ID']
 
     # eventually add ' /activities/update' to scope
-    button_html = link_to "#{ENV['ORCID_BASE_URL']}/oauth/authorize?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}",
+    button_html = link_to "#{ENV['ORCID_BASE_URL']}/oauth/authorize /activities/update?client_id=#{orcid_client_id}&response_type=code&scope=/authenticate&redirect_uri=#{redirect}",
       id: 'connect-orcid-button', rel: 'nofollow' do
       image_tag('orcid.png') + " Create or Connect Your ORCID ID"
     end
