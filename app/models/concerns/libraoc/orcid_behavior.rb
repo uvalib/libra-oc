@@ -14,7 +14,7 @@ module Libraoc::OrcidBehavior
     # save an updated value
     #
     def save_orcid
-      orcid_url = orcid.present? ? orcid.gsub( 'http://orcid.org/', '' ) : nil
+      orcid_url = orcid.present? ? orcid.gsub( 'https://orcid.org/', '' ) : nil
       update_orcid_service( User.cid_from_email( email ), orcid_url )
     end
 
