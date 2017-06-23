@@ -86,8 +86,13 @@ module PublicViewHelper
   end
 
   def display_abstract( abstract )
-    return '' if abstract.nil?
+    return '' if abstract.blank?
     return display_generic( "Abstract", simple_format( abstract ) )
+  end
+
+  def display_source_citation( citation )
+    return '' if citation.blank?
+    return display_generic( "Source Citation", content_tag( :p, citation)  )
   end
 
   def construct_person_span(person, want_orcid = false )
