@@ -85,9 +85,9 @@ module PublicViewHelper
     concat raw('</div>')
   end
 
-  def display_abstract( name, abstract )
+  def display_abstract( abstract )
     return '' if abstract.nil?
-    return display_generic( name, simple_format( abstract ) )
+    return display_generic( "Abstract", simple_format( abstract ) )
   end
 
   def construct_person_span(person, want_orcid = false )

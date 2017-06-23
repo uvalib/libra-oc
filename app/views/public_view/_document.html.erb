@@ -10,12 +10,12 @@
                <h1><%= raw(@work[:title].join(raw("<br>"))) %></h1>
                <% display_resource_type @work %>
                <% display_authors( Author.sort(@work.authors) ) %>
-               <%= display_abstract( 'Abstract', @work.abstract) %>
+               <%= display_abstract(@work.abstract) %>
                <%= display_keywords( @work ) %>
                <%= display_rights(@work.rights_display) %>
                <% display_contributors( Contributor.sort(@work.contributors )) %>
                <%= display_language( @work.language ) %>
-               <%= display_generic( 'Source Citation', @work.source_citation) %>
+               <%= display_generic( 'Source Citation', content_tag(:p, @work.source_citation) ) %>
                <%= display_generic( 'Publisher', @work.publisher) %>
                <%= display_generic_date( 'Published Date', date_formatter( @work.published_date ) ) %>
                <%= display_related_links( @work.related_url ) %>
