@@ -166,10 +166,10 @@ module PublicViewHelper
 
   def display_related_links( links )
     return '' if links.blank?
-    concat content_tag :b, "Related Links:"
-    links.each do |link|
-      concat content_tag :li, link_to(link)
+    links = links.map do |link|
+      content_tag :li, link
     end
+    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Related Links:", links ).render
 
   end
 
