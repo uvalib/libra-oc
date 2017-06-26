@@ -8,7 +8,7 @@ class PublicViewController < ApplicationController
 
   def show
     @id = params[:id]
-    @work = get_work_item
+    @work = get_work_item( @id )
     setup_meta_tags
 
     @can_view = helpers.can_view_work?( @work )
@@ -27,13 +27,8 @@ class PublicViewController < ApplicationController
 
   private
 
-  def get_work_item
-    id = params[:id]
-    work = LibraWork.where( { id: id } )
-    if work.length > 0
-      return work[ 0 ]
-    end
-    return nil
+  def get_work_item( id )
+    return LibraWork.find( id )
   end
 
   def setup_meta_tags
