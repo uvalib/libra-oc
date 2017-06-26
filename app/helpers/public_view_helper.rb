@@ -129,7 +129,7 @@ module PublicViewHelper
 
   def extract_orcid_for_display( orcid )
     return '' if orcid.blank?
-    return orcid.gsub( 'http://orcid.org/', '' )
+    return orcid.gsub( /https?:\/\//, '' )
   end
 
   def display_contributors(contributors)
