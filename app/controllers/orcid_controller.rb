@@ -1,6 +1,6 @@
 class OrcidController < ApplicationController
 
-  ORCID_MESSAGE= 'For more information about how Libra works with your ORCID ID, please read the <a href="http://www.library.virginia.edu/libra/open-access/oc-checklist/" target="_blank">Libra Open Deposit Checklist.</a>'
+  ORCID_MESSAGE= '<a href="http://www.library.virginia.edu/libra/orcid-at-uva/" target="_blank">Click here for more information about how Libra works with your ORCID ID.</a>'
 
   def landing
     orcid_response = orcid_token_exchange
