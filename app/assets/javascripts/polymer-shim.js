@@ -6,6 +6,6 @@ Polymer = {dom: 'shadow'};
     && 'content' in document.createElement('template')) {
       // platform is good!
     } else {
-      document.write( '<script src="http://www.library.virginia.edu/wp-content/themes/libweb/bower_components/webcomponentsjs/webcomponents-lite.js"></script>')
+      document.write( '<script src="//www.library.virginia.edu/wp-content/themes/libweb/bower_components/webcomponentsjs/webcomponents-lite.js"></script>')
     }
 })();
