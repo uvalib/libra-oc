@@ -390,9 +390,13 @@ module IngestHelpers
   def get_legacy_ingest_id( dirname )
 
     f = File.join( dirname, TaskHelpers::INGEST_ID_FILE )
-    File.open( f, 'r') do |file|
-      id = file.read( )
-      return id
+    begin
+      File.open( f, 'r') do |file|
+        id = file.read( )
+        return id
+      end
+    rescue Errno::ENOENT
+      return nil
     end
   end
 
@@ -401,10 +405,16 @@ module IngestHelpers
   #
   def set_legacy_ingest_id( dirname, id )
 
-    f = File.join( dirname, TaskHelpers::INGEST_ID_FILE )
-    File.open( f, 'w') do |file|
-      file.write( id )
+    begin
+      f = File.join( dirname, TaskHelpers::INGEST_ID_FILE )
+      File.open( f, 'w') do |file|
+        file.write( id )
+      end
+      return true
+    rescue => e
+      # do nothing...
     end
+    return false
   end
 
   #
@@ -415,50 +425,9 @@ module IngestHelpers
     begin
       f = File.join( dirname, TaskHelpers::INGEST_ID_FILE )
       File.delete( f )
-    rescue => e
-    end
-  end
-
-
-  #
-  # get the ingest id from the file
-  #
-  def get_ingest_id( filename )
-
-     begin
-        File.open( "#{filename}.id", 'r') do |file|
-           id = file.read( )
-           return id
-        end
-     rescue => e
-     end
-     return ''
-  end
-
-  #
-  # write the ingest id to the file
-  #
-  def set_ingest_id( filename, id )
-
-    begin
-       File.open( "#{filename}.id", 'w') do |file|
-          file.write( id )
-       end
-       return true
-    rescue => e
-    end
-    return false
-  end
-
-  #
-  # remove the ingest id file
-  #
-  def clear_ingest_id( filename )
-
-    begin
-      File.delete( "#{filename}.id" )
       return true
     rescue => e
+      # do nothing...
     end
     return false
   end
@@ -578,8 +547,8 @@ module IngestHelpers
   #
   def escape_fields( payload )
 
-    #payload[:title] = escape_field( payload[:title] ) if field_supplied( payload[:title] )
-    #payload[:abstract] = escape_field( payload[:abstract] ) if field_supplied( payload[:abstract] )
+    payload[:title] = escape_field( payload[:title] ) if field_supplied( payload[:title] )
+    payload[:abstract] = escape_field( payload[:abstract] ) if field_supplied( payload[:abstract] )
     return payload
 
   end

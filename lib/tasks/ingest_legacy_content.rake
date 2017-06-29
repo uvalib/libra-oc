@@ -74,7 +74,11 @@ namespace :libraoc do
      assets = IngestHelpers.get_document_assets( dirname )
      puts "Ingesting #{current} of #{total}: #{File.basename( dirname )} (#{assets.length} assets)..."
 
-     work_id = IngestHelpers.get_legacy_ingest_id(dirname )
+     work_id = IngestHelpers.get_legacy_ingest_id( dirname )
+     if work_id.blank?
+       puts "ERROR: no work id for #{dirname}, continuing anyway"
+       return false
+     end
 
      work = TaskHelpers.get_work_by_id( work_id )
      if work.nil?

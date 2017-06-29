@@ -169,7 +169,7 @@ namespace :libraoc do
 
      # create a record of the actual work id
      if work != nil
-        IngestHelpers.set_legacy_ingest_id(dirname, work.id )
+        ok = IngestHelpers.set_legacy_ingest_id(dirname, work.id )
      end
 
      return ok
@@ -237,10 +237,12 @@ namespace :libraoc do
      payload[ :work_source ] = solr_doc.at_path( 'id' )
 
      # related URL's
-     payload[ :related_url ] = extract_related_url( payload, solr_doc, fedora_doc )
+     related_urls = extract_related_url( payload, solr_doc, fedora_doc )
+     payload[ :related_url ] = related_urls if related_urls.present?
 
      # sponsoring agency
-     payload[:sponsoring_agency] = extract_sponsoring_agency( payload, solr_doc, fedora_doc )
+     agencies = extract_sponsoring_agency( payload, solr_doc, fedora_doc )
+     payload[:sponsoring_agency] = agencies if agencies.present?
 
      #
      # handle optional fields

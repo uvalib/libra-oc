@@ -79,7 +79,7 @@ namespace :libraoc do
       work_id = IngestHelpers.get_legacy_ingest_id( File.join( ingest_dir, dirname ) )
 
       if work_id.blank?
-        puts "ERROR: no work id for #{filename}, continuing anyway"
+        puts "ERROR: no work id for #{File.join( ingest_dir, dirname )}, continuing anyway"
         errors += 1
         next
       end
@@ -132,7 +132,7 @@ namespace :libraoc do
       work_id = IngestHelpers.get_legacy_ingest_id( File.join( ingest_dir, dirname ) )
 
       if work_id.blank?
-        puts "ERROR: no work id for #{filename}, continuing anyway"
+        puts "ERROR: no work id for #{File.join( ingest_dir, dirname )}, continuing anyway"
         next
       end
 
