@@ -151,11 +151,11 @@ namespace :libraoc do
        puts " ==> #{warnings.join( "\n ==> " )}"
      end
 
-     # determine the appropriate depositor
-     depositor = identify_and_create_depositor( payload[ :authors ], default_depositor )
-
      # handle dry running
      return true if ENV[ 'DRY_RUN' ]
+
+     # determine the appropriate depositor
+     depositor = identify_and_create_depositor( payload[ :authors ], default_depositor )
 
      # create the work
      ok, work = IngestHelpers.create_new_item( depositor, payload )
