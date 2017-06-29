@@ -7,6 +7,7 @@ include ERB::Util
 module IngestHelpers
 
   DEFAULT_DEFAULT_FILE = 'data/default_ingest_attributes.yml'
+  RESOURCE_TYPE_OVERRIDE_FILE = 'data/resource_type_override.txt'
   MAX_ABSTRACT_LENGTH = 32766
 
   # mapping of department names/mnemonics to actual textual values
@@ -324,6 +325,8 @@ module IngestHelpers
   end
 
   def load_resource_type_remap( filename)
+     puts "Loading resource type remap from: #{filename}"
+
      res = {}
      works = load_reference_works( filename )
      works.each do |w|
@@ -332,6 +335,7 @@ module IngestHelpers
        id = tokens[ 1 ]
        res[id] = rt
      end
+     puts "#{res.length} remap(s) loaded"
      return res
   end
 
@@ -340,6 +344,7 @@ module IngestHelpers
   #
   def load_config_file( filename )
 
+    puts "Loading configuration from: #{filename}"
     begin
       config_erb = ERB.new( IO.read( filename ) ).result( binding )
     rescue StandardError => ex

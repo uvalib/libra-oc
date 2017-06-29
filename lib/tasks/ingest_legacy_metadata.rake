@@ -42,7 +42,7 @@ namespace :libraoc do
   #
   # ingest metadata
   #
-  desc "Ingest legacy Libra data; must provide the ingest directory; optionally provide a defaults file and start index"
+  desc "Ingest legacy Libra data; must provide the ingest directory; optionally provide restource type override file, a defaults file and start index"
   task legacy_metadata: :environment do |t, args|
 
     ingest_dir = ARGV[ 1 ]
@@ -52,13 +52,19 @@ namespace :libraoc do
     end
     task ingest_dir.to_sym do ; end
 
-    defaults_file = ARGV[ 2 ]
+    rt_override_file = ARGV[ 2 ]
+    if rt_override_file.nil?
+      rt_override_file = IngestHelpers::RESOURCE_TYPE_OVERRIDE_FILE
+    end
+    task rt_override_file.to_sym do ; end
+
+    defaults_file = ARGV[ 3 ]
     if defaults_file.nil?
       defaults_file = IngestHelpers::DEFAULT_DEFAULT_FILE
     end
     task defaults_file.to_sym do ; end
 
-    start = ARGV[ 3 ]
+    start = ARGV[ 4 ]
     if start.nil?
       start = "0"
     end
@@ -73,6 +79,8 @@ namespace :libraoc do
       puts "ERROR: ingest directory does not contain contains any items, aborting"
       next
     end
+
+    rt_override = IngestHelpers.load_resource_type_remap( rt_override_file )
 
     # load any default attributes
     defaults = IngestHelpers.load_config_file( defaults_file )
@@ -92,7 +100,7 @@ namespace :libraoc do
     total = ingests.size
     ingests.each_with_index do | dirname, ix |
       next if ix < start_ix
-      ok = ingest_legacy_metadata( defaults, default_depositor, File.join( ingest_dir, dirname ), ix + 1, total )
+      ok = ingest_legacy_metadata( rt_override, defaults, default_depositor, File.join( ingest_dir, dirname ), ix + 1, total )
       ok == true ? success_count += 1 : error_count += 1
       break if ENV[ 'MAX_COUNT' ] && ENV[ 'MAX_COUNT' ].to_i == ( success_count + error_count )
     end
@@ -107,7 +115,7 @@ namespace :libraoc do
   #
   # convert a set of Libra extract assets into a new Libra metadata record
   #
-  def ingest_legacy_metadata( defaults, default_depositor, dirname, current, total )
+  def ingest_legacy_metadata( rt_overrides, defaults, default_depositor, dirname, current, total )
 
      solr_doc, fedora_doc = IngestHelpers.load_legacy_ingest_content(dirname )
      id = solr_doc['id']
@@ -115,7 +123,7 @@ namespace :libraoc do
      puts "Ingesting #{current} of #{total}: #{File.basename( dirname )} (#{id})..."
 
      # create a payload from the document
-     payload = create_legacy_ingest_payload( dirname, solr_doc, fedora_doc )
+     payload = create_legacy_ingest_payload( rt_overrides, dirname, solr_doc, fedora_doc )
 
      # merge in any default attributes
      payload = apply_defaults_for_legacy_item( defaults, payload )
@@ -170,7 +178,7 @@ namespace :libraoc do
   #
   # create a ingest payload from the Libra document
   #
-  def create_legacy_ingest_payload( dirname, solr_doc, fedora_doc )
+  def create_legacy_ingest_payload( rt_overrides, dirname, solr_doc, fedora_doc )
 
 
      payload = {}
@@ -186,7 +194,7 @@ namespace :libraoc do
      payload[ :modified_date ] = modified_date if modified_date.present?
 
      # resource type
-     rt = determine_resource_type( solr_doc )
+     rt = determine_resource_type( rt_overrides, solr_doc )
      payload[ :resource_type ] = rt if rt.present?
 
      # title
@@ -583,12 +591,12 @@ namespace :libraoc do
   #
   # take a guess at the resource type
   #
-  def determine_resource_type( solr_doc )
+  def determine_resource_type( rt_overrides, solr_doc )
 
     # extract the resource type from the SOLR document
     resource_type = solr_doc.at_path( 'object_type_facet[0]' )
     # check to see if we have an override specified
-    resource_type = check_for_resource_type_override( resource_type, solr_doc )
+    resource_type = check_for_resource_type_override( rt_overrides,resource_type, solr_doc )
     # ensure we have identified one
     if resource_type.nil?
        puts "ERROR: unable to determine resource type"
@@ -620,16 +628,15 @@ namespace :libraoc do
   #
   # see if we have configured a resource type override
   #
-  def check_for_resource_type_override( existing_resource_type, solr_doc )
-
-    @resource_type_override = IngestHelpers.load_resource_type_remap( 'data/reference_migration_dataset.txt' ) if @resource_type_override.empty?
+  def check_for_resource_type_override( rt_overrides, existing_resource_type, solr_doc )
 
     id = solr_doc.at_path( 'id' )
-    if @resource_type_override[ id ].present? && @resource_type_override[id] != existing_resource_type
-      puts "==> remapping resource type: [#{existing_resource_type}] -> [#{@resource_type_override[id]}]"
-      return @resource_type_override[id]
+    if rt_overrides[ id ].present? && rt_overrides[id] != existing_resource_type
+      puts "==> remapping resource type: [#{existing_resource_type}] -> [#{rt_overrides[id]}]"
+      return rt_overrides[id]
     end
 
+    puts "==> identified as resource type: [#{existing_resource_type}]"
     return existing_resource_type
   end
 

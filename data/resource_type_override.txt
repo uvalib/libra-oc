@@ -1,0 +1,40 @@
+#
+# Used to remap resource types as we ingest them.
+# For the reference set, we used a specific file to identify the reference set, this is a more general case.
+#
+
+#
+# article remaps
+#
+
+#
+# article_reprint remaps
+#
+
+#
+# book remaps
+#
+
+#
+# book_part remaps
+#
+
+#
+# conference_paper remaps
+#
+
+Poster/libra-oa:8153
+Poster/libra-oa:2810
+Poster/libra-oa:3615
+Poster/libra-oa:945
+Poster/libra-oa:715
+Poster/libra-oa:9649
+Poster/libra-oa:218
+Poster/libra-oa:110
+Poster/libra-oa:108
+Poster/libra-oa:3618
+Poster/libra-oa:3607
+
+#
+# end of file
+#
