@@ -373,8 +373,8 @@ namespace :libraoc do
   def extract_related_url( existing_payload, solr_doc, fedora_doc )
 
     # general approach
-    related_url = IngestHelpers.solr_first_field_extract(solr_doc, 'other_version_location_t')
-    return related_url if related_url.present?
+    related_urls = IngestHelpers.solr_all_field_extract(solr_doc, 'other_version_location_t')
+    return related_urls if related_urls.present?
 
     return nil
   end
@@ -385,8 +385,8 @@ namespace :libraoc do
   def extract_sponsoring_agency( existing_payload, solr_doc, fedora_doc )
 
     # general approach
-    sponsor = IngestHelpers.solr_first_field_extract(solr_doc, 'mods_sponsor_sponsor_name_t')
-    return sponsor if sponsor.present?
+    sponsors = IngestHelpers.solr_all_field_extract(solr_doc, 'mods_sponsor_sponsor_name_t')
+    return sponsors if sponsors.present?
 
     return nil
   end

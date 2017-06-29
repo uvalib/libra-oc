@@ -262,8 +262,8 @@ module IngestHelpers
 
       w.resource_type = payload[ :resource_type ] if payload[ :resource_type ]
 
-      w.related_url = [ payload[ :related_url ] ] if payload[ :related_url ]
-      w.sponsoring_agency = [ payload[ :sponsoring_agency ] ] if payload[ :sponsoring_agency ]
+      w.related_url = payload[ :related_url ] if payload[ :related_url ]
+      w.sponsoring_agency = payload[ :sponsoring_agency ] if payload[ :sponsoring_agency ]
       w.source_citation = payload[ :citation ] if payload[ :citation ]    end
 
     return ok, work
@@ -592,6 +592,17 @@ module IngestHelpers
   def solr_first_field_extract(solr_doc, field_name )
 
     field = solr_doc.at_path( "#{field_name}[0]" )
+    return field if field.present?
+
+    return nil
+  end
+
+  #
+  # solr field extract
+  #
+  def solr_all_field_extract(solr_doc, field_name )
+
+    field = solr_doc.at_path( "#{field_name}" )
     return field if field.present?
 
     return nil
