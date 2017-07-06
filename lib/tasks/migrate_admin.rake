@@ -21,6 +21,8 @@ namespace :migrate do
       LibraWork.search_in_batches( {} ) do |group|
         group.each do |w|
           begin
+            print "."
+
             work = LibraWork.find( w['id'] )
 
             # this will migrate the fields...
@@ -38,6 +40,7 @@ namespace :migrate do
         end
       end
 
+      puts "done"
       puts "Processed #{successes} work(s), #{errors} error(s) encountered"
 
     end
