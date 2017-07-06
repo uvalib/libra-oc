@@ -260,14 +260,13 @@ namespace :work do
 
       w.abstract = description
 
-      w.publisher = LibraWork::DEFAULT_INSTITUTION
+      w.publisher = LibraWork::DEFAULT_PUBLISHER
       w.notes = 'Placeholder notes'
       w.admin_notes << 'Placeholder admin notes'
-      w.language = [ 'English' ]
+      w.language = [ 'English', 'German', 'French' ]
 
-      w.rights << '1'
-      #w.license = LibraWork::DEFAULT_LICENSE
-
+      w.rights << LibraWork::DEFAULT_RIGHTS
+      w.resource_type = 'Article'
     end
 
     return work

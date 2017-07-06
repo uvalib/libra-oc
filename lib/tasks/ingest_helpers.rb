@@ -157,8 +157,7 @@ module IngestHelpers
 
     # other required attributes
     errors << 'missing rights' if payload[ :rights ].nil?
-    errors << 'missing publisher' if payload[ :publisher ].nil?
-    errors << 'missing institution' if payload[ :institution ].nil?
+    #errors << 'missing institution' if payload[ :institution ].nil?
     errors << 'missing work source' if payload[ :work_source ].nil?
     #errors << 'missing license' if payload[ :license ].nil?
     errors << 'missing embargo' if payload[ :embargo_type ].nil?
@@ -185,6 +184,7 @@ module IngestHelpers
     warnings << 'missing contributor(s)' if payload[ :contributors ].empty?
 
     # other fields
+    warnings << 'missing publisher' if payload[ :publisher ].nil?
     warnings << 'missing issued date' if payload[ :issued ].nil?
     warnings << 'missing abstract' if payload[ :abstract ].nil?
     warnings << 'missing keywords' if payload[ :keywords ].nil?
@@ -253,7 +253,7 @@ module IngestHelpers
 
       w.publisher = payload[ :publisher ] if payload[ :publisher ]
 
-      w.language = [ payload[ :language ] ] if payload[ :language ]
+      w.language = payload[ :language ] if payload[ :language ]
 
       w.notes = payload[ :notes ] if payload[ :notes ]
       w.rights = payload[ :rights ] ?  [ payload[ :rights ] ] : LibraWork::DEFAULT_RIGHTS

@@ -257,8 +257,9 @@ namespace :libraoc do
      payload[ :keywords ] = keywords if keywords.present?
 
      # language
-     language = IngestHelpers.solr_first_field_extract(solr_doc, 'language_lang_code_t' )
-     payload[ :language ] = IngestHelpers.language_code_lookup( language ) if language.present?
+     languages = IngestHelpers.solr_all_field_extract(solr_doc, 'language_lang_code_t' )
+     languages = languages.map { |l| IngestHelpers.language_code_lookup( l ) } if languages.present?
+     payload[ :language ] = languages if languages.present?
 
      # notes
      notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
@@ -782,8 +783,6 @@ namespace :libraoc do
 
         when :admin_notes
           next if v.blank?
-
-          #payload[ k ] = [] if payload[ k ].blank?
 
           original_create_date = payload[ :create_date ]
           dt = datetime_from_string( original_create_date )
