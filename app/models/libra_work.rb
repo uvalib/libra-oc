@@ -101,6 +101,50 @@ class LibraWork < ActiveFedora::Base
   end
 
   #
+  # we want to handle the language list as an ordered set
+  #
+  def language
+    return OrderedStringHelper.deserialize(super )
+  end
+
+  def language= values
+    super OrderedStringHelper.serialize(values )
+  end
+
+  #
+  # we want to handle the keyword list as an ordered set
+  #
+  def keyword
+    return OrderedStringHelper.deserialize(super )
+  end
+
+  def keyword= values
+    super OrderedStringHelper.serialize(values )
+  end
+
+  #
+  # we want to handle the related_url list as an ordered set
+  #
+  def related_url
+    return OrderedStringHelper.deserialize(super )
+  end
+
+  def related_url= values
+    super OrderedStringHelper.serialize(values )
+  end
+
+  #
+  # we want to handle the sponsoring_agency list as an ordered set
+  #
+  def sponsoring_agency
+    return OrderedStringHelper.deserialize(super )
+  end
+
+  def sponsoring_agency= values
+    super OrderedStringHelper.serialize(values )
+  end
+
+  #
   # is this work publicly visible?
   #
   def is_publicly_visible?
