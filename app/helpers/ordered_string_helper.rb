@@ -1,4 +1,4 @@
-class OrderedStringHelper
+module OrderedStringHelper
 
   # defaults
   TOKEN_DELIMITER = '|'.freeze
@@ -6,9 +6,9 @@ class OrderedStringHelper
   #
   # convert a serialized array to a normal array of values
   #
-  def self.deserialize( arr )
+  def deserialize( arr )
     return [] if arr.blank?
-    #puts "==> OrderedStringHelper::deserialize in #{relation_to_array( arr )}"
+    #puts "==> OrderedStringHelper::deserialize in #{OrderedStringHelper.relation_to_array( arr )}"
     res = OrderedStringHelper.to_array( arr )
     #puts "==> OrderedStringHelper::deserialize out #{res}"
     return res
@@ -17,7 +17,7 @@ class OrderedStringHelper
   #
   # serialize a normal array of values to an array of ordered values
   #
-  def self.serialize( arr )
+  def serialize( arr )
     return [] if arr.blank?
     #puts "==> OrderedStringHelper::serialize in #{arr}"
     res = []
@@ -35,7 +35,7 @@ class OrderedStringHelper
   #
   def self.to_array( arr )
     res = []
-    OrderedStringHelper.sort(arr ).each do |val|
+    sort( arr ).each do |val|
       res << OrderedStringHelper.get_value(val )
     end
     return res

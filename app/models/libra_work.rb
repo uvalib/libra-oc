@@ -1,5 +1,6 @@
-# Generated via
-#  `rails generate curation_concerns:work LibraWork`
+require_dependency 'app/helpers/ordered_string_helper'
+include OrderedStringHelper
+
 class LibraWork < ActiveFedora::Base
   include ::CurationConcerns::WorkBehavior
   include Libraoc::BasicMetadata
@@ -39,7 +40,6 @@ class LibraWork < ActiveFedora::Base
 
   # A UTF8 minus sign
   ADMIN_NOTE_DATE_MARKER = "\u{2212}"
-
 
   has_and_belongs_to_many :authors, predicate: ::RDF::Vocab::DC.creator,
     class_name: 'Author', inverse_of: :libra_works
