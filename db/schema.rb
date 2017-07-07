@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 20170530162116) do
   create_table "permission_templates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "admin_set_id"
     t.string   "visibility"
-    t.string   "workflow_name"
+    t.string   "workflow_name",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "release_date"
@@ -412,11 +412,12 @@ ActiveRecord::Schema.define(version: 20170530162116) do
   end
 
   create_table "sipity_workflows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.string   "name",                      null: false
+    t.string   "name",                              null: false
     t.string   "label"
-    t.text     "description", limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.text     "description",         limit: 65535
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "allows_access_grant"
     t.index ["name"], name: "index_sipity_workflows_on_name", unique: true, using: :btree
   end
 
