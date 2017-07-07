@@ -10,7 +10,6 @@ module Libraoc::CreateBehavior
 
     def create_behavior
 
-      self.publisher = LibraWork::DEFAULT_PUBLISHER if self.publisher.blank?
       self.date_created = CurationConcerns::TimeService.time_in_utc.to_s if self.date_created.blank?
 
     end

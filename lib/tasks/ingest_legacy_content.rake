@@ -46,8 +46,8 @@ namespace :libraoc do
       next
     end
 
-    # disable the allocate DOI callback for the ingest
-    LibraWork.skip_callback( :save, :after, :allocate_doi )
+    # disable the workflow callbacks
+    TaskHelpers.disable_workflow_callbacks
 
     success_count = 0
     error_count = 0

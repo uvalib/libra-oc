@@ -20,6 +20,20 @@ module TaskHelpers
   DEFAULT_DOMAIN ||= 'virginia.edu'
 
   #
+  # disable the callbacks that are used for workflow; this ensures that we control sgtate changes, etc better
+  # during ingest, and various other
+  #
+  def disable_workflow_callbacks
+
+    # disable the allocate DOI callback
+    LibraWork.skip_callback( :save, :after, :allocate_doi )
+
+    # disable the email send callback
+    LibraWork.skip_callback( :save, :after, :determine_email_behavior )
+
+  end
+
+  #
   # the default user for various admin activities
   #
   def default_user_email

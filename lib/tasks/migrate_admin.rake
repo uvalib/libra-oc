@@ -13,8 +13,8 @@ namespace :migrate do
     desc "Migration to ordered fields (language, keyword, related_url, sponsoring_agency)"
     task ordered_fields: :environment do |t, args|
 
-      # disable the allocate DOI callback for the ingest
-      LibraWork.skip_callback( :save, :after, :allocate_doi )
+      # disable the workflow callbacks
+      TaskHelpers.disable_workflow_callbacks
 
       successes = 0
       errors = 0
