@@ -114,11 +114,11 @@ module ServiceClient
        h[schema] = {}
 
        # needed for datacite schema
-       h[schema]['abstract'] = normalize( work.abstract ) if work.abstract.present?
+       h[schema]['abstract'] = work.abstract if work.abstract.present?
        h[schema]['creators'] = work.authors if work.authors.present?
        h[schema]['contributors'] = work.contributors if work.contributors.present?
        h[schema]['keywords'] = work.keyword if work.keyword.present?
-       h[schema]['rights'] = work.rights[ 0 ] if work.rights.present?
+       h[schema]['rights'] = work.rights_display if work.rights_display.present?
        h[schema]['sponsors'] = work.sponsoring_agency if work.sponsoring_agency.present?
        h[schema]['resource_type'] = work.resource_type if work.resource_type.present?
        h[schema]['general_type'] = dc_general_type( work.resource_type ) if work.resource_type.present?
@@ -127,7 +127,7 @@ module ServiceClient
        yyyymmdd = extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.nil?
        h[schema]['publication_date'] = yyyymmdd if yyyymmdd
        h[schema]['url'] = fully_qualified_work_url( work.id ) # 'http://google.com'
-       h[schema]['title'] = normalize( work.title.join( ' ' ) ) if work.title.present?
+       h[schema]['title'] = work.title.join( ' ' ) if work.title.present?
        h[schema]['publisher'] = work.publisher if work.publisher.present?
 
        #puts "==> #{h.to_json}"
@@ -235,13 +235,6 @@ module ServiceClient
 
        # not sure what format
        return nil
-     end
-
-     #
-     # remove CR/LF from content
-     #
-     def normalize( field )
-       return field.gsub( /\r\n/, ' ' )
      end
 
    end
