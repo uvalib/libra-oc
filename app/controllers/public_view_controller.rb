@@ -7,11 +7,14 @@ class PublicViewController < ApplicationController
   layout 'public_view'
 
   def show
+
     @id = params[:id]
     @work = get_work_item( @id )
-    setup_meta_tags
+    setup_meta_tags if @work.present?
 
-    @can_view = helpers.can_view_work?( @work )
+    @can_view = false
+    @can_view = helpers.can_view_work?( @work ) if @work.present?
+
     if @can_view
 
       # save work view statistics
@@ -28,33 +31,39 @@ class PublicViewController < ApplicationController
   private
 
   def get_work_item( id )
-    return LibraWork.find( id )
+    begin
+      return LibraWork.find( id )
+    rescue Ldp::Gone => ex
+      # do nothing special, we will render a public 404 later on
+      return nil
+    rescue ActiveFedora::ObjectNotFoundError => ex
+      # do nothing special, we will render a public 404 later on
+      return nil
+    end
   end
 
   def setup_meta_tags
-    if @work.present?
-      author_names = @work.authors.map {|a| a.to_display(email: false) }
-      contributor_names = @work.contributors.map {|a| a.to_display(email: false) }
-      title = @work.title.first.to_s
-      set_meta_tags(
-        title: title,
-        description: "Libra Open Content: #{title} | Authors: #{author_names.join(', ')} #{@work.abstract}",
-        keywords: "UVA Libra Open #{author_names.join(' ')} #{@work.keyword.join(' ')}",
+    author_names = @work.authors.map {|a| a.to_display(email: false) }
+    contributor_names = @work.contributors.map {|a| a.to_display(email: false) }
+    title = @work.title.first.to_s
+    set_meta_tags(
+      title: title,
+      description: "Libra Open Content: #{title} | Authors: #{author_names.join(', ')} #{@work.abstract}",
+      keywords: "UVA Libra Open #{author_names.join(' ')} #{@work.keyword.join(' ')}",
 
-        #for google scholar
-        "DC.title": title,
-        "DC.creator": author_names.join('; '),
-        "DC.contributor": contributor_names.join('; '),
-        "DC.subject": @work.keyword.join("; "),
-        "DC.type": @work.resource_type,
-        "DC.identifier": @work.identifier,
-        "DC.rights": @work.license,
-        "DC.issued": @work.published_date,
-        citation_online_date: (Date.parse(@work.date_created).try(:strftime, "%Y/%-m/%-d") if @work.date_created.present?),
-        "DC.language": @work.language,
-        "DC.publisher":@work.publisher,
-      )
-    end
+      #for google scholar
+      "DC.title": title,
+      "DC.creator": author_names.join('; '),
+      "DC.contributor": contributor_names.join('; '),
+      "DC.subject": @work.keyword.join("; "),
+      "DC.type": @work.resource_type,
+      "DC.identifier": @work.identifier,
+      "DC.rights": @work.license,
+      "DC.issued": @work.published_date,
+      citation_online_date: (Date.parse(@work.date_created).try(:strftime, "%Y/%-m/%-d") if @work.date_created.present?),
+      "DC.language": @work.language,
+      "DC.publisher":@work.publisher,
+    )
   end
 
 end
