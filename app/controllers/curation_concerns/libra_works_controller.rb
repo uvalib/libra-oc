@@ -3,6 +3,7 @@
 
 module CurationConcerns
   class LibraWorksController < ApplicationController
+
     include CurationConcerns::CurationConcernController
     include Sufia::WorksControllerBehavior
 
@@ -73,7 +74,7 @@ module CurationConcerns
       begin
         return LibraWork.find( id )
       rescue => ex
-        # do noting
+        # do nothing
       end
       return nil
     end
