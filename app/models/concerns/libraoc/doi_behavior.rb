@@ -8,6 +8,8 @@ module Libraoc::DoiBehavior
 
     after_save :allocate_doi, :if => :doi_unassigned?
 
+    before_destroy :revoke_doi, :if => :doi_assigned?
+
     def doi_url
       return '' if self.doi.nil?
       return "https://doi.org/#{self.doi.gsub('doi:', '')}"
@@ -19,6 +21,13 @@ module Libraoc::DoiBehavior
       return self.doi.blank?
     end
 
+    def doi_assigned?
+      return self.doi.present?
+    end
+
+    #
+    # allocate a DOI to a work that does not have one...
+    #
     def allocate_doi
 
       if is_private? == false
@@ -45,6 +54,21 @@ module Libraoc::DoiBehavior
            puts "ERROR: DOI create returns #{status}"
          end
 
+      end
+
+    end
+
+    #
+    # attempt to revoke a DOI before we delete the work
+    #
+    def revoke_doi
+      puts "Revoking existing DOI #{self.doi}"
+
+      # attempt the revoke
+      status = ServiceClient::EntityIdClient.instance.revoke( self.doi )
+      if ServiceClient::EntityIdClient.instance.ok?( status ) == false
+        # report the error
+        puts "ERROR: DOI revoke returns #{status}"
       end
 
     end
