@@ -127,7 +127,6 @@ module ServiceClient
        h[schema]['publisher'] = work.publisher if work.publisher.present?
 
        #puts "==> #{h.to_json}"
-
        return h.to_json
      end
 
@@ -234,7 +233,7 @@ module ServiceClient
                       department: p.department,
                       institution: p.institution )
        end
-       return res.uniq
+       return res.uniq { |p| p.index }
      end
 
      #
@@ -255,7 +254,7 @@ module ServiceClient
                     department: p.department,
                     institution: p.institution )
        end
-       return res.uniq
+       return res.uniq { |p| p.index }
      end
 
    end
