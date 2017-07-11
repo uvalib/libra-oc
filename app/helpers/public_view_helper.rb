@@ -163,12 +163,6 @@ module PublicViewHelper
     return work.keyword.join( ', ')
   end
 
-  def display_sponsoring_agency( sponsoring_agency )
-    return '' if sponsoring_agency.blank?
-    sa = sponsoring_agency.join( ' ')
-    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Sponsoring Agency:", sa ).render
-  end
-
   def display_related_links( links )
     return '' if links.blank?
     links = links.map do |link|
@@ -197,6 +191,11 @@ module PublicViewHelper
     return '' if rights.blank?
     rights = rights.join(' ') if rights.kind_of?(Array)
     return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights ).render )
+  end
+
+  def display_sponsoring_agency( sponsors )
+    return '' if sponsors.blank?
+    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Sponsoring Agency:", sponsors ).render )
   end
 
   def display_generic_date(name, date)
