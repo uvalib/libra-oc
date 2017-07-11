@@ -103,10 +103,6 @@ module ServiceClient
      #
      def construct_payload( work )
        h = {}
-       #h['creator_firstname'] = author_firstname( work.authors ) if author_firstname( work.authors )
-       #h['creator_lastname'] = author_lastname( work.authors ) if author_lastname( work.authors )
-       #h['creator_department'] = author_department( work.authors ) if author_department( work.authors )
-       #h['creator_institution'] = author_institution( work.authors ) if author_institution( work.authors )
 
        # open content uses the datacite schema
        schema = 'datacite'
@@ -115,8 +111,8 @@ module ServiceClient
 
        # needed for datacite schema
        h[schema]['abstract'] = work.abstract if work.abstract.present?
-       h[schema]['creators'] = work.authors if work.authors.present?
-       h[schema]['contributors'] = work.contributors if work.contributors.present?
+       h[schema]['creators'] = author_cleanup( work.authors ) if work.authors.present?
+       h[schema]['contributors'] = contributor_cleanup( work.contributors ) if work.contributors.present?
        h[schema]['keywords'] = work.keyword if work.keyword.present?
        h[schema]['rights'] = work.rights_display if work.rights_display.present?
        h[schema]['sponsors'] = work.sponsoring_agency if work.sponsoring_agency.present?
@@ -153,26 +149,9 @@ module ServiceClient
 
      private
 
-     def author_firstname( authors )
-       return authors[ 0 ].first_name if authors && authors[ 0 ] && authors[ 0 ].first_name.present?
-       return nil
-     end
-
-     def author_lastname( authors )
-       return authors[ 0 ].last_name if authors && authors[ 0 ] && authors[ 0 ].last_name.present?
-       return nil
-     end
-
-     def author_department( authors )
-       return authors[ 0 ].department if authors && authors[ 0 ] && authors[ 0 ].department.present?
-       return nil
-     end
-
-     def author_institution( authors )
-       return authors[ 0 ].institution if authors && authors[ 0 ] && authors[ 0 ].institution.present?
-       return nil
-     end
-
+     #
+     # general type definition based on the work resource type
+     #
      def dc_general_type( resource_type )
 
        return DC_GENERAL_TYPE_TEXT if resource_type.blank?
@@ -235,6 +214,48 @@ module ServiceClient
 
        # not sure what format
        return nil
+     end
+
+     #
+     # cleanup author list
+     # this includes ensuring the index value is the correct type and removing any duplicates
+     #
+     def author_cleanup( authors )
+
+       res = []
+       authors.each do | p |
+         ix = p.index
+         ix = ix.to_i if ix.instance_of? String
+         res << Author.new(
+             index: ix,
+                      first_name: p.first_name,
+                      last_name: p.last_name,
+                      computing_id: p.computing_id,
+                      department: p.department,
+                      institution: p.institution )
+       end
+       return res.uniq
+     end
+
+     #
+     # cleanup contributor list
+     # this includes ensuring the index value is the correct type and removing any duplicates
+     #
+     def contributor_cleanup( authors )
+
+       res = []
+       authors.each do | p |
+         ix = p.index
+         ix = ix.to_i if ix.instance_of? String
+         res << Contributor.new(
+           index: ix,
+                    first_name: p.first_name,
+                    last_name: p.last_name,
+                    computing_id: p.computing_id,
+                    department: p.department,
+                    institution: p.institution )
+       end
+       return res.uniq
      end
 
    end
