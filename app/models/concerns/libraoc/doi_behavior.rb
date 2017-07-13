@@ -6,8 +6,13 @@ module Libraoc::DoiBehavior
 
   included do
 
+    # create the DOI if required
     after_save :allocate_doi, :if => :doi_unassigned?
 
+    # update the associated metadata if required
+    before_update :update_doi, :if => :doi_update_required?
+
+    # revoke the DOI if required
     before_destroy :revoke_doi, :if => :doi_assigned?
 
     def doi_url
@@ -25,6 +30,41 @@ module Libraoc::DoiBehavior
       return self.doi.present?
     end
 
+    def doi_update_required?
+
+      return false if doi_unassigned?
+
+      changed = self.abstract_changed? ||
+                authors_changed? ||
+                contributors_changed? ||
+                self.keyword_changed? ||
+                self.rights_changed? ||
+                self.sponsoring_agency_changed? ||
+                self.resource_type_changed? ||
+                self.published_date_changed? ||
+                self.date_created_changed? ||
+                self.title_changed? ||
+                self.publisher_changed?
+      #puts "==> DOI METADATA CHANGED: #{changed}"
+      return changed
+    end
+
+    def authors_changed?
+
+      #changed = self.authors.any? { |a| a.changed? }
+      #puts "==> AUTHORS CHANGED: #{changed}"
+      # TODO: DPG: this is not reliable, assume they have not changed
+      return false
+    end
+
+    def contributors_changed?
+
+      #changed = self.contributors.any? { |a| a.changed? }
+      #puts "==> CONTRIBUTORS CHANGED: #{changed}"
+      # TODO: DPG: this is not reliable, assume they have not changed
+      return false
+    end
+
     #
     # allocate a DOI to a work that does not have one...
     #
@@ -39,7 +79,7 @@ module Libraoc::DoiBehavior
 
            self.doi = id
 
-           puts "Updating DOI metadata for #{id}..."
+           puts "Sending DOI metadata for #{id}..."
 
            # update the service metadata
            status = ServiceClient::EntityIdClient.instance.metadatasync( self )
@@ -47,12 +87,32 @@ module Libraoc::DoiBehavior
              # save our new DOI
              self.save!
            else
-             # clear the DOI and note the error
-             puts "ERROR: DOI metadata update returns #{status}"
+             # note the error
+             puts "ERROR: DOI metadata send returns #{status}"
            end
          else
            puts "ERROR: DOI create returns #{status}"
          end
+
+      end
+
+    end
+
+    #
+    # update the DOI metadata asd necessary
+    #
+    def update_doi
+
+      if is_private? == false
+
+        puts "Updating DOI metadata for #{self.doi}..."
+
+        # update the service metadata
+        status = ServiceClient::EntityIdClient.instance.metadatasync( self )
+        if ServiceClient::EntityIdClient.instance.ok?( status ) == false
+          # note the error
+          puts "ERROR: DOI metadata update returns #{status}"
+        end
 
       end
 
