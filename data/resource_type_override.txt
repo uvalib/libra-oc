@@ -855,6 +855,13 @@ Report/libra-oa:3266
 Report/libra-oa:3261
 Report/libra-oa:3260
 
+Conference Proceeding/libra-oa:112
+Conference Proceeding/libra-oa:145
+Conference Proceeding/libra-oa:157
+Conference Proceeding/libra-oa:166
+Conference Proceeding/libra-oa:3441
+Conference Proceeding/libra-oa:507
+
 #
 # end of file
 #
