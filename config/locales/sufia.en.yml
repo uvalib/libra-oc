@@ -55,3 +55,5 @@ en:
         related_url: "Links to another version, another location with the file, website or other specific content (audio, video, PDF document) related to the work."
         source_citation: "The bibliographic citation of the work that reflects where it was originally published."
         person_fields: "Enter a UVA Computing ID to automatically fill the remaining fields for this person."
+        authors: "The main researchers involved in producing the work, or the authors of the publication, in priority order"
+        contributors: "The person responsible for contributing to the development of the resource, such as editor or producer (not an author)."

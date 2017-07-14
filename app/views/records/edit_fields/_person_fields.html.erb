@@ -1,5 +1,8 @@
 <div class="form-group multi_value person libra_work_<%= name %> managed">
   <%= f.label "#{name}_attributes", name.titleize, class: 'multi_value' %>
+    <div class="help-block">
+      <%= helper_text %>
+    </div>
 
     <ul class="listing" aria-live="polite">
       <%= f.simple_fields_for name, Author.sort(f.object.send(name)) do |af| %>
