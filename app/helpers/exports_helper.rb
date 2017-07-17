@@ -12,6 +12,11 @@ module ExportsHelper
     return array.sort.join( delimiter )
   end
 
+  def first_from_array( array )
+    return '' if array.blank?
+    return array.first
+  end
+
   def format_file_count( rec )
     return( rec.file_set_ids.blank? ? 0 : rec.file_set_ids.length )
   end
