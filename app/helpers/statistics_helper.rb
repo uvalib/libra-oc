@@ -42,7 +42,7 @@ module StatisticsHelper
     return 0 if work.file_sets.blank?
     sum = 0
     work.file_sets.each { |fs|
-      sum += get_file_download_count( fs )
+      sum += get_file_download_count( fs.id )
     }
     return sum
   end
@@ -64,8 +64,8 @@ module StatisticsHelper
   #
   # get an aggregate count of file downloads
   #
-  def get_file_download_count( fileset )
-    return FileDownloadStat.where( 'file_id = ?', fileset.id ).sum( :downloads )
+  def get_file_download_count( fileset_id )
+    return FileDownloadStat.where( 'file_id = ?', fileset_id ).sum( :downloads )
   end
 
   private

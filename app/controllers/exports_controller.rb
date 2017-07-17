@@ -22,7 +22,7 @@ class ExportsController < ApplicationController
     works = export_get( the_type, start_date, end_date )
     respond_to do |format|
       format.csv do
-        render_csv_works_response( the_type, transform_to_libra_works( works ) )
+        render_csv_works_response( the_type, work_transform( works ) )
       end
     end
   end
@@ -125,16 +125,13 @@ class ExportsController < ApplicationController
   end
 
   #
-  # transform an array of SOLR works to an array of LibraWorks
+  # transform an array of hashes to SOLR documents
   #
-  def transform_to_libra_works( works )
+  def work_transform( work_hashes )
+
     res = []
-    works.each do |w|
-      begin
-        res << LibraWork.find( w['id'] )
-      rescue => e
-        # ignore errors
-      end
+    work_hashes.each do |w|
+      res << SolrDocument.new( w )
     end
     return res
   end

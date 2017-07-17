@@ -100,6 +100,10 @@ class SolrDocument
     self[Solrizer.solr_name('date_created')]
   end
 
+  def date_modified
+    self['date_modified_dtsi']
+  end
+
   def abstract
     self[Solrizer.solr_name('abstract')]
   end
@@ -108,11 +112,36 @@ class SolrDocument
     self[Solrizer.solr_name('email_status')]
   end
 
+  #def rights_display
+  #  self[Solrizer.solr_name('rights_display')]
+  #end
+
+  def file_set_ids
+    self['member_ids_ssim']
+  end
+
+  #
+  # is this work publicly visible?
+  #
+  def is_publicly_visible?
+    return false if visibility.nil?
+    return( visibility == 'open' )
+  end
+
+  #
+  # is this work visible within the institution?
+  #
+  def is_institution_visible?
+    return false if visibility.nil?
+    return( visibility == 'authenticated' )
+  end
+
   #
   # is this work private to the depositor?
   #
   def is_private?
-    return true if self.visibility.nil? || self.visibility == 'restricted'
+    return true if visibility.nil?
+    return( self.visibility == 'restricted' )
   end
 
   private

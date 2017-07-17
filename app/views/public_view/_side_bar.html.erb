@@ -15,7 +15,7 @@
       <div id="uploads">
         <% filesets_sort( @work.file_sets ).each do |fs| %>
           <div class="file_asset_record">
-            <% download_count = get_file_download_count( fs ) %>
+            <% download_count = get_file_download_count( fs.id ) %>
             <p><%= link_to fs.title.first, download_path(fs), class: 'piwikTrackContent',
                            data: { turbolinks: false,
                       "content-name": "Public Page File Download", "content-piece": fs.title.first
