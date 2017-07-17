@@ -414,7 +414,7 @@ namespace :libraoc do
      # update the service metadata
      status = ServiceClient::EntityIdClient.instance.metadatasync( work )
      if ServiceClient::EntityIdClient.instance.ok?( status ) == false
-        puts "ERROR: metadata update returns #{status}, aborting"
+        puts "ERROR: metadata update for #{work.id} returns #{status}, aborting"
         return false
      end
 
@@ -431,7 +431,7 @@ namespace :libraoc do
 
     status = ServiceClient::EntityIdClient.instance.metadatasync( work )
     if ServiceClient::EntityIdClient.instance.ok?( status ) == false
-       puts "ERROR: metadata update returns #{status}, aborting"
+       puts "ERROR: metadata update for #{work.id} returns #{status}, aborting"
        return false
     end
 

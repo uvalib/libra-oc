@@ -111,7 +111,7 @@ module Libraoc::DoiBehavior
         status = ServiceClient::EntityIdClient.instance.metadatasync( self )
         if ServiceClient::EntityIdClient.instance.ok?( status ) == false
           # note the error
-          puts "ERROR: DOI metadata update returns #{status}"
+          puts "ERROR: DOI metadata update for #{self.id} returns #{status}"
         end
 
       end
