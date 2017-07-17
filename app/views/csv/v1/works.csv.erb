@@ -40,7 +40,7 @@
                                  rec.published_date.first,
                                  rec.notes,
                                  format_array( rec.admin_notes, ', ' ).gsub( LibraWork::ADMIN_NOTE_DATE_MARKER, '-' ),
-                                 rec.rights.first,
+                                 rec.rights_display.first,
                                  format_array( rec.keyword, ', ' ),
                                  format_array( rec.language, ', ' ),
                                  rec.publisher.first,

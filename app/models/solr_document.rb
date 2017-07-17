@@ -112,9 +112,9 @@ class SolrDocument
     self[Solrizer.solr_name('email_status')]
   end
 
-  #def rights_display
-  #  self[Solrizer.solr_name('rights_display')]
-  #end
+  def rights_display
+    self['rights_display_ssm']
+  end
 
   def file_set_ids
     self['member_ids_ssim']
