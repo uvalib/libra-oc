@@ -31,7 +31,7 @@ module OrderedStringHelper
   private
 
   #
-  # deserialize a serialized array of values preservoing the original order
+  # deserialize a serialized array of values preserving the original order
   #
   def self.to_array( arr )
     res = []
@@ -63,8 +63,8 @@ module OrderedStringHelper
   #
   def self.get_index( val )
     tokens = val.split( TOKEN_DELIMITER, 2 )
-    return tokens[ 0 ] if tokens.length == 2
-    return '0'
+    return tokens[ 0 ].to_i if tokens.length == 2
+    return 0
   end
 
   #
