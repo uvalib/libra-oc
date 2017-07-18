@@ -248,10 +248,6 @@ namespace :libraoc do
      # handle optional fields
      #
 
-     # degree program
-     #degree = solr_doc.at_path( 'mods_extension_degree_level_t[0]' )
-     #payload[ :degree ] = degree if degree.present?
-
      # keywords
      keywords = solr_doc.at_path( 'subject_topic_t' )
      payload[ :keywords ] = keywords if keywords.present?
@@ -262,7 +258,7 @@ namespace :libraoc do
      payload[ :language ] = languages if languages.present?
 
      # notes
-     notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
+     notes = extract_notes( payload, solr_doc, fedora_doc )
      payload[ :notes ] = notes if notes.present?
 
      # publisher attributes
@@ -379,6 +375,22 @@ namespace :libraoc do
   end
 
   #
+  # Attempt to extract the notes
+  #
+  def extract_notes( existing_payload, solr_doc, fedora_doc )
+
+    # document notes (use the XML variant as it reflects the formatting better)
+    notes = IngestHelpers.fedora_first_field_extract( fedora_doc, 'mods note' )
+    return notes if notes.present?
+
+    # general approach
+    notes = IngestHelpers.solr_first_field_extract(solr_doc, 'note_t' )
+    return notes if notes.present?
+
+    return nil
+  end
+
+  #
   # Attempt to extract the related URL
   #
   def extract_related_url( existing_payload, solr_doc, fedora_doc )
@@ -389,6 +401,7 @@ namespace :libraoc do
 
     return nil
   end
+
 
   #
   # Attempt to extract the sponsoring agency
