@@ -7,8 +7,7 @@ class WorkMailer < ActionMailer::Base
 		@recipient = User.displayname_from_email( to )
 		@title = work.title.first
     @visibility = work.is_publicly_visible? ? 'public' : 'UVa-only'
-		@rights_link = work.rights.first
-    @rights_name = RightsService.label( @rights_link )
+    @rights_name = RightsService.label( work.rights.first )
 		@doi_url = work.doi_url
 		subject = 'Work successfully deposited to libra-oc'
 		logger.info "Sending email (successful deposit); to: #{to} (#{@recipient}), from: #{from}, subject: #{subject}"

@@ -1,7 +1,7 @@
 <p>Dear <%= @recipient %>,</p>
 <p>Congratulations on opening your work via Libra, the University of Virginia's scholarly repository.</p>
 <p>The work '<%= @title %>' will be available immediately for <%= @visibility %> access.
-  You have opted to grant to users of your work the following re-use rights: <%= "#{@rights_name} #{@rights_link}" %>.</p>
+  You have opted to grant to users of your work the following re-use rights: <%= "#{@rights_name}" %>.</p>
 <p>The permanent location for your work is <a href="<%= @doi_url %>"><%= @doi_url %></a>.</p>
 <p>Always provide this exact link when sharing your work with colleagues, collaborators, and on social media.
 <strong>If your work did not receive a DOI (e.g. there is no link above), please contact us immediately at</strong> <%= MAIL_SENDER %>.</p>
