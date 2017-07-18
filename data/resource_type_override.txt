@@ -824,6 +824,30 @@ Report/libra-oa:998
 # article_reprint remaps
 #
 
+Article/libra-oa:7902
+Article/libra-oa:7900
+Article/libra-oa:7898
+Article/libra-oa:7888
+Article/libra-oa:7885
+Article/libra-oa:7883
+Article/libra-oa:7880
+Article/libra-oa:7878
+Article/libra-oa:7876
+Article/libra-oa:7871
+Article/libra-oa:7869
+Article/libra-oa:7862
+Article/libra-oa:7860
+Article/libra-oa:7856
+Article/libra-oa:7854
+Article/libra-oa:7852
+
+Part of Book/libra-oa:11915
+
+Report/libra-oa:7408
+Report/libra-oa:11922
+
+Other/libra-oa:7753
+
 #
 # book remaps
 #
