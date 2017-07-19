@@ -27,12 +27,17 @@ DownloadsController.class_eval do
   #
   def authorize_download!
 
-    # attempt to get the asset to determine if it is downloadable
-    if asset && asset.in_works.first
-       can_download =  can_download_files?( asset.in_works.first )
-       # if we can download, bail out here...
-       return if can_download
+    begin
+      # attempt to get the asset to determine if it is downloadable
+      if asset && asset.in_works.first
+         can_download =  can_download_files?( asset.in_works.first )
+         # if we can download, bail out here...
+         return if can_download
+      end
+    rescue => ex
+      # do nothing and let the sufia classes handle this
     end
+
     super
   end
 
