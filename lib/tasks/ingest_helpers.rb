@@ -290,7 +290,7 @@ module IngestHelpers
   #
   def get_legacy_ingest_list(dirname )
     res = TaskHelpers.get_directory_list( dirname, /^extract./ )
-    puts "loaded #{res.length} legacy indest candidate(s)" unless res.length == 0
+    puts "loaded #{res.length} legacy ingest candidate(s)" unless res.length == 0
     return res
   end
 
