@@ -308,6 +308,11 @@ namespace :libraoc do
        editor_number += 1
      end
 
+     # special case...
+     if payload[ :publish_date ].blank? && payload[:conference_date].present?
+       payload[ :publish_date ] = payload[:conference_date]
+     end
+
      # construct the citation
      payload[ :citation ] = CitationHelpers.construct( payload )
 
@@ -364,11 +369,6 @@ namespace :libraoc do
     if resource_type( existing_payload ) == 'Article'
       issued_date = IngestHelpers.solr_first_field_extract(solr_doc, 'journal_issue_publication_year_t' )
       return issued_date if issued_date.present?
-    end
-
-    # try for conference papers
-    if resource_type( existing_payload ) == 'Conference Proceeding'
-       return existing_payload[:create_date] if existing_payload[:create_date].present?
     end
 
     return nil

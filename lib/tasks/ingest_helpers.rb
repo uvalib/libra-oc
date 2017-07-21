@@ -242,10 +242,10 @@ module IngestHelpers
       w.date_created = payload[ :create_date ] if payload[ :create_date ]
       w.date_modified = DateTime.parse( payload[ :modified_date ] ) if payload[ :modified_date ]
 
-      # try issued date, then published date, then the create date
+      # default to the create date but use the issued date or the publish date if present
+      w.published_date = payload[ :create_date ] if payload[ :create_date ]
       w.published_date = payload[ :issued ] if payload[ :issued ]
-      w.published_date = payload[ :publish_date ] if payload[ :publish_date ] && w.published_date.blank?
-      w.published_date = payload[ :create_date ] if payload[ :create_date ] && w.published_date.blank?
+      w.published_date = payload[ :publish_date ] if payload[ :publish_date ]
 
       # embargo attributes
       w.visibility = visibility_lookup( payload[ :embargo_type ] )
