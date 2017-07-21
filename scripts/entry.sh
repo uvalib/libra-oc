@@ -3,9 +3,6 @@
 # remove stale pid files
 rm -f $APP_HOME/tmp/pids/server.pid > /dev/null 2>&1
 
-# run the statistics rollup process
-nohup scripts/stats_rollup.sh &
-
 # run the sitemap generator process
 nohup scripts/sitemap_generator.sh &
 
