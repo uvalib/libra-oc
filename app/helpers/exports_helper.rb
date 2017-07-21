@@ -35,8 +35,20 @@ module ExportsHelper
   end
 
   def format_aggregate_filesize( rec )
-    # TODO: DPG not implemented
-    0
+    return 0 if rec.file_set_ids.blank?
+
+    total_size = 0
+    tstart = Time.now
+    FileSet.search_in_batches( { id: rec.file_set_ids } ) do |fsg|
+      elapsed = Time.now - tstart
+      puts "===> extracted #{fsg.length} fileset(s) in #{elapsed}"
+      fsg.each do |fsid|
+        total_size += fsid[ 'file_size_is' ] unless fsid[ 'file_size_is' ].blank?
+      end
+      tstart = Time.now
+    end
+
+    return total_size
   end
 
 end
