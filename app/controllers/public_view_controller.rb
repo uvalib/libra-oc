@@ -18,7 +18,7 @@ class PublicViewController < ApplicationController
     if @can_view
 
       # save work view statistics
-      work_view_event( @work.id, current_user )
+      work_view_event( @work.id )
 
       # handle any debugging support necessary
       set_debugging_override( )
