@@ -2,6 +2,9 @@
 # Some helper tasks to manage view and download statistics
 #
 
+require_dependency 'app/helpers/statistics_helper'
+include StatisticsHelper
+
 namespace :libraoc do
 
   namespace :statistics do
@@ -35,6 +38,27 @@ namespace :libraoc do
        end
     end
   end
+
+  desc "Anonymize work view statistics"
+  task anonymize_work_views: :environment do |t, args|
+
+    view_events = get_all_identified_view_events
+    view_events.each do |event|
+      anonymize_work_view_event( event )
+    end
+  end
+
+  desc "Anonymize file download statistics"
+  task anonymize_file_downloads: :environment do |t, args|
+
+    download_events = get_all_identified_download_events
+    download_events.each do |event|
+      anonymize_file_download_event( event )
+    end
+
+  end
+
+  private
 
   def aggregate_statistics_for_day( day )
     work_views, file_downloads = statistics_for_day( day )

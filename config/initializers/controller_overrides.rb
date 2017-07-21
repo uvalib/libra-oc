@@ -17,7 +17,7 @@ DownloadsController.class_eval do
     #
     if file.kind_of?( String ) == false
       # save file download statistics
-      file_download_event( params['id'] )
+      record_file_download_event( params['id'] )
     end
     super
   end
