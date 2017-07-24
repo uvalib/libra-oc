@@ -216,6 +216,43 @@ namespace :work do
     puts "Work transfered to #{who}"
   end
 
+  desc "Show work id and DOI of all deposited works"
+  task summerize_deposits: :environment do |t, args|
+
+    count = 0
+    LibraWork.search_in_batches( { } ) do |group|
+      group.each do |solr_rec|
+        ws = work_source_from_solr_doc( solr_rec )
+        if ws.blank?
+          puts "id:#{id_from_solr_doc( solr_rec )} #{doi_from_solr_doc( solr_rec )}"
+          count += 1
+        end
+
+      end
+    end
+
+    puts "Listed #{count} work(s)"
+  end
+
+  desc "Show work id, source id and DOI of all migrated works"
+  task summerize_migrated: :environment do |t, args|
+
+    count = 0
+    LibraWork.search_in_batches( { } ) do |group|
+      group.each do |solr_rec|
+        ws = work_source_from_solr_doc( solr_rec )
+        if ws.present?
+           puts "id:#{id_from_solr_doc( solr_rec )} ws:#{ws} #{doi_from_solr_doc( solr_rec )}"
+           count += 1
+        end
+
+      end
+    end
+
+    puts "Listed #{count} work(s)"
+
+  end
+
   #
   # helpers
   #
@@ -270,6 +307,25 @@ namespace :work do
     end
 
     return work
+  end
+
+  def work_source_from_solr_doc( solr_doc )
+    fname = Solrizer.solr_name('work_source')
+    return '' unless solr_doc[ fname ]
+    return solr_doc[ fname ][ 0 ] if solr_doc[ fname ][ 0 ].start_with?( LibraWork::SOURCE_LEGACY )
+    return ''
+  end
+
+  def id_from_solr_doc( solr_doc )
+    fname = 'id'
+    return '' unless solr_doc[ fname ]
+    return solr_doc[ fname ]
+  end
+
+  def doi_from_solr_doc( solr_doc )
+    fname = Solrizer.solr_name('doi')
+    return 'None' unless solr_doc[ fname ] && solr_doc[ fname ][ 0 ]
+    return solr_doc[ fname ][ 0 ]
   end
 
 end   # namespace work
