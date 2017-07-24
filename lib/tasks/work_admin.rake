@@ -222,9 +222,10 @@ namespace :work do
     count = 0
     LibraWork.search_in_batches( { } ) do |group|
       group.each do |solr_rec|
-        ws = work_source_from_solr_doc( solr_rec )
-        if ws.blank?
-          puts "id:#{id_from_solr_doc( solr_rec )} #{doi_from_solr_doc( solr_rec )}"
+        solr_doc = SolrDocument.new( solr_rec )
+        ws = work_source_from_solr_doc( solr_doc )
+        if ws.start_with?( LibraWork::SOURCE_LEGACY ) == false
+          puts "id:#{id_from_solr_doc( solr_doc )} #{doi_from_solr_doc( solr_doc )} (#{visibility_from_solr_doc( solr_doc )})"
           count += 1
         end
 
@@ -240,9 +241,10 @@ namespace :work do
     count = 0
     LibraWork.search_in_batches( { } ) do |group|
       group.each do |solr_rec|
-        ws = work_source_from_solr_doc( solr_rec )
-        if ws.present?
-           puts "id:#{id_from_solr_doc( solr_rec )} ws:#{ws} #{doi_from_solr_doc( solr_rec )}"
+        solr_doc = SolrDocument.new( solr_rec )
+        ws = work_source_from_solr_doc( solr_doc )
+        if ws.start_with?( LibraWork::SOURCE_LEGACY ) == true
+           puts "id:#{id_from_solr_doc( solr_doc )} ws:#{ws} #{doi_from_solr_doc( solr_doc )} (#{visibility_from_solr_doc( solr_doc )})"
            count += 1
         end
 
@@ -310,22 +312,23 @@ namespace :work do
   end
 
   def work_source_from_solr_doc( solr_doc )
-    fname = Solrizer.solr_name('work_source')
-    return '' unless solr_doc[ fname ]
-    return solr_doc[ fname ][ 0 ] if solr_doc[ fname ][ 0 ].start_with?( LibraWork::SOURCE_LEGACY )
-    return ''
+    return '' unless solr_doc.work_source && solr_doc.work_source.first
+    return solr_doc.work_source.first
   end
 
   def id_from_solr_doc( solr_doc )
-    fname = 'id'
-    return '' unless solr_doc[ fname ]
-    return solr_doc[ fname ]
+    return solr_doc.id
   end
 
   def doi_from_solr_doc( solr_doc )
-    fname = Solrizer.solr_name('doi')
-    return 'None' unless solr_doc[ fname ] && solr_doc[ fname ][ 0 ]
-    return solr_doc[ fname ][ 0 ]
+    return 'None' unless solr_doc.doi && solr_doc.doi.first
+    return solr_doc.doi.first
+  end
+
+  def visibility_from_solr_doc( solr_doc )
+    return 'public' if solr_doc.is_publicly_visible?
+    return 'UVa only' if solr_doc.is_institution_visible?
+    return 'private'
   end
 
 end   # namespace work
