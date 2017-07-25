@@ -4,7 +4,6 @@
       var cid = cid_field.val();
       var outerForm = $(cid_field).parents('.person-group');
       var personType = outerForm.data("persontype")
-      var index = outerForm.data("index");
 
       function onSuccess(resp) {
         console.log(resp);
@@ -25,11 +24,10 @@
           elInstitution.val("");
         }
         elFirstName.change();
-        $("body").trigger("computing_id:change", { index: index });
       }
 
       $.ajax("/computing_id.json", {
-        data: { id: cid, index: index },
+        data: { id: cid },
         success: onSuccess
       });
     }
