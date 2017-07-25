@@ -8,7 +8,6 @@ export class RequiredFields {
 
   // modified to decorate the required fields so we can style them
   get areComplete() {
-    this.reload()
     var incomplete = 0
     for( let value of this.requiredFields ) {
       if( this.isValueEmpty( value ) === false ) {
