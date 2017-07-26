@@ -132,7 +132,7 @@ namespace :libraoc do
      payload = add_embargo_release_date( payload )
 
      # some fields with embedded quotes need to be escaped; handle this here
-     payload = IngestHelpers.escape_fields( payload )
+     #payload = IngestHelpers.escape_fields( payload )
 
      # dump the fields as necessary...
      IngestHelpers.dump_ingest_payload( payload ) if ENV[ 'DUMP_PAYLOAD' ]
