@@ -26,6 +26,9 @@ RUN groupadd -r webservice && useradd -r -g webservice webservice && mkdir /home
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# set the locale correctly
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
 # install bundler
 RUN gem install bundler --no-ri --no-rdoc
 
