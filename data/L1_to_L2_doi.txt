@@ -49,7 +49,6 @@ libra-oa:25 doi:10.18130/V3717G
 libra-oa:29 doi:10.18130/V3375J
 libra-oa:328 doi:10.18130/V3ZJ28
 libra-oa:39 doi:10.18130/V3TQ9D
-libra-oa:41 doi:10.18130/V3Q186
 libra-oa:43 doi:10.18130/V3K75W
 libra-oa:46 doi:10.18130/V3FJ30
 libra-oa:55 doi:10.18130/V39R0P
@@ -984,3 +983,15 @@ libra-oa:7871 doi:10.18130/V3448Z
 libra-oa:7880 doi:10.18130/V30F7F
 libra-oa:11915 doi:10.18130/V3VR3S
 libra-oa:11922 doi:10.18130/V3QZ27
+libra-oa:874 doi:10.18130/V33219
+libra-oa:7151 doi:10.18130/V3ZB8G
+libra-oa:7352 doi:10.18130/V3TJ6J
+libra-oa:844 doi:10.18130/V3PV38
+libra-oa:8347 doi:10.18130/V3K208
+libra-oa:11811 doi:10.18130/V3FB8T
+libra-oa:7230 doi:10.18130/V39J6W
+libra-oa:7146 doi:10.18130/V35V3M
+libra-oa:7149 doi:10.18130/V32210
+libra-oa:6290 doi:10.18130/V3XB7S
+libra-oa:214 doi:10.18130/V3SN4H
+libra-oa:212 doi:10.18130/V3NV3Z
