@@ -3,7 +3,7 @@ SitemapGenerator::Sitemap.default_host = "https://libraopen.lib.virginia.edu"
 
 SitemapGenerator::Sitemap.create do
   constraints = "read_access_group_ssim:public"
-  LibraWork.search_in_batches( constraints, {:rows => 999} ) do |group|
+  LibraWork.search_in_batches( constraints ) do |group|
     group.each do |work|
       modified_at = Date.parse(work['date_modified_dtsi'])
       add public_view_path(work['id']), lastmod: modified_at

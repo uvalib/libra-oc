@@ -2,9 +2,6 @@ class ExportsController < ApplicationController
 
   before_action :enforce_user_is_admin
 
-  # the maximum number of rows to pull from SOLR for export...
-  MAX_EXPORT_ROWS = 9999
-
   # # GET /exports
   def index
   end
@@ -37,10 +34,10 @@ class ExportsController < ApplicationController
     # construct the query
     constraints = construct_query_constraints( the_type, start_date, end_date )
 
-    puts "===> query: #{constraints} (max #{MAX_EXPORT_ROWS} rows)"
+    puts "===> query: #{constraints}"
     res = []
     tstart = Time.now
-    LibraWork.search_in_batches( constraints, {:rows => MAX_EXPORT_ROWS} ) do |group|
+    LibraWork.search_in_batches( constraints ) do |group|
       elapsed = Time.now - tstart
       puts "===> extracted #{group.length} work(s) in #{elapsed}"
       res.push( *group )
