@@ -30,9 +30,9 @@ while true; do
       logit "Beginning sitemap generator sequence"
 
       if [ $ENABLE_TEST_FEATURES == 'n' ]; then
-        bundle exec rake sitemap:refresh >> $LOGGER 2>&1
+        rake sitemap:refresh >> $LOGGER 2>&1
       else
-        bundle exec rake sitemap:refresh:no_ping >> $LOGGER 2>&1
+        rake sitemap:refresh:no_ping >> $LOGGER 2>&1
       fi
       res=$?
 
