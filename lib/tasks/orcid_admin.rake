@@ -8,8 +8,8 @@ namespace :libraoc do
 
   namespace :orcid do
 
-  desc "List known ORCID's (from the ORCID service)"
-  task list_orcids: :environment do |t, args|
+  desc "List known ORCID's from the ORCID service"
+  task list_remote_orcids: :environment do |t, args|
 
     count = 0
     status, r = ServiceClient::OrcidAccessClient.instance.get_all( )
@@ -26,8 +26,25 @@ namespace :libraoc do
     end
   end
 
-  desc "Update ORCID's for local users"
-  task update_orcids: :environment do |t, args|
+  desc "List known local ORCID's"
+  task list_local_orcids: :environment do |t, args|
+
+    count = 0
+    User.order( :email ).each do |user|
+      if user.orcid.blank? == false
+        orcid = orcid_from_orcid_url( user.orcid )
+        cid = User.cid_from_email( user.email )
+        puts "#{cid} -> #{orcid} (authenticated: #{user.orcid_access_token.blank? ? 'NO' : 'yes'})"
+        count += 1
+      end
+    end
+
+    puts "#{count} ORCIDS(s) listed"
+
+  end
+
+  desc "Harvest remote ORCID's and update the local users"
+  task harvest_remote_orcids: :environment do |t, args|
 
     count = 0
     User.order( :email ).each do |user|
@@ -48,8 +65,8 @@ namespace :libraoc do
 
   end
 
-  desc "Harvest ORCID's"
-  task harvest_orcids: :environment do |t, args|
+  desc "Harvest local ORCID's and push to ORCID service"
+  task harvest_local_orcids: :environment do |t, args|
 
      count = 0
      User.order( :email ).each do |user|
@@ -68,6 +85,21 @@ namespace :libraoc do
      end
 
      puts "#{count} ORCID(s) harvested"
+  end
+
+  desc "Purge unauthenticated local ORCID's"
+  task purge_local_orcids: :environment do |t, args|
+
+    count = 0
+    User.order( :email ).each do |user|
+      if user.orcid.blank? == false && user.orcid_access_token.blank? == true
+        user.orcid = nil
+        user.save!
+        count += 1
+      end
+    end
+    puts "#{count} ORCID(s) purged"
+
   end
 
   desc "Search ORCID; must provide a search pattern, optionally provide a start index and max count"
@@ -109,41 +141,6 @@ namespace :libraoc do
     end
 
   end
-
-  #
-  # Send work metadata to the ORCID profiloe service
-  #
-  desc "Send work metadata to ORCID profile; must provide the work id"
-  task work_to_orcid: :environment do |t, args|
-
-    work_id = ARGV[ 1 ]
-    if work_id.nil?
-      puts "ERROR: no work id specified, aborting"
-      next
-    end
-
-    task work_id.to_sym do ; end
-
-    work = TaskHelpers.get_work_by_id( work_id )
-    if work.nil?
-      puts "ERROR: work #{work_id} does not exist, aborting"
-      next
-    end
-
-    depositor = User.find_by_user_key( work.depositor )
-    if depositor.nil?
-      puts "ERROR: depositor #{work.depositor} does not exist, aborting"
-      next
-    end
-
-    if depositor.orcid.blank?
-      puts "ERROR: depositor #{work.depositor} does not have an assigned ORCID, aborting"
-      next
-    end
-
-    puts "ERROR: Not implemented"
-  end
-
 
   def orcid_from_orcid_url( orcid_url )
     return '' if orcid_url.blank?
