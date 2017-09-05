@@ -7,6 +7,8 @@ module CurationConcerns
     include CurationConcerns::CurationConcernController
     include Sufia::WorksControllerBehavior
 
+    include WorkHelper
+
     self.curation_concern_type = LibraWork
     self.show_presenter = LibraWorkPresenter
 
@@ -32,13 +34,13 @@ module CurationConcerns
     def update
 
       # snapshot of the work before updating
-      work_before = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
+      work_before = WorkAuditJob.serialize_work( get_work_item( params['id'] ) )
 
       # call base class for actual update behavior
       super
 
       # kick off the work audit task
-      work_after = WorkAuditJob.serialize_work( get_current_work( params['id'] ) )
+      work_after = WorkAuditJob.serialize_work( get_work_item( params['id'] ) )
       WorkAuditJob.perform_later( current_user, work_before, work_after )
 
       # kick off the file auditing task
@@ -68,15 +70,6 @@ module CurationConcerns
         flash[:has_new_files] = true
       end
       flash[:notice] = nil
-    end
-
-    def get_current_work( id )
-      begin
-        return LibraWork.find( id )
-      rescue => ex
-        # do nothing
-      end
-      return nil
     end
 
     def apply_orcid

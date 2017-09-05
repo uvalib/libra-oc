@@ -2,6 +2,7 @@
 
 class PublicViewController < ApplicationController
 
+  include WorkHelper
   include StatisticsHelper
 
   layout 'public_view'
@@ -29,18 +30,6 @@ class PublicViewController < ApplicationController
   end
 
   private
-
-  def get_work_item( id )
-    begin
-      return LibraWork.find( id )
-    rescue Ldp::Gone => ex
-      # do nothing special, we will render a public 404 later on
-      return nil
-    rescue ActiveFedora::ObjectNotFoundError => ex
-      # do nothing special, we will render a public 404 later on
-      return nil
-    end
-  end
 
   def setup_meta_tags
     author_names = @work.authors.map {|a| a.to_display(email: false) }
