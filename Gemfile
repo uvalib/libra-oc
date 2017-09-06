@@ -72,4 +72,7 @@ gem 'sentry-raven'
 
 gem 'meta-tags'
 gem 'sitemap_generator'
-#gem 'clamav'
+
+group :production do
+   gem 'clamav'
+end

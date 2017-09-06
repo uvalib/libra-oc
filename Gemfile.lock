@@ -595,6 +595,7 @@ GEM
       json (>= 1.7)
       mime-types (>= 1.16)
       mimemagic (>= 0.3.0)
+    clamav (0.4.1)
     clipboard-rails (1.7.1)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -1113,6 +1114,7 @@ PLATFORMS
 DEPENDENCIES
   blacklight_advanced_search
   byebug
+  clamav
   coffee-rails (~> 4.2)
   curation_concerns (~> 1.7.6)!
   devise
