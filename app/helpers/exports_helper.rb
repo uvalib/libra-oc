@@ -7,6 +7,21 @@ module ExportsHelper
     return 'unknown'
   end
 
+  def format_abstract( rec )
+    return '' if rec.abstract.blank?
+    return transform_newlines( format_array( rec.abstract, ' ' ) )
+  end
+
+  def format_notes( rec )
+    return '' if rec.notes.blank?
+    return transform_newlines( first_from_array( rec.notes ) )
+  end
+
+  def format_admin_notes( rec )
+    return '' if rec.admin_notes.blank?
+    return transform_newlines( format_array( rec.admin_notes, ', ' ).gsub( LibraWork::ADMIN_NOTE_DATE_MARKER, '-' ) )
+  end
+
   def format_array( array, delimiter )
     return '' if array.blank?
     return array.sort.join( delimiter )
@@ -49,6 +64,12 @@ module ExportsHelper
     end
 
     return total_size
+  end
+
+  private
+
+  def transform_newlines( str )
+     return str.gsub( /\n/, ' ' )
   end
 
 end
