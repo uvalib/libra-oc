@@ -21,27 +21,20 @@ while true; do
 
    # sleeping message...
    logit "Sleeping until $ACTION_TIME..."
-   sleep_until $ACTION_TIME
+   #sleep_until $ACTION_TIME
 
-   # determine if we are the active host... only run on one host even though we may be deployed on many
-   if is_active_host; then
+   # starting message
+   logit "Beginning sitemap generator sequence"
 
-      # starting message
-      logit "Beginning sitemap generator sequence"
-
-      if [ $ENABLE_TEST_FEATURES == 'n' ]; then
-        rake sitemap:refresh >> $LOGGER 2>&1
-      else
-        rake sitemap:refresh:no_ping >> $LOGGER 2>&1
-      fi
-      res=$?
-
-      # ending message
-      logit "Sitemap generator completes with status: $res"
-
+   if [ "$ENABLE_TEST_FEATURES" == "n" ]; then
+      rake sitemap:refresh >> $LOGGER 2>&1
    else
-      logit "Not the active host; doing nothing"
+      rake sitemap:refresh:no_ping >> $LOGGER 2>&1
    fi
+   res=$?
+
+   # ending message
+   logit "Sitemap generator completes with status: $res"
 
    # sleep for another minute
    sleep 60
