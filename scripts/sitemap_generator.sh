@@ -21,7 +21,7 @@ while true; do
 
    # sleeping message...
    logit "Sleeping until $ACTION_TIME..."
-   #sleep_until $ACTION_TIME
+   sleep_until $ACTION_TIME
 
    # starting message
    logit "Beginning sitemap generator sequence"
