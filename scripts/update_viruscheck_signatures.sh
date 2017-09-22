@@ -11,7 +11,10 @@ export NAME=$(basename $0 .sh)
 export LOGGER=$(logger_name "$NAME.log")
 
 # the time we want the action to occur
-export ACTION_TIME="01:00"
+# this is the time in EST
+#export ACTION_TIME="01:00"
+# we are running in UTC
+export ACTION_TIME="05:00"
 
 # helpful message...
 logit "Virus check signature refresher starting up..."
