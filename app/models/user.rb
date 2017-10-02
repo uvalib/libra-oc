@@ -10,9 +10,6 @@ class User < ApplicationRecord
   # helpers, etc for libraoc users
   include Libraoc::UserAttributes
 
-  # support to persist the ORCID on an external service
-  include Libraoc::OrcidBehavior
-
   if Blacklight::Utils.needs_attr_accessible?
     attr_accessible :email, :password, :password_confirmation
   end
@@ -23,8 +20,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
          :rememberable, :trackable
-
-  after_save :save_orcid, :if => :orcid_changed?
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier for
