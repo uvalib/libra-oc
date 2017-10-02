@@ -120,6 +120,11 @@ class SolrDocument
     self['member_ids_ssim']
   end
 
+  def orcid_status
+    orcid_status = self[Solrizer.solr_name('orcid_status')]
+    LibraWork::ORCID_STATUSES[ orcid_status.first.to_sym ] if orcid_status
+  end
+
   #
   # is this work publicly visible?
   #

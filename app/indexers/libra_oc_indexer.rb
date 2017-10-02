@@ -10,6 +10,8 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
       solr_doc[Solrizer.solr_name('thumbnail_url_display', :displayable)] = object.thumbnail_url
       solr_doc[Solrizer.solr_name('rights_display', :displayable)] = rights_labels(object)
       solr_doc[Solrizer.solr_name('rights_url', :displayable)] = rights_urls(object)
+      solr_doc[Solrizer.solr_name('orcid_status', :searchable)] = object.orcid_status
+
     end
   end
 

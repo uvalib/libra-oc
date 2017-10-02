@@ -4,6 +4,7 @@ include OrderedStringHelper
 class LibraWork < ActiveFedora::Base
   include ::CurationConcerns::WorkBehavior
   include Libraoc::BasicMetadata
+  include Libraoc::OrcidBehavior
   include Sufia::WorkBehavior
   include UrlHelper
 
@@ -97,6 +98,10 @@ class LibraWork < ActiveFedora::Base
 
   property :admin_notes, predicate: ::RDF::URI('http://example.org/terms/admin_notes') do |index|
     index.type :text
+    index.as :stored_searchable
+  end
+
+  property :orcid_status, predicate: ::RDF::URI('http://example.org/terms/orcid_status'), multiple: false do |index|
     index.as :stored_searchable
   end
 
