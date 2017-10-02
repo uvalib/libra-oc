@@ -104,6 +104,9 @@ class LibraWork < ActiveFedora::Base
   property :orcid_status, predicate: ::RDF::URI('http://example.org/terms/orcid_status'), multiple: false do |index|
     index.as :stored_searchable
   end
+  property :orcid_put_code, predicate: ::RDF::URI('http://example.org/terms/orcid_put_code'), multiple: false do |index|
+    index.as :stored_searchable
+  end
 
   #
   # we want to handle the language list as an ordered set

@@ -125,6 +125,10 @@ class SolrDocument
     LibraWork::ORCID_STATUSES[ orcid_status.first.to_sym ] if orcid_status
   end
 
+  def orcid_put_code
+    self[Solrizer.solr_name('orcid_put_code')]
+  end
+
   #
   # is this work publicly visible?
   #
