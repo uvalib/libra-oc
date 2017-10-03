@@ -110,7 +110,7 @@ module ServiceClient
        h['oauth_refresh_token'] = oauth_renew
        h['scope'] = oauth_scope
 
-       puts "==> #{h.to_json}"
+       #puts "==> #{h.to_json}"
        return h.to_json
      end
 
@@ -120,7 +120,7 @@ module ServiceClient
      def construct_activity_payload( work )
        h = {}
 
-       #h['update_code'] = work.update_code if work.update_code.present?
+       h['update_code'] = work.orcid_put_code if work.orcid_put_code.present?
 
        metadata = 'work'
        h[metadata] = {}

@@ -132,21 +132,72 @@ namespace :libraoc do
       next
     end
 
-    if Helpers.work_suitable_for_orcid_activity( cid, work ) == false
-      puts "ERROR: work #{work_id} is not suitable to report as activity for #{cid}, aborting"
+    suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+    if suitable == false
+      puts "ERROR: work #{work_id} is unsuitable to report as activity for #{cid} (#{why}), aborting"
       next
     end
 
     status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( cid, work )
     if ServiceClient::OrcidAccessClient.instance.ok?( status )
-      puts "==> OK, update code [#{update_code}]"
+      if work.orcid_put_code.blank?
+         work.orcid_put_code = update_code
+         work.save!
+      end
+
+      puts "Success; work #{work_id} reported as activity for #{cid} (update code #{update_code})"
     else
       puts "ERROR: ORCID service returns #{status}, aborting"
     end
 
   end
 
-    def orcid_from_orcid_url( orcid_url )
+  desc "Update ORCID with all activity; optionally provide the author email"
+  task update_all_author_activity: :environment do |t, args|
+
+    who = ARGV[ 1 ]
+    who = TaskHelpers.default_user_email if who.nil?
+    task who.to_sym do ; end
+
+    cid = User.cid_from_email( who )
+
+    count = 0
+    reported = 0
+    LibraWork.search_in_batches( { depositor: who } ) do |group|
+      group.each do |lw_solr|
+        begin
+          work = LibraWork.find( lw_solr['id'] )
+          suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+          if suitable == false
+            puts "ERROR: work #{work.id} is unsuitable to report as activity for #{cid} (#{why})"
+            next
+          end
+
+          status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( cid, work )
+          if ServiceClient::OrcidAccessClient.instance.ok?( status )
+            if work.orcid_put_code.blank?
+               work.orcid_put_code = update_code
+               work.save!
+            end
+
+            reported += 1
+            puts "Success; work #{work.id} reported as activity for #{cid} (update code #{update_code})"
+          else
+            puts "ERROR: ORCID service returns #{status}"
+          end
+
+        rescue => e
+          puts e
+        end
+      end
+      count += group.size
+    end
+
+    puts "Processed #{count} work(s), #{reported} reported"
+
+  end
+
+  def orcid_from_orcid_url( orcid_url )
     return '' if orcid_url.blank?
     return orcid_url.gsub( 'http://orcid.org/', '' )
   end
