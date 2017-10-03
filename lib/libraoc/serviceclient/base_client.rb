@@ -114,6 +114,9 @@ module ServiceClient
        rescue RestClient::BadRequest => ex
          log_error( method, url, ex, payload )
          return 400, {}
+       rescue RestClient::Unauthorized => ex
+         log_error( method, url, ex, payload )
+         return 401, {}
        rescue RestClient::ResourceNotFound => ex
          #log_error( method, url, ex, payload )
          return 404, {}
@@ -141,6 +144,9 @@ module ServiceClient
        rescue RestClient::BadRequest => ex
          log_error( :get, url, ex )
          return 400, {}
+       rescue RestClient::Unauthorized => ex
+         log_error( :get, url, ex, payload )
+         return 401, {}
        rescue RestClient::ResourceNotFound => ex
          #log_error( :get, url, ex )
          return 404, {}
@@ -164,6 +170,9 @@ module ServiceClient
        rescue RestClient::BadRequest => ex
          log_error( :delete, url, ex )
          return 400
+       rescue RestClient::Unauthorized => ex
+         log_error( :delete, url, ex, payload )
+         return 401, {}
        rescue RestClient::ResourceNotFound => ex
          #log_error( :delete, url, ex )
          return 404
@@ -213,6 +222,49 @@ module ServiceClient
        puts "ERROR: #{ex.class}; #{ex}" if ex.nil? == false
 
      end
+   end
+
+   #
+   # attempt to extract YYYY-MM-DD from a date string
+   #
+   def self.extract_yyyymmdd_from_datestring( date )
+
+     return nil if date.blank?
+
+     #puts "==> DATE IN [#{date}]"
+     begin
+
+       # try yyyy-mm-dd (at the start of the string)
+       dts = date.match( /^(\d{4}-\d{1,2}-\d{1,2})/ )
+       return dts[ 0 ] if dts
+
+       # try yyyy/mm/dd (at the start of the string)
+       dts = date.match( /^(\d{4}\/\d{1,2}\/\d{1,2})/ )
+       return dts[ 0 ].gsub( '/', '-' ) if dts
+
+       # try yyyy-mm (at the start of the string)
+       dts = date.match( /^(\d{4}-\d{1,2})/ )
+       return dts[ 0 ] if dts
+
+       # try yyyy/mm (at the start of the string)
+       dts = date.match( /^(\d{4}\/\d{1,2})/ )
+       return dts[ 0 ].gsub( '/', '-' ) if dts
+
+       # try mm/dd/yyyy (at the start of the string)
+       dts = date.match( /^(\d{1,2}\/\d{1,2}\/\d{4})/ )
+       return DateTime.strptime( dts[ 0 ], "%m/%d/%Y" ).strftime( "%Y-%m-%d" ) if dts
+
+       # try yyyy (anywhere in the string)
+       dts = date.match( /(\d{4})/ )
+       return dts[ 0 ] if dts
+
+     rescue => ex
+       #puts "==> EXCEPTION: #{ex}"
+       # do nothing...
+     end
+
+     # not sure what format
+     return nil
    end
 
 end
