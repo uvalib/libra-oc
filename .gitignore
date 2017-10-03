@@ -29,9 +29,7 @@ env.*
 .idea
 
 # image uploads and state information
-hostfs/uploads/originals/sufia/*
-hostfs/uploads/derivatives/??
-hostfs/state/minter-state
+/hostfs
 
 fits.log
 

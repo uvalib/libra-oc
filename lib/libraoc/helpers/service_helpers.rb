@@ -18,9 +18,9 @@ module Helpers
   def lookup_orcid( cid )
     return '' if cid.blank?
 
-    status, orcid = ServiceClient::OrcidAccessClient.instance.get_by_cid( cid )
+    status, attribs = ServiceClient::OrcidAccessClient.instance.get_attribs_by_cid( cid )
     if ServiceClient::OrcidAccessClient.instance.ok?( status )
-      return orcid
+      return attribs['uri'] ? attribs['uri'] : ''
     else
       puts "INFO: No ORCID located for #{cid}" if status == 404
       puts "ERROR: ORCID lookup returns #{status}" unless status == 404
