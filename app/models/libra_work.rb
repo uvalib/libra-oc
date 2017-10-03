@@ -249,4 +249,8 @@ class LibraWork < ActiveFedora::Base
     license['term']
   end
 
+  def depositor_id
+    depositor[/^.*@/].chop
+  end
+
 end

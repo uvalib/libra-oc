@@ -186,7 +186,7 @@ namespace :libraoc do
 
   end
 
-    def orcid_from_orcid_url( orcid_url )
+  def orcid_from_orcid_url( orcid_url )
     return '' if orcid_url.blank?
     return orcid_url.gsub( 'http://orcid.org/', '' )
   end

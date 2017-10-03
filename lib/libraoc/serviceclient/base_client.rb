@@ -17,6 +17,10 @@ module ServiceClient
        return( status == 200 || status == 201 )
      end
 
+     def retry?( status )
+       status == 503
+     end
+
      #
      # configuration helper
      #

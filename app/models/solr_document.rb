@@ -7,7 +7,6 @@ class SolrDocument
   include Sufia::SolrDocumentBehavior
 
 
-
   # self.unique_key = 'id'
 
   # Email uses the semantic field mappings below to generate the body of an email.
@@ -122,7 +121,7 @@ class SolrDocument
 
   def orcid_status
     orcid_status = self[Solrizer.solr_name('orcid_status')]
-    LibraWork::ORCID_STATUSES[ orcid_status.first.to_sym ] if orcid_status
+    orcid_status.first if orcid_status
   end
 
   def orcid_put_code
