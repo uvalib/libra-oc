@@ -109,46 +109,6 @@ namespace :libraoc do
 
   end
 
-  desc "Search ORCID; must provide a search pattern, optionally provide a start index and max count"
-  task search_orcid: :environment do |t, args|
-
-    search = ARGV[ 1 ]
-    if search.nil?
-      puts "ERROR: no search parameter specified, aborting"
-      next
-    end
-
-    task search.to_sym do ; end
-
-    start = ARGV[ 2 ]
-    if start.nil?
-      start = "0"
-    end
-
-    task start.to_sym do ; end
-
-    max = ARGV[ 3 ]
-    if max.nil?
-      max = "100"
-    end
-
-    task max.to_sym do ; end
-
-    count = 0
-    status, r = ServiceClient::OrcidAccessClient.instance.search_orcid( search, start, max )
-    if ServiceClient::OrcidAccessClient.instance.ok?( status )
-      r.each do |details|
-        puts "#{details['last_name']}, #{details['first_name']} (#{details['display_name']}) -> #{details['orcid']}"
-        count += 1
-      end
-      puts "#{count} ORCIDS(s) listed"
-
-    else
-      puts "ERROR: ORCID service returns #{status}, aborting"
-    end
-
-  end
-
   desc "Update ORCID with an activity; must provide the work id; optionally provide author email"
   task update_author_activity: :environment do |t, args|
 
