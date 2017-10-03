@@ -152,7 +152,7 @@ namespace :libraoc do
 
   end
 
-  desc "Update ORCID with all activity; optionally provide the author email"
+  desc "Update ORCID with all author activity; optionally provide the author email"
   task update_all_author_activity: :environment do |t, args|
 
     who = ARGV[ 1 ]
@@ -163,6 +163,7 @@ namespace :libraoc do
 
     count = 0
     reported = 0
+    errors = 0
     LibraWork.search_in_batches( { depositor: who } ) do |group|
       group.each do |lw_solr|
         begin
@@ -183,17 +184,66 @@ namespace :libraoc do
             reported += 1
             puts "Success; work #{work.id} reported as activity for #{cid} (update code #{update_code})"
           else
-            puts "ERROR: ORCID service returns #{status}"
+            errors += 1
+            puts "ERROR: ORCID service returns #{status} for work #{work.id} reported as activity for #{cid}"
           end
 
         rescue => e
+          errors += 1
           puts e
         end
       end
       count += group.size
     end
 
-    puts "Processed #{count} work(s), #{reported} reported"
+    puts "Processed #{count} work(s), #{reported} reported, #{errors} errors"
+
+  end
+
+  desc "Update ORCID with all activity"
+  task update_all_activity: :environment do |t, args|
+
+    count = 0
+    reported = 0
+    errors = 0
+    LibraWork.search_in_batches( { } ) do |group|
+      group.each do |lw_solr|
+        begin
+          work = LibraWork.find( lw_solr['id'] )
+
+          depositor_cid = User.cid_from_email( work.depositor )
+
+          suitable, why = Helpers.work_suitable_for_orcid_activity( depositor_cid, work )
+          if suitable == false
+            puts "ERROR: work #{work.id} is unsuitable to report as activity for #{depositor_cid} (#{why})"
+            next
+          end
+
+          work.orcid_put_code = ''
+
+          status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( depositor_cid, work )
+          if ServiceClient::OrcidAccessClient.instance.ok?( status )
+            if work.orcid_put_code.blank?
+              work.orcid_put_code = update_code
+              work.save!
+            end
+
+            reported += 1
+            puts "Success; work #{work.id} reported as activity for #{depositor_cid} (update code #{update_code})"
+          else
+            errors += 1
+            puts "ERROR: ORCID service returns #{status} for work #{work.id} reported as activity for #{depositor_cid}"
+          end
+
+        rescue => e
+          errors += 1
+          puts e
+        end
+      end
+      count += group.size
+    end
+
+    puts "Processed #{count} work(s), #{reported} reported, #{errors} errors"
 
   end
 
