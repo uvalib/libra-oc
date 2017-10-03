@@ -109,46 +109,6 @@ namespace :libraoc do
 
   end
 
-  desc "Search ORCID; must provide a search pattern, optionally provide a start index and max count"
-  task search_orcid: :environment do |t, args|
-
-    search = ARGV[ 1 ]
-    if search.nil?
-      puts "ERROR: no search parameter specified, aborting"
-      next
-    end
-
-    task search.to_sym do ; end
-
-    start = ARGV[ 2 ]
-    if start.nil?
-      start = "0"
-    end
-
-    task start.to_sym do ; end
-
-    max = ARGV[ 3 ]
-    if max.nil?
-      max = "100"
-    end
-
-    task max.to_sym do ; end
-
-    count = 0
-    status, r = ServiceClient::OrcidAccessClient.instance.search_orcid( search, start, max )
-    if ServiceClient::OrcidAccessClient.instance.ok?( status )
-      r.each do |details|
-        puts "#{details['last_name']}, #{details['first_name']} (#{details['display_name']}) -> #{details['orcid']}"
-        count += 1
-      end
-      puts "#{count} ORCIDS(s) listed"
-
-    else
-      puts "ERROR: ORCID service returns #{status}, aborting"
-    end
-
-  end
-
   desc "Update ORCID with an activity; must provide the work id; optionally provide author email"
   task update_author_activity: :environment do |t, args|
 
@@ -172,17 +132,116 @@ namespace :libraoc do
       next
     end
 
-    if Helpers.work_suitable_for_orcid_activity( cid, work ) == false
-      puts "ERROR: work #{work_id} is not suitable to report as activity for #{cid}, aborting"
+    suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+    if suitable == false
+      puts "ERROR: work #{work_id} is unsuitable to report as activity for #{cid} (#{why}), aborting"
       next
     end
 
     status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( cid, work )
     if ServiceClient::OrcidAccessClient.instance.ok?( status )
-      puts "==> OK, update code [#{update_code}]"
+      if work.orcid_put_code.blank?
+         work.orcid_put_code = update_code
+         work.save!
+      end
+
+      puts "Success; work #{work_id} reported as activity for #{cid} (update code #{update_code})"
     else
       puts "ERROR: ORCID service returns #{status}, aborting"
     end
+
+  end
+
+  desc "Update ORCID with all author activity; optionally provide the author email"
+  task update_all_author_activity: :environment do |t, args|
+
+    who = ARGV[ 1 ]
+    who = TaskHelpers.default_user_email if who.nil?
+    task who.to_sym do ; end
+
+    cid = User.cid_from_email( who )
+
+    count = 0
+    reported = 0
+    errors = 0
+    LibraWork.search_in_batches( { depositor: who } ) do |group|
+      group.each do |lw_solr|
+        begin
+          work = LibraWork.find( lw_solr['id'] )
+          suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+          if suitable == false
+            puts "ERROR: work #{work.id} is unsuitable to report as activity for #{cid} (#{why})"
+            next
+          end
+
+          status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( cid, work )
+          if ServiceClient::OrcidAccessClient.instance.ok?( status )
+            if work.orcid_put_code.blank?
+               work.orcid_put_code = update_code
+               work.save!
+            end
+
+            reported += 1
+            puts "Success; work #{work.id} reported as activity for #{cid} (update code #{update_code})"
+          else
+            errors += 1
+            puts "ERROR: ORCID service returns #{status} for work #{work.id} reported as activity for #{cid}"
+          end
+
+        rescue => e
+          errors += 1
+          puts e
+        end
+      end
+      count += group.size
+    end
+
+    puts "Processed #{count} work(s), #{reported} reported, #{errors} errors"
+
+  end
+
+  desc "Update ORCID with all activity"
+  task update_all_activity: :environment do |t, args|
+
+    count = 0
+    reported = 0
+    errors = 0
+    LibraWork.search_in_batches( { } ) do |group|
+      group.each do |lw_solr|
+        begin
+          work = LibraWork.find( lw_solr['id'] )
+
+          depositor_cid = User.cid_from_email( work.depositor )
+
+          suitable, why = Helpers.work_suitable_for_orcid_activity( depositor_cid, work )
+          if suitable == false
+            puts "ERROR: work #{work.id} is unsuitable to report as activity for #{depositor_cid} (#{why})"
+            next
+          end
+
+          status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( depositor_cid, work )
+          if ServiceClient::OrcidAccessClient.instance.ok?( status )
+            if work.orcid_put_code.blank?
+              work.orcid_put_code = update_code
+              work.save!
+            end
+
+            reported += 1
+            puts "Success; work #{work.id} reported as activity for #{depositor_cid} (update code #{update_code})"
+          else
+            errors += 1
+            puts "ERROR: ORCID service returns #{status} for work #{work.id} reported as activity for #{depositor_cid}"
+          end
+
+        rescue => e
+          errors += 1
+          puts e
+        end
+      end
+      count += group.size
+    end
+
+    puts "Processed #{count} work(s), #{reported} reported, #{errors} errors"
 
   end
 
