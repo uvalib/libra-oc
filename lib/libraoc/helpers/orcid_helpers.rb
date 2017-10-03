@@ -13,6 +13,12 @@ module Helpers
      author_cid = first_author_cid( work.authors )
      return false, "Not author (author reported as #{author_cid})" if author_cid != cid
 
+     # works that do not have DOI's cannot go to ORCID
+     return false, 'Missing DOI' if work.doi.blank?
+
+     # works that do not have titles cannot go to ORCID
+     return false, 'Missing title' if work.title.blank?
+
      # OK to send to ORCID
      return true
    end
