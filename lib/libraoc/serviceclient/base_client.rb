@@ -123,6 +123,9 @@ module ServiceClient
        rescue RestClient::RequestTimeout => ex
          #log_error( method, url, ex, payload )
          return 408, {}
+       rescue RestClient::Conflict => ex
+         log_error( method, url, ex, payload )
+         return 409, {}
        rescue RestClient::Exception, SocketError, Exception => ex
          log_error( method, url, ex, payload )
          return 500, {}
@@ -153,6 +156,9 @@ module ServiceClient
        rescue RestClient::RequestTimeout => ex
          #log_error( :get, url, ex )
          return 408, {}
+       rescue RestClient::Conflict => ex
+         log_error( :get, url, ex, payload )
+         return 409, {}
        rescue RestClient::Exception, SocketError, Exception => ex
          log_error( :get, url, ex )
          return 500, {}
@@ -179,6 +185,9 @@ module ServiceClient
        rescue RestClient::RequestTimeout => ex
          #log_error( :delete, url, ex )
          return 408
+       rescue RestClient::Conflict => ex
+         log_error( :delete, url, ex, payload )
+         return 409, {}
        rescue RestClient::Exception, SocketError, Exception => ex
          log_error( :delete, url, ex )
          return 500
