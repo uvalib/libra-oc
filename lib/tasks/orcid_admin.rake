@@ -219,8 +219,6 @@ namespace :libraoc do
             next
           end
 
-          work.orcid_put_code = ''
-
           status, update_code = ServiceClient::OrcidAccessClient.instance.set_activity_by_cid( depositor_cid, work )
           if ServiceClient::OrcidAccessClient.instance.ok?( status )
             if work.orcid_put_code.blank?
