@@ -9,8 +9,7 @@ module OrcidHelper
      return false, 'Not publicly visible' if work.is_publicly_visible? == false
 
      # works that are not authored by the specified user should not be sent to ORCID
-     author_cid = first_author_cid( work.authors )
-     return false, "Not author (author reported as #{author_cid})" if author_cid != cid
+     return false, 'Not author' if contains_computing_id( work.authors, cid )
 
      # works that do not have DOI's cannot go to ORCID
      return false, 'Missing DOI' if work.doi.blank?
@@ -45,21 +44,19 @@ module OrcidHelper
    private
 
    #
-   # return the computing ID of the first author
+   # does the list of authors contain the supplied computing ID
    #
-   def first_author_cid( authors )
+   def contains_computing_id( authors, cid )
 
-      return 'none' if authors.empty?
+      # list is empty
+      return false if authors.empty?
+
       authors.each do |a|
-         if a.index == 0
-            return a.computing_id if a.computing_id.present?
-            return 'none'
-         end
-
+         return true if a.computing_id == cid
       end
 
       # nothing found
-      return 'none'
+      return false
 
    end
 
