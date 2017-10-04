@@ -1,5 +1,7 @@
 class OrcidSyncJob < ApplicationJob
 
+  include ::OrcidHelper
+
   #
   # Creates or updates a LibraWork in the OrcidService
   #
@@ -7,7 +9,7 @@ class OrcidSyncJob < ApplicationJob
 
     work = LibraWork.find(work_id)
 
-    if Helpers.work_suitable_for_orcid_activity( computing_id, work ) == false
+    if work_suitable_for_orcid_activity( computing_id, work ) == false
       puts "The work is not eligible for ORCID upload."
       return
     end
@@ -21,8 +23,8 @@ class OrcidSyncJob < ApplicationJob
 
     elsif ServiceClient::OrcidAccessClient.instance.retry?( status )
       work.update orcid_status: LibraWork.incomplete_orcid_status
-      retry_job wait: 5.minutes
       puts "RETRYING: OrcidSyncJob for #{work_id}"
+      retry_job wait: 5.minutes
 
     else
       work.update orcid_status: LibraWork.incomplete_orcid_status
