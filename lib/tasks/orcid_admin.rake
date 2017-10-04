@@ -3,7 +3,8 @@
 #
 
 require_dependency 'libraoc/serviceclient/orcid_access_client'
-require_dependency 'libraoc/helpers/orcid_helpers'
+require_dependency 'app/helpers/orcid_helper'
+include OrcidHelper
 
 namespace :libraoc do
 
@@ -132,7 +133,7 @@ namespace :libraoc do
       next
     end
 
-    suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+    suitable, why = work_suitable_for_orcid_activity( cid, work )
     if suitable == false
       puts "ERROR: work #{work_id} is unsuitable to report as activity for #{cid} (#{why}), aborting"
       next
@@ -168,7 +169,7 @@ namespace :libraoc do
       group.each do |lw_solr|
         begin
           work = LibraWork.find( lw_solr['id'] )
-          suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+          suitable, why = work_suitable_for_orcid_activity( cid, work )
           if suitable == false
             puts "ERROR: work #{work.id} is unsuitable to report as activity for #{cid} (#{why})"
             next
@@ -213,7 +214,7 @@ namespace :libraoc do
 
           depositor_cid = User.cid_from_email( work.depositor )
 
-          suitable, why = Helpers.work_suitable_for_orcid_activity( depositor_cid, work )
+          suitable, why = work_suitable_for_orcid_activity( depositor_cid, work )
           if suitable == false
             puts "ERROR: work #{work.id} is unsuitable to report as activity for #{depositor_cid} (#{why})"
             next
@@ -243,11 +244,6 @@ namespace :libraoc do
 
     puts "Processed #{count} work(s), #{reported} reported, #{errors} errors"
 
-  end
-
-  def orcid_from_orcid_url( orcid_url )
-    return '' if orcid_url.blank?
-    return orcid_url.gsub( 'http://orcid.org/', '' )
   end
 
   end   # namespace orcid
