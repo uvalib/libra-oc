@@ -20,7 +20,7 @@ module UpdateOrcidBehavior
     def update_orcid
       if current_user.orcid.present?
         update_orcid_attributes(User.cid_from_email(current_user.email ), current_user )
-        OrcidSyncAllJob.perform_async(current_user.id)
+        OrcidSyncAllJob.perform_later(current_user.id)
       end
     end
 
