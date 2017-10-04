@@ -18,7 +18,7 @@ module ServiceClient
      end
 
      def retry?( status )
-       status == 503
+       status == 408
      end
 
      #
