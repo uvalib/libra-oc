@@ -7,7 +7,7 @@ class OrcidSyncAllJob < ApplicationJob
 
     user = User.find(user_id)
     LibraWork.where(depositor: user.email).each do |work|
-      OrcidSyncJob.perform_later(work.id, user_id)
+      OrcidSyncJob.perform_later(work.id, user.computing_id)
     end
   end
 

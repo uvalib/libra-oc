@@ -73,7 +73,7 @@ module CurationConcerns
     end
 
     def update_orcid
-      OrcidSyncJob.perform_later @curation_concern.id, current_user.id
+      OrcidSyncJob.perform_later @curation_concern.id, current_user.computing_id
     end
 
   end
