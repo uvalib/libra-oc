@@ -33,7 +33,7 @@ namespace :libraoc do
     count = 0
     User.order( :email ).each do |user|
       if user.orcid.blank? == false
-        orcid = orcid_from_orcid_url( user.orcid )
+        orcid = Helpers.orcid_from_orcid_url( user.orcid )
         cid = User.cid_from_email( user.email )
         puts "#{cid} -> #{orcid} (authenticated: #{user.orcid_access_token.blank? ? 'NO' : 'yes'})"
         count += 1
@@ -54,7 +54,7 @@ namespace :libraoc do
         cid = User.cid_from_email( user.email )
         status, attribs = ServiceClient::OrcidAccessClient.instance.get_attribs_by_cid(cid )
         if ServiceClient::OrcidAccessClient.instance.ok?( status )
-          orcid = orcid_from_orcid_url( attribs['uri'] )
+          orcid = Helpers.orcid_from_orcid_url( attribs['uri'] )
           puts "#{cid} <- #{orcid}"
           user.orcid = orcid
           user.save!
@@ -72,7 +72,7 @@ namespace :libraoc do
      count = 0
      User.order( :email ).each do |user|
        if user.orcid.blank? == false
-         orcid = orcid_from_orcid_url( user.orcid )
+         orcid = Helpers.orcid_from_orcid_url( user.orcid )
          cid = User.cid_from_email( user.email )
 
          puts "Updating ORCID attributes for #{cid} (#{orcid})"
@@ -243,11 +243,6 @@ namespace :libraoc do
 
     puts "Processed #{count} work(s), #{reported} reported, #{errors} errors"
 
-  end
-
-  def orcid_from_orcid_url( orcid_url )
-    return '' if orcid_url.blank?
-    return orcid_url.gsub( 'http://orcid.org/', '' )
   end
 
   end   # namespace orcid

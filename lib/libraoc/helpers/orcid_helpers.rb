@@ -23,7 +23,17 @@ module Helpers
      return true
    end
 
-  private
+   #
+   # extract the ORCID from the full URL
+   #
+   def orcid_from_orcid_url( orcid_url )
+     return '' if orcid_url.blank?
+     tokens = orcid_url.split( "/" )
+     return '' if tokens.length == 0
+     return tokens[ tokens.length - 1 ]
+   end
+
+   private
 
    #
    # return the computing ID of the first author
