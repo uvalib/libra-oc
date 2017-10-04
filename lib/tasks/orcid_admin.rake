@@ -3,7 +3,8 @@
 #
 
 require_dependency 'libraoc/serviceclient/orcid_access_client'
-require_dependency 'libraoc/helpers/orcid_helpers'
+require_dependency 'app/helpers/orcid_helper'
+include OrcidHelper
 
 namespace :libraoc do
 
@@ -33,7 +34,7 @@ namespace :libraoc do
     count = 0
     User.order( :email ).each do |user|
       if user.orcid.blank? == false
-        orcid = Helpers.orcid_from_orcid_url( user.orcid )
+        orcid = orcid_from_orcid_url( user.orcid )
         cid = User.cid_from_email( user.email )
         puts "#{cid} -> #{orcid} (authenticated: #{user.orcid_access_token.blank? ? 'NO' : 'yes'})"
         count += 1
@@ -54,7 +55,7 @@ namespace :libraoc do
         cid = User.cid_from_email( user.email )
         status, attribs = ServiceClient::OrcidAccessClient.instance.get_attribs_by_cid(cid )
         if ServiceClient::OrcidAccessClient.instance.ok?( status )
-          orcid = Helpers.orcid_from_orcid_url( attribs['uri'] )
+          orcid = orcid_from_orcid_url( attribs['uri'] )
           puts "#{cid} <- #{orcid}"
           user.orcid = orcid
           user.save!
@@ -72,7 +73,7 @@ namespace :libraoc do
      count = 0
      User.order( :email ).each do |user|
        if user.orcid.blank? == false
-         orcid = Helpers.orcid_from_orcid_url( user.orcid )
+         orcid = orcid_from_orcid_url( user.orcid )
          cid = User.cid_from_email( user.email )
 
          puts "Updating ORCID attributes for #{cid} (#{orcid})"
@@ -132,7 +133,7 @@ namespace :libraoc do
       next
     end
 
-    suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+    suitable, why = work_suitable_for_orcid_activity( cid, work )
     if suitable == false
       puts "ERROR: work #{work_id} is unsuitable to report as activity for #{cid} (#{why}), aborting"
       next
@@ -168,7 +169,7 @@ namespace :libraoc do
       group.each do |lw_solr|
         begin
           work = LibraWork.find( lw_solr['id'] )
-          suitable, why = Helpers.work_suitable_for_orcid_activity( cid, work )
+          suitable, why = work_suitable_for_orcid_activity( cid, work )
           if suitable == false
             puts "ERROR: work #{work.id} is unsuitable to report as activity for #{cid} (#{why})"
             next
@@ -213,7 +214,7 @@ namespace :libraoc do
 
           depositor_cid = User.cid_from_email( work.depositor )
 
-          suitable, why = Helpers.work_suitable_for_orcid_activity( depositor_cid, work )
+          suitable, why = work_suitable_for_orcid_activity( depositor_cid, work )
           if suitable == false
             puts "ERROR: work #{work.id} is unsuitable to report as activity for #{depositor_cid} (#{why})"
             next

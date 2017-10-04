@@ -1,9 +1,11 @@
 require_dependency 'libraoc/serviceclient/orcid_access_client'
-require_dependency 'libraoc/helpers/orcid_helpers'
+#require_dependency 'app/helpers/orcid_helper'
 
 module UpdateOrcidBehavior
 
     extend ActiveSupport::Concern
+
+    include OrcidHelper
 
     included do
       after_action :update_orcid, only: [ :landing ]
@@ -34,7 +36,7 @@ module UpdateOrcidBehavior
     def update_orcid_attributes(cid, user )
       return if cid.blank?
 
-      orcid = Helpers.orcid_from_orcid_url( user.orcid )
+      orcid = orcid_from_orcid_url( user.orcid )
 
       puts "==> updating ORCID attributes for #{cid} (#{orcid})"
       status = ServiceClient::OrcidAccessClient.instance.set_attribs_by_cid(

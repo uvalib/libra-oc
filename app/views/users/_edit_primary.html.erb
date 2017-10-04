@@ -38,7 +38,7 @@
     <div class="col-xs-8">
       <% if @user.orcid.present? %>
         <p>
-          <%= link_to @user.orcid, @user.orcid, { target: '_blank' } %>
+          <%= link_to normalize_orcid_url( @user.orcid ), normalize_orcid_url( @user.orcid ), { target: '_blank' } %>
         </p>
         <%= link_to "Remove My ORCID ID", orcid_destroy_path, method: :delete, class: 'btn btn-danger' if @user.orcid %>
       <%else %>
