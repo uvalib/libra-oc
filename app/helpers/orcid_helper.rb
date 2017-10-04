@@ -9,7 +9,7 @@ module OrcidHelper
      return false, 'Not publicly visible' if work.is_publicly_visible? == false
 
      # works that are not authored by the specified user should not be sent to ORCID
-     return false, 'Not author' if contains_computing_id( work.authors, cid )
+     return false, 'Not author' if !contains_computing_id( work.authors, cid )
 
      # works that do not have DOI's cannot go to ORCID
      return false, 'Missing DOI' if work.doi.blank?

@@ -8,9 +8,9 @@ class OrcidSyncJob < ApplicationJob
   def perform work_id, computing_id
 
     work = LibraWork.find(work_id)
-
-    if work_suitable_for_orcid_activity( computing_id, work ) == false
-      puts "The work is not eligible for ORCID upload."
+    suitable, why = work_suitable_for_orcid_activity( computing_id, work )
+    if suitable == false
+      puts "INFO: work #{work.id} is unsuitable to report as activity for #{computing_id} (#{why})"
       return
     end
 
