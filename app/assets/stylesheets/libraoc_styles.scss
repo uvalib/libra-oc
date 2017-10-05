@@ -86,6 +86,16 @@ a.navbar-brand {
   padding-left: 32px;
 }
 
+.table-responsive .dashboard.table {
+  .media-body {
+    white-space: normal;
+    min-width: 200px;
+  }
+  .date {
+    white-space: nowrap;
+  }
+}
+
 //
 // end of file
 //

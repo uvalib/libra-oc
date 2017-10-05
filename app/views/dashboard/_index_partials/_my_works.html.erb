@@ -1,4 +1,5 @@
-<table class="table table-striped">
+<div class="table-responsive">
+<table class="table table-striped dashboard">
   <caption class="sr-only"><%= t("sufia.dashboard.my.sr.listing") %> <%= application_name %></caption>
   <thead>
     <tr>
@@ -38,7 +39,7 @@
           </div>
         </td>
 
-        <td class='text-center'><%= document.date_uploaded %></td>
+        <td class='text-center date'><%= document.date_uploaded %></td>
         <td class='text-center'><%= document.orcid_status %></td>
         <td class='text-center'><%= render_libra_visibility_link document %></td>
 
@@ -92,3 +93,4 @@
     <% end %>
   </tbody>
 </table>
+</div>
