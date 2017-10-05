@@ -1,5 +1,7 @@
 class OrcidSyncAllJob < ApplicationJob
 
+  queue_as :orcid
+
   #
   # Syncs all LibraWorks for a newly linked ORCID User
   #

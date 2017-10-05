@@ -2,6 +2,8 @@ class OrcidSyncJob < ApplicationJob
 
   include ::OrcidHelper
 
+  queue_as :orcid
+
   #
   # Creates or updates a LibraWork in the OrcidService
   #
