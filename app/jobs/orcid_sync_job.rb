@@ -5,14 +5,23 @@ class OrcidSyncJob < ApplicationJob
   #
   # Creates or updates a LibraWork in the OrcidService
   #
-  def perform work_id, computing_id
+  def perform work_id, user_id
 
     work = LibraWork.find(work_id)
+    user = User.find(user_id)
+    computing_id = user.computing_id
+
     suitable, why = work_suitable_for_orcid_activity( computing_id, work )
+
+    if user.orcid.empty?
+      suitable, why = false, 'ORCID not linked for user'
+    end
+
     if suitable == false
       puts "INFO: work #{work.id} is unsuitable to report as activity for #{computing_id} (#{why})"
       return
     end
+    work.update orcid_status: LibraWork.pending_orcid_status
 
     status, update_code = ServiceClient::OrcidAccessClient.instance.
       set_activity_by_cid( computing_id, work )
@@ -22,13 +31,13 @@ class OrcidSyncJob < ApplicationJob
       puts "==> ORCID Upload OK for #{work_id}, update code [#{update_code}]"
 
     elsif ServiceClient::OrcidAccessClient.instance.retry?( status )
-      work.update orcid_status: LibraWork.incomplete_orcid_status
       puts "RETRYING: OrcidSyncJob for #{work_id}"
       retry_job wait: 5.minutes
 
     else
-      work.update orcid_status: LibraWork.incomplete_orcid_status
       # fail on other errors
+      puts "ERROR: OrcidSyncJob for #{work_id}"
+      work.update orcid_status: LibraWork.error_orcid_status
       return
     end
 

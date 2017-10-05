@@ -20,6 +20,7 @@ module UpdateOrcidBehavior
     def update_orcid
       if current_user.orcid.present?
         update_orcid_attributes(User.cid_from_email(current_user.email ), current_user )
+
         OrcidSyncAllJob.perform_later(current_user.id)
       end
     end
@@ -29,6 +30,14 @@ module UpdateOrcidBehavior
     #
     def remove_orcid
       remove_orcid_attributes( User.cid_from_email( current_user.email ) )
+
+      # remove pending statuses
+      LibraWork.where(
+        orcid_status: LibraWork.pending_orcid_status,
+        depositor: current_user.computing_id
+      ).each do |work|
+        work.update(orcid_status: nil)
+      end
     end
 
     #

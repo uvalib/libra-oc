@@ -4,7 +4,7 @@ module Libraoc::OrcidBehavior
   extend ActiveSupport::Concern
 
   # ORCID_STATUSES
-  ORCID_STATUSES = %w(pending incomplete complete).freeze
+  ORCID_STATUSES = %w(pending error complete).freeze
 
   included do
     singleton_class.instance_eval do

@@ -11,7 +11,7 @@ class OrcidSyncAllJob < ApplicationJob
 
         # Sync non-complete Works
         if work.orcid_status != LibraWork.complete_orcid_status
-          OrcidSyncJob.perform_later(work.id, user.computing_id)
+          OrcidSyncJob.perform_later(work.id, user.id)
         end
       end
     end
