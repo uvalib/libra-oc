@@ -5,8 +5,8 @@ module OrcidHelper
    #
    def work_suitable_for_orcid_activity( cid, work )
 
-     # works that are not publically visible should not be sent to ORCID
-     return false, 'Not publicly visible' if work.is_publicly_visible? == false
+     # works that are private should not be sent to ORCID
+     return false, 'Work is private' if work.is_private?
 
      # works that are not authored by the specified user should not be sent to ORCID
      return false, 'Not author' if !contains_computing_id( work.authors, cid )
