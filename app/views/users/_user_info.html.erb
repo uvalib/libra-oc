@@ -2,7 +2,7 @@
 
 <% if user.orcid.present? %>
   <dt><%= orcid_label('profile') %></dt>
-  <dd><%= link_to orcid_from_orcid_url( user.orcid ), normalize_orcid_url( user.orcid ), { target: '_blank' } %></dd>
+  <dd><%= link_to display_orcid_from_url( normalize_orcid_url( user.orcid ) ), normalize_orcid_url( user.orcid ), { target: '_blank' } %></dd>
 <%else%>
   <dd>
     <%= orcid_oauth_button %>

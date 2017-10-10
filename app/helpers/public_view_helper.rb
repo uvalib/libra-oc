@@ -124,12 +124,7 @@ module PublicViewHelper
     orcid = Helpers.lookup_orcid( person.computing_id )
     return '' if orcid.blank?
 
-    return "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')} #{link_to extract_orcid_for_display( orcid ), orcid, { target: '_blank' }}".html_safe
-  end
-
-  def extract_orcid_for_display( orcid )
-    return '' if orcid.blank?
-    return orcid.gsub( /https?:\/\//, '' )
+    return "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')} #{link_to display_orcid_from_url( normalize_orcid_url( orcid ) ), normalize_orcid_url( orcid ), { target: '_blank' }}".html_safe
   end
 
   def display_contributors(contributors)
