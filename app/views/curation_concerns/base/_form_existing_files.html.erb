@@ -10,7 +10,7 @@
         <th><%= t('.date_uploaded') %></th>
         <th><%= t('.actions') %></th>
       </tr>
-      <% f.object.model.file_sets.each do |fs| %>
+      <% filesets_sort( f.object.model.file_sets ).each do |fs| %>
           <tr data-file-id="<%= fs.id %>">
             <td class="thumbnail">
               <%= image_tag "/downloads/#{fs.id}?file=thumbnail" %>
