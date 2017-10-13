@@ -11,11 +11,10 @@ DownloadsController.class_eval do
   def show
 
     #
-    # assume we need a file download event unless the file is a string. This means that the
-    # file is a thumbnail (special sufia magic) and we dont want a download event when downloading
-    # thumbnails
+    # assume we need a file download event unless the file is a thumbnail.
+    # We dont want a download event when downloading thumbnails
     #
-    if file.kind_of?( String ) == false
+    if params[:file].blank? || params[:file] != 'thumbnail'
       # save file download statistics
       record_file_download_event( params['id'] )
     end
