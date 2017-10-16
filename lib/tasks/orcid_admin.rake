@@ -245,6 +245,70 @@ namespace :libraoc do
 
   end
 
+  desc "Report ORCID status; optionally provide the depositor email"
+  task report_status: :environment do |t, args|
+
+    who = ARGV[ 1 ]
+    if who
+       task who.to_sym do ; end
+    end
+
+    count = 0
+    reported = 0
+    pending = 0
+    errors = 0
+    LibraWork.search_in_batches( { } ) do |group|
+      group.each do |lw_solr|
+        begin
+
+          depositor = lw_solr[ Solrizer.solr_name( 'depositor' ) ]
+          depositor = depositor[ 0 ] if depositor.present?
+          next if who && who != depositor
+
+          count += 1
+
+          status = lw_solr[ Solrizer.solr_name( 'orcid_status' ) ]
+          status = status[ 0 ] if status.present?
+          if status == 'complete'
+            puts "Work #{lw_solr['id']}: already reported (depositor #{User.cid_from_email( depositor )})"
+            reported += 1
+            next
+          end
+
+          work = LibraWork.find( lw_solr['id'] )
+          depositor_cid = User.cid_from_email( work.depositor )
+
+          suitable, why = work_suitable_for_orcid_activity( depositor_cid, work )
+          if suitable == false
+            puts "Work #{work.id}: unsuitable to report as activity for #{depositor_cid} (#{why})"
+            next
+          end
+
+          user = User.find_by_email( work.depositor )
+          if user.present?
+            if user.orcid.present? && user.orcid_access_token.present?
+              pending += 1
+              puts "Work #{work.id}: will be reported for #{depositor_cid}"
+            else
+              puts "Work #{work.id}: missing depositor ORCID/OAUTH for #{depositor_cid}"
+            end
+
+          else
+            errors += 1
+            puts "Work #{work.id}: missing depositor record for #{depositor_cid}"
+          end
+
+        rescue => ex
+          errors += 1
+          puts ex
+        end
+      end
+    end
+
+    puts "Processed #{count} work(s), #{pending} pending, #{reported} already reported, #{errors} errors"
+
+  end
+
   end   # namespace orcid
 
 end   # namespace libraoc
