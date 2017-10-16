@@ -40,6 +40,24 @@ module OrcidHelper
    end
 
    #
+   # A displayable status based on the orcid status
+   #
+   def displayable_orcid_status( status )
+
+      return '' if status.blank?
+
+      case status
+        when 'pending'
+          return 'Pending'
+        when 'complete'
+          return 'In ORCID'
+        when 'error'
+          return 'Email Us'
+      end
+      return status
+   end
+
+   #
    # normalize an ORCID URL to the ORCID environment
    # Necessary because sufia *assumes* we are in the orcid.org domain
    # when we might be in the sandbox.orcid.org domain

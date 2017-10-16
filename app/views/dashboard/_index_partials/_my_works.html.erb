@@ -40,7 +40,7 @@
         </td>
 
         <td class='text-center date'><%= document.date_uploaded %></td>
-        <td class='text-center'><%= document.orcid_status %></td>
+        <td class='text-center'><%= displayable_orcid_status( document.orcid_status ) %></td>
         <td class='text-center'><%= render_libra_visibility_link document %></td>
 
         <td class='text-center'>
