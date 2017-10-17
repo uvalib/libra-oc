@@ -52,7 +52,7 @@ module OrcidHelper
         when 'complete'
           return 'In ORCID'
         when 'error'
-          return raw( '<a href="mailto:libra@virginia.edu">Email Us</a>' )
+          return raw( '<a href="mailto:libra@virginia.edu">Email Libra</a>' )
       end
       return status
    end
