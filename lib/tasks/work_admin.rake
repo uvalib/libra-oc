@@ -92,9 +92,9 @@ namespace :work do
     depositors = {}
     count = 0
     LibraWork.search_in_batches( {} ) do |group|
-      group.each do |gw_solr|
+      group.each do |solr_work|
 
-        depositor = gw_solr[ Solrizer.solr_name( 'depositor' ) ]
+        depositor = solr_work[ Solrizer.solr_name( 'depositor' ) ]
         depositor = depositor[ 0 ] if depositor.present?
         depositor = 'unknown' if depositor.blank?
 
@@ -122,8 +122,8 @@ namespace :work do
     sources = { :deposits => 0, :legacy => 0 }
     count = 0
     LibraWork.search_in_batches( {} ) do |group|
-      group.each do |gw_solr|
-        source = gw_solr[ Solrizer.solr_name( 'work_source' ) ]
+      group.each do |solr_work|
+        source = solr_work[ Solrizer.solr_name( 'work_source' ) ]
         source = source[ 0 ] if source.present?
         source = '' if source.blank?
 
@@ -143,6 +143,39 @@ namespace :work do
     end
 
     puts "Summerized #{count} work(s)"
+  end
+
+  desc "Work counts by visibility"
+  task count_by_visibility: :environment do |t, args|
+
+    visibilities = {}
+    count = 0
+    LibraWork.search_in_batches( {} ) do |group|
+      group.each do |solr_work|
+
+#        puts "==> #{solr_work['read_access_group_ssim']}"
+        visibility = solr_work[ 'read_access_group_ssim' ]
+        visibility = visibility[ 0 ] if visibility.present?
+        visibility = 'private' if visibility.blank?
+        visibility = 'uva only' if visibility == 'registered'
+
+        if visibilities[ visibility ].nil?
+          visibilities[ visibility ] = 1
+        else
+          visibilities[ visibility ] = visibilities[ visibility ] + 1
+        end
+
+      end
+
+      count += group.size
+    end
+
+    # output a summary...
+    visibilities.keys.sort.each do |k|
+      puts " #{k} => #{visibilities[k]} work(s)"
+    end
+
+    puts "Summarized #{count} work(s)"
   end
 
   desc "Delete all works"
