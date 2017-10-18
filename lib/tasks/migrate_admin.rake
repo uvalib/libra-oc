@@ -45,6 +45,31 @@ namespace :migrate do
 
     end
 
+    desc "Refresh by re-saving each work"
+    task refresh: :environment do |t, args|
+
+      successes = 0
+      errors = 0
+      LibraWork.search_in_batches( {} ) do |group|
+        group.each do |w|
+          begin
+            print "."
+            work = LibraWork.find( w['id'] )
+            work.save!
+
+            successes += 1
+          rescue => ex
+            puts ex
+            errors += 1
+          end
+        end
+      end
+
+      puts "done"
+      puts "Processed #{successes} work(s), #{errors} error(s) encountered"
+
+    end
+
 end   # namespace migrate
 
 end   # namespace libraoc
