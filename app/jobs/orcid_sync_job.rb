@@ -1,5 +1,6 @@
 class OrcidSyncJob < ApplicationJob
 
+  include ::WorkHelper
   include ::OrcidHelper
 
   queue_as :orcid
@@ -9,13 +10,22 @@ class OrcidSyncJob < ApplicationJob
   #
   def perform work_id, user_id
 
-    work = LibraWork.find(work_id)
-    user = User.find(user_id)
+    work = get_work_item(work_id)
+    return if work.nil?
+
+    user = nil
+    begin
+       user = User.find(user_id)
+    rescue RecordNotFound => ex
+       puts "==> ERROR: cannot find user #{user_id} (#{ex})"
+       return
+    end
+
     computing_id = user.computing_id
 
     suitable, why = work_suitable_for_orcid_activity( computing_id, work )
 
-    if user.orcid.empty?
+    if user.orcid.blank?
       suitable, why = false, 'ORCID not linked for user'
     end
 
