@@ -90,11 +90,15 @@ a.navbar-brand {
   .media-body {
     white-space: normal;
     min-width: 200px;
+    .document-title {
+      word-break: break-word;
+    }
   }
   .date {
     white-space: nowrap;
   }
 }
+
 
 //
 // end of file
