@@ -38,7 +38,7 @@ while true; do
    sleep 60
 
    # sleeping message...
-   logit "Sleeping until $ACTION_TIME ($ACTION_TIMEZONE)..."
+   logit "Sleeping until $ACTION_TIME $ACTION_TIMEZONE..."
    sleep_until $ACTION_TIME $ACTION_TIMEZONE
 
 done

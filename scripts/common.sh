@@ -38,7 +38,7 @@ function logger_name {
 #
 function logit {
    local msg=$1
-   TS=$(date "+%Y-%m-%d %H:%M:%S")
+   TS=$(date "+%Y-%m-%d %H:%M:%S %Z")
    echo "$TS: $msg" >> $LOGGER
 }
 
