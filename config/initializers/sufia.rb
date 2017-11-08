@@ -54,7 +54,7 @@ Sufia.config do |config|
 
   # Specify the path to the file characterization tool:
   # config.fits_path = "fits.sh"
-  config.fits_path = "#{Rails.application.root}/tools/fits-1.0.5/fits.sh"
+  config.fits_path = "#{Rails.application.root}/tools/fits-1.2.0/fits.sh"
 
   # Specify the path to the file derivatives creation tool:
   # config.libreoffice_path = "soffice"
