@@ -50,7 +50,7 @@ namespace :libraoc do
   # get the ID service metadata for the specified work
   #
   desc "Get ID service metadata for the specified work; must provide the work id"
-  task ezid_metadata_by_id: :environment do |t, args|
+  task id_service_metadata_by_id: :environment do |t, args|
 
     work_id = ARGV[ 1 ]
     if work_id.nil?
@@ -79,7 +79,7 @@ namespace :libraoc do
   # get the ID service metadata for the specified DOI
   #
   desc "Get ID service metadata for the specified DOI; must provide the DOI"
-  task ezid_metadata_by_doi: :environment do |t, args|
+  task id_service_metadata_by_doi: :environment do |t, args|
 
     doi = ARGV[ 1 ]
     if doi.nil?
