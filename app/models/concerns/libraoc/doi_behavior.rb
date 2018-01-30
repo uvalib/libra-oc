@@ -17,7 +17,7 @@ module Libraoc::DoiBehavior
 
     def doi_url
       return '' if self.doi.nil?
-      return "https://doi.org/#{self.doi.gsub('doi:', '')}"
+      return "#{ENV['DOI_BASE_URL']}/#{self.doi.gsub('doi:', '')}"
     end
 
     private

@@ -408,7 +408,6 @@ namespace :libraoc do
       # update the identifier
       puts "Assigned new DOI (#{id})"
       work.doi = id
-      #work.permanent_url = LibraWork.doi_url( id )
       work.save!
 
      # update the service metadata
