@@ -4,10 +4,10 @@ FROM centos:7
 RUN yum -y update && yum -y install which tar wget make gcc-c++ zlib-devel libyaml-devel autoconf patch readline-devel libffi-devel openssl-devel bzip2 automake libtool bison sqlite-devel
 
 # install ruby
-RUN cd /tmp && wget https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
-RUN cd /tmp && tar xzvf ruby-2.4.1.tar.gz
-RUN cd /tmp/ruby-2.4.1 && ./configure && make && make install
-RUN rm -fr /tmp/ruby-2.4.1
+RUN cd /tmp && wget https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.3.tar.gz
+RUN cd /tmp && tar xzvf ruby-2.4.3.tar.gz
+RUN cd /tmp/ruby-2.4.3 && ./configure && make && make install
+RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
 
 # install application dependancies
 RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel #&&
@@ -17,10 +17,10 @@ RUN yum -y install clamav clamav-update clamav-devel
 RUN rpm -ivh https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm && yum -y install nodejs
 
 # install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/5.4.2/rpm/x86_64/LibreOffice_5.4.2_Linux_x86-64_rpm.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_5.4.2_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_5.4.2.2_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/5.4.5/rpm/x86_64/LibreOffice_5.4.5_Linux_x86-64_rpm.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_5.4.5_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_5.4.5.1_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
 RUN ln -s /opt/libreoffice5.4/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_5.4.2.2_Linux_x86-64_rpm
+RUN rm -fr /tmp/LibreOffice_5.4.5.1_Linux_x86-64_rpm && rm /tmp/LibreOffice_5.4.5_Linux_x86-64_rpm.tar.gz
 
 # Create the run user and group
 RUN groupadd -r webservice && useradd -r -g webservice webservice && mkdir /home/webservice
