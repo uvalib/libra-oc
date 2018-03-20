@@ -436,6 +436,8 @@ GEM
     parslet (1.8.0)
     posix-spawn (0.3.13)
     power_converter (0.1.2)
+    prometheus-client (0.7.1)
+      quantile (~> 0.2.0)
     public_suffix (3.0.0)
     puma (3.10.0)
     qa (0.11.1)
@@ -444,6 +446,7 @@ GEM
       faraday
       nokogiri (~> 1.6)
       rails (>= 4.2.0, < 6.0)
+    quantile (0.2.0)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
@@ -699,6 +702,7 @@ DEPENDENCIES
   meta-tags
   mysql2
   oga
+  prometheus-client
   puma
   rails (~> 5.0.0, >= 5.0.0.1)
   rest-client
@@ -716,4 +720,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.15.4
+   1.16.1

@@ -73,6 +73,8 @@ gem 'sentry-raven'
 gem 'meta-tags'
 gem 'sitemap_generator'
 
+gem 'prometheus-client'
+
 group :production do
    gem 'clamav'
 end
