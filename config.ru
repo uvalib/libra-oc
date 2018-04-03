@@ -16,8 +16,8 @@ counter_label_builder: ->(env, code) {
   normalized_path = env['PATH_INFO'].to_s.
       gsub(/\/public_view\/.*$/, '/public_view/:id').
       gsub(/\/downloads\/.*$/, '/downloads/:id').
-      gsub(/\/concern\/libra_works\/.*/, '/concern/libra_works/:id').
-      gsub(/\/concern\/file_sets\/.*/, '/concern/file_sets/:id')
+      gsub(/\/concern\/libra_works\/.*$/, '/concern/libra_works/:id').
+      gsub(/\/concern\/file_sets\/.*$/, '/concern/file_sets/:id')
 
       {
       code:         code,
@@ -30,14 +30,13 @@ duration_label_builder: -> ( env, code ) {
   normalized_path = env['PATH_INFO'].to_s.
       gsub(/\/public_view\/.*$/, '/public_view/:id').
       gsub(/\/downloads\/.*$/, '/downloads/:id').
-      gsub(/\/concern\/libra_works\/.*/, '/concern/libra_works/:id').
-      gsub(/\/concern\/file_sets\/.*/, '/concern/file_sets/:id')
+      gsub(/\/concern\/libra_works\/.*$/, '/concern/libra_works/:id').
+      gsub(/\/concern\/file_sets\/.*$/, '/concern/file_sets/:id')
 
   {
       method:       env['REQUEST_METHOD'].downcase,
       path:         normalized_path
   }
 }
-
 
 run Rails.application
