@@ -183,9 +183,9 @@ module PublicViewHelper
   end
 
   def display_rights(rights)
-    return '' if rights.blank?
-    rights = rights.join(' ') if rights.kind_of?(Array)
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights ).render )
+    return '' if rights.none?
+    rights = LibraRightsAttributeRenderer.rights_attribute_to_html(rights.first)
+    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights) ).render )
   end
 
   def display_sponsoring_agency( sponsors )

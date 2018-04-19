@@ -12,7 +12,7 @@
                <% display_authors( Author.sort(@work.authors) ) %>
                <%= display_abstract(@work.abstract) %>
                <%= display_keywords( @work ) %>
-               <%= display_rights(@work.rights_display) %>
+               <%= display_rights(@work.rights_ids) %>
                <% display_contributors( Contributor.sort(@work.contributors )) %>
                <%= display_language( @work.language ) %>
                <%= display_source_citation( @work.source_citation ) %>
