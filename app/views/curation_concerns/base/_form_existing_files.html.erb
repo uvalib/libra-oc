@@ -15,7 +15,7 @@
             <td class="thumbnail">
               <%= image_tag "/downloads/#{fs.id}?file=thumbnail" %>
             </td>
-            <td class="attribute filename"><%= fs.label %></td>
+            <td class="attribute filename"><%= fs.title.try :first %></td>
             <td class="attribute date_uploaded"><%= date_formatter( fs.date_uploaded ) %></td>
             <td>
             <%= render 'actions', member: fs %>
