@@ -53,6 +53,9 @@ gem 'blacklight_advanced_search'
 gem 'devise'
 gem 'devise-guests'
 
+gem 'kaminari', '< 1.0'
+gem 'simple_form', '3.5.0'
+
 # sidekiq worker support
 gem 'sidekiq'
 gem 'sidekiq-failures'
