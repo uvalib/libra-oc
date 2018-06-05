@@ -133,7 +133,7 @@ module TaskHelpers
 
     print "deleting file set #{fileset.id} (#{fileset.label})... "
 
-    file_actor = ::CurationConcerns::Actors::FileSetActor.new( fileset, user )
+    file_actor = ::Hyrax::Actors::FileSetActor.new( fileset, user )
     file_actor.destroy
 
     puts "done"
@@ -226,7 +226,7 @@ module TaskHelpers
 
     fileset = ::FileSet.new
     fileset.title << title unless title.nil?
-    file_actor = ::CurationConcerns::Actors::FileSetActor.new( fileset, user )
+    file_actor = ::Hyrax::Actors::FileSetActor.new( fileset, user )
     file_actor.create_metadata( work )
     file_actor.create_content( File.open( filename ) )
     fileset.visibility = visibility

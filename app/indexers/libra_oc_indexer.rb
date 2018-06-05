@@ -1,4 +1,4 @@
-class LibraOcIndexer < CurationConcerns::WorkIndexer
+class LibraOcIndexer < Hyrax::WorkIndexer
 
   def generate_solr_document
     super.tap do |solr_doc|
@@ -19,12 +19,12 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
   private
   def rights_labels doc
     doc.rights.map do |r|
-      CurationConcerns.config.license_service_class.new.label(r)
+      Hyrax.config.license_service_class.new.label(r)
     end if doc.rights.present?
   end
   def rights_urls doc
     doc.rights.map do |r|
-      CurationConcerns.config.license_service_class.new.url(r)
+      Hyrax.config.license_service_class.new.url(r)
     end if doc.rights.present?
   end
 end

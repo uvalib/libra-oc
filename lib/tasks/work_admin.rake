@@ -385,9 +385,9 @@ namespace :work do
       w.contributors << TaskHelpers.make_contributor( 'sah', 1 )
       w.contributors << TaskHelpers.make_contributor( 'rwl', 2 )
 
-      w.date_uploaded = CurationConcerns::TimeService.time_in_utc.to_s
-      #w.date_created = CurationConcerns::TimeService.time_in_utc.to_s
-      #w.published_date = CurationConcerns::TimeService.time_in_utc.to_s
+      w.date_uploaded = Hyra::TimeService.time_in_utc.to_s
+      #w.date_created = Hyrax::TimeService.time_in_utc.to_s
+      #w.published_date = Hyrax::TimeService.time_in_utc.to_s
 
       w.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
 

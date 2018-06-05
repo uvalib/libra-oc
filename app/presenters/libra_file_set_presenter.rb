@@ -1,6 +1,6 @@
 require_dependency 'app/helpers/permissions_helper'
 
-class LibraFileSetPresenter < Sufia::FileSetPresenter
+class LibraFileSetPresenter < Hyrax::FileSetPresenter
 
   include PermissionsHelper
 

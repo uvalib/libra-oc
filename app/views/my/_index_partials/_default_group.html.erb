@@ -1,12 +1,12 @@
 <table class="table table-striped">
-  <caption class="sr-only"><%= t("sufia.dashboard.my.sr.listing") %> <%= application_name %></caption>
+  <caption class="sr-only"><%= t("hyrax.dashboard.my.sr.listing") %> <%= application_name %></caption>
   <% unless params[:display_type] == 'list' %>
     <thead>
     <tr>
-      <th><%= t("sufia.dashboard.my.heading.title") %></th>
-      <th class="sorts-dash"><i id="<%= CatalogController.uploaded_field %>" class="<%= params[:sort] == "#{CatalogController.uploaded_field} desc" ? 'caret' : params[:sort] == "#{CatalogController.uploaded_field} asc" ? 'caret up' : ''%>"></i><%= t("sufia.dashboard.my.heading.date_uploaded") %></th>
-      <th><%= t("sufia.dashboard.my.heading.visibility") %></th>
-      <th><%= t("sufia.dashboard.my.heading.action") %></th>
+      <th><%= t("hyrax.dashboard.my.heading.title") %></th>
+      <th class="sorts-dash"><i id="<%= CatalogController.uploaded_field %>" class="<%= params[:sort] == "#{CatalogController.uploaded_field} desc" ? 'caret' : params[:sort] == "#{CatalogController.uploaded_field} asc" ? 'caret up' : ''%>"></i><%= t("hyrax.dashboard.my.heading.date_uploaded") %></th>
+      <th><%= t("hyrax.dashboard.my.heading.visibility") %></th>
+      <th><%= t("hyrax.dashboard.my.heading.action") %></th>
     </tr>
     </thead>
   <% end %>
@@ -15,7 +15,7 @@
     <% if document.collection? %>
       <%= render 'my/_index_partials/list_collections', document: document, counter: counter %>
     <% else %>
-      <%= render 'my/_index_partials/list_works', document: document, counter: counter, presenter: Sufia::WorkShowPresenter.new(document, current_ability) %>
+      <%= render 'my/_index_partials/list_works', document: document, counter: counter, presenter: Hyrax::WorkShowPresenter.new(document, current_ability) %>
     <% end %>
   <% end %>
   </tbody>

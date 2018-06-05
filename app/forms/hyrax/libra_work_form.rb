@@ -1,7 +1,7 @@
 # Generated via
-#  `rails generate curation_concerns:work LibraWork`
-module CurationConcerns
-  class LibraWorkForm < Sufia::Forms::WorkForm
+#  `rails generate hyrax:work LibraWork`
+module Hyrax
+  class LibraWorkForm < Hyrax::Forms::WorkForm
     self.model_class = ::LibraWork
     self.terms -= [:description, :creator, :subject, :based_near, :contributor,
                    :keyword, :publisher, :date_created, :identifier,

@@ -1,11 +1,10 @@
 # Generated via
-#  `rails generate curation_concerns:work LibraWork`
+#  `rails generate hyrax:work LibraWork`
 
-module CurationConcerns
+module Hyrax
   class LibraWorksController < ApplicationController
 
-    include CurationConcerns::CurationConcernController
-    include Sufia::WorksControllerBehavior
+    include Hyrax::WorksControllerBehavior
 
     include WorkHelper
 
@@ -50,7 +49,7 @@ module CurationConcerns
     protected
     def after_update_response
       if permissions_changed? && curation_concern.file_sets.present?
-        # Taken from CurationConcerns::PermissionsController
+        # Taken from Hyrax::PermissionsController
         # copy visibility
         VisibilityCopyJob.perform_later(curation_concern)
         # copy permissions

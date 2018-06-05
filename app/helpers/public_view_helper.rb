@@ -124,7 +124,7 @@ module PublicViewHelper
     orcid = Helpers.lookup_orcid( person.computing_id )
     return '' if orcid.blank?
 
-    return "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt')} #{link_to display_orcid_from_url( normalize_orcid_url( orcid ) ), normalize_orcid_url( orcid ), { target: '_blank' }}".html_safe
+    return "#{image_tag 'orcid.png', alt: t('hyrax.user_profile.orcid.alt')} #{link_to display_orcid_from_url( normalize_orcid_url( orcid ) ), normalize_orcid_url( orcid ), { target: '_blank' }}".html_safe
   end
 
   def display_contributors(contributors)
@@ -144,13 +144,13 @@ module PublicViewHelper
 
   def display_degree( degree )
     return '' if degree.blank?
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Degree:", degree ).render )
+    return( Hyrax::Renderers::CustomPublicAttributeRenderer.new("Degree:", degree ).render )
   end
 
   def display_keywords( work )
     kw = construct_keywords( work )
     return '' if kw.blank?
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Keywords:", kw ).render )
+    return( Hyrax::Renderers::CustomPublicAttributeRenderer.new("Keywords:", kw ).render )
   end
 
   def construct_keywords( work )
@@ -163,45 +163,45 @@ module PublicViewHelper
     links = links.map do |link|
       content_tag :li, link
     end
-    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Related Links:", links ).render
+    Hyrax::Renderers::CustomPublicAttributeRenderer.new("Related Links:", links ).render
 
   end
 
   def display_doi_link(work)
-    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Persistent Link:", work.doi_url ).render
+    Hyrax::Renderers::CustomPublicAttributeRenderer.new("Persistent Link:", work.doi_url ).render
   end
 
   def display_notes(notes)
     return '' if notes.blank?
     notes = simple_format( notes )
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Notes:", notes ).render )
+    return( Hyrax::Renderers::CustomPublicAttributeRenderer.new("Notes:", notes ).render )
   end
 
   def display_language( language )
     return '' if language.blank?
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Language:", language ).render )
+    return( Hyrax::Renderers::CustomPublicAttributeRenderer.new("Language:", language ).render )
   end
 
   def display_rights(rights)
     return '' if rights.none?
     rights = LibraRightsAttributeRenderer.rights_attribute_to_html(rights.first)
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights.html_safe ).render )
+    return( Hyrax::Renderers::CustomPublicAttributeRenderer.new("Rights:", rights.html_safe ).render )
   end
 
   def display_sponsoring_agency( sponsors )
     return '' if sponsors.blank?
-    return( CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("Sponsoring Agency:", sponsors ).render )
+    return( Hyrax::Renderers::CustomPublicAttributeRenderer.new("Sponsoring Agency:", sponsors ).render )
   end
 
   def display_generic_date(name, date)
     return '' if date.blank?
-    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", date ).render
+    Hyrax::Renderers::CustomPublicAttributeRenderer.new("#{name}:", date ).render
   end
 
   def display_generic(name, field)
     return '' if field.blank?
     field = field.join(' ') if field.kind_of?(Array)
-    CurationConcerns::Renderers::CustomPublicAttributeRenderer.new("#{name}:", field ).render
+    Hyrax::Renderers::CustomPublicAttributeRenderer.new("#{name}:", field ).render
   end
 
   def filesets_sort( filesets )

@@ -528,7 +528,7 @@ module IngestHelpers
   end
 
   #
-  # maps our concept of visibility to sufias
+  # maps our concept of visibility to hyrax
   #
   def visibility_lookup( visibility )
     return Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED if visibility == 'uva'

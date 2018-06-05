@@ -13,7 +13,7 @@ namespace :libraoc do
 
     count = 0
     kh = Helpers::KeyHelper.new
-    keys = kh.keys( "sufia:events:*" )
+    keys = kh.keys( "hyrax:events:*" )
     if keys.nil? == false
       keys.each do |k|
         puts " #{k}"

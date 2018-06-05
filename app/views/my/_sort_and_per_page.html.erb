@@ -8,7 +8,7 @@
       <%= form_tag search_action_for_dashboard, method: :get, class: 'per_page form-inline' do %>
             <div class="form-group">
               <fieldset class="col-xs-12">
-                <legend class="sr-only"><%= t('sufia.sort_label') %></legend>
+                <legend class="sr-only"><%= t('hyrax.sort_label') %></legend>
                 <%= label_tag(:sort, "<span>Sort By:</span>".html_safe) %>
                 <%= select_tag(:sort, options_for_select(sort_fields, h(params[:sort]))) %>
                 <%= label_tag :per_page do %>

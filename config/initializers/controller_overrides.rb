@@ -1,9 +1,9 @@
 #
 # override so we can generate a download event whenever a file is downloaded
-# standard sufia uses google analytics for this and this approach was easier
+# standard hyrax uses google analytics for this and this approach was easier
 # than integrating with piwik
 #
-DownloadsController.class_eval do
+Hyrax::DownloadsController.class_eval do
 
   include StatisticsHelper
   include VisibilityHelper
@@ -34,7 +34,7 @@ DownloadsController.class_eval do
          return if can_download
       end
     rescue => ex
-      # do nothing and let the sufia classes handle this
+      # do nothing and let the hyrax classes handle this
     end
 
     super
@@ -68,7 +68,7 @@ end
 # override so we can specify a different file set presenter and generate an audit record when
 # we destroy an existing fileset.
 #
-CurationConcerns::FileSetsController.class_eval do
+Hyrax::FileSetsController.class_eval do
 
   self.show_presenter = LibraFileSetPresenter
 

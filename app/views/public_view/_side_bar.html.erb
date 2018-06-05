@@ -2,13 +2,13 @@
 
   <div id="metrics">
      <% view_count = get_work_view_count( @work ) %>
-    <span class="file_label"><%= "#{t("sufia.public.stats.work_views")}: " %></span><span class="badge"><%= view_count %></span>
+    <span class="file_label"><%= "#{t("hyrax.public.stats.work_views")}: " %></span><span class="badge"><%= view_count %></span>
   </div>
 
   <h2>Files</h2>
 
   <% if @work.file_sets.empty? %>
-      <p class="file-notice"><%= t("sufia.public.files.none") %></p>
+      <p class="file-notice"><%= t("hyrax.public.files.none") %></p>
   <% else %>
 
     <% if can_download_files?( @work ) %>
@@ -21,13 +21,13 @@
                       "content-name": "Public Page File Download", "content-piece": fs.title.first
                     } %>&nbsp;&nbsp;
             <p><span class="file_label">Uploaded:</span><%= date_formatter(fs.date_uploaded) %></p>
-            <p><span class="file_label"><%= "#{t("sufia.public.stats.file_downloads")}: " %></span><span class="badge"><%= download_count %></p>
+            <p><span class="file_label"><%= "#{t("hyrax.public.stats.file_downloads")}: " %></span><span class="badge"><%= download_count %></p>
           </div>
         <% end %>
 
       </div>
     <% else %>
-         <p class="file-notice"><%= t("sufia.public.files.restricted") %></p>
+         <p class="file-notice"><%= t("hyrax.public.files.restricted") %></p>
     <% end %>
   <% end %>
 </div>

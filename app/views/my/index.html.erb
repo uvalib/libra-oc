@@ -1,33 +1,33 @@
 <% provide :page_title, "#{@selected_tab.capitalize} listing" %>
 
 <% content_for :head do %>
-  <%= rss_feed_link_tag route_set: sufia %>
-  <%= atom_feed_link_tag route_set: sufia %>
+  <%= rss_feed_link_tag route_set: hyrax %>
+  <%= atom_feed_link_tag route_set: hyrax %>
 <% end %>
 
 <%= javascript_tag do %>
   <%= render partial: 'scripts', formats: [:js] %>
 <% end %>
 
-<h1 class="sr-only">My Works, Collections, Highlights, and <%= t('sufia.dashboard.my.shares') %></h1>
+<h1 class="sr-only">My Works, Collections, Highlights, and <%= t('hyrax.dashboard.my.shares') %></h1>
 <ul class="nav nav-tabs" id="my_nav" role="navigation">
   <span class="sr-only">You are currently listing your <%= @selected_tab.pluralize %> .  You have <%= @response.docs.count %> <%= @selected_tab.pluralize(@response.docs.count)%> </span>
   <li class="<%= "active" if @selected_tab == 'works' %>">
-    <%= link_to t('sufia.dashboard.my.works'), sufia.dashboard_works_path %>
+    <%= link_to t('hyrax.dashboard.my.works'), hyrax.dashboard_works_path %>
   </li>
   <% if Toggles.expose_collections %>
   <li class="<%= "active" if @selected_tab == 'collections' %>">
-    <%= link_to t('sufia.dashboard.my.collections'), sufia.dashboard_collections_path %>
+    <%= link_to t('hyrax.dashboard.my.collections'), hyrax.dashboard_collections_path %>
   </li>
   <% end %>
   <% if Toggles.expose_highlights %>
   <li class="<%= "active" if @selected_tab == 'highlighted' %>">
-    <%= link_to t('sufia.dashboard.my.highlights'), sufia.dashboard_highlights_path %>
+    <%= link_to t('hyrax.dashboard.my.highlights'), hyrax.dashboard_highlights_path %>
   </li>
   <% end %>
   <% if Toggles.expose_work_share %>
   <li class="<%= "active" if @selected_tab == 'shared' %>">
-    <%= link_to t('sufia.dashboard.my.shares'), sufia.dashboard_shares_path %>
+    <%= link_to t('hyrax.dashboard.my.shares'), hyrax.dashboard_shares_path %>
   </li>
   <% end %>
 </ul>

@@ -1,7 +1,7 @@
 <div class="show-actions">
   <% public_label = presenter.solr_document.is_private? ? 'Public Preview' : 'Public View' %>
   <%= link_to public_label, Rails.application.routes.url_helpers.public_view_path(presenter.solr_document.id), class: 'btn btn-default' %>
-  <% if Sufia.config.analytics %>
+  <% if Hyrax.config.analytics %>
     <%= link_to "Analytics", presenter.stats_path, id: 'stats', class: 'btn btn-default' %>
   <% end %>
   <% if presenter.editor? %>
@@ -14,7 +14,7 @@
     <% end %>
 
     <% if can_delete %>
-      <%= link_to "Delete", [main_app, presenter], class: 'btn btn-danger', data: { confirm: t("sufia.dashboard.my.action.work_confirmation", application_name: application_name) }, method: :delete %>
+      <%= link_to "Delete", [main_app, presenter], class: 'btn btn-danger', data: { confirm: t("hyrax.dashboard.my.action.work_confirmation", application_name: application_name) }, method: :delete %>
     <% end %>
 
       <% if Toggles.expose_file_manager && presenter.member_presenters.size > 1 %>
@@ -24,11 +24,11 @@
   <% end %>
   <% if Toggles.expose_feature_work %>
     <% if presenter.display_feature_link? %>
-      <%= link_to "Feature", sufia.featured_work_path(presenter, format: :json),
+      <%= link_to "Feature", hyrax.featured_work_path(presenter, format: :json),
         data: {behavior: 'feature'}, id: 'featureLink', name: 'featureLink', class: 'btn btn-default' %>
     <% end %>
     <% if presenter.display_unfeature_link? %>
-      <%= link_to "Unfeature", sufia.featured_work_path(presenter, format: :json),
+      <%= link_to "Unfeature", hyrax.featured_work_path(presenter, format: :json),
         data: {behavior: 'unfeature'}, id: 'unfeatureLink', name: 'unfeatureLink', class: 'btn btn-default' %>
     <% end %>
   <% end %>

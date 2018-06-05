@@ -46,9 +46,9 @@
 
 <%= render 'form_existing_files', f: f %>
 
-<%= render 'sufia/uploads/js_templates' %>
+<%= render 'hyrax/uploads/js_templates' %>
 
-<% if Sufia.config.browse_everything %>
+<% if Hyrax.config.browse_everything %>
   <h2><%= t('curation_concerns.base.form_files.external_upload') %></h2>
   <%= render 'browse_everything', f: f %>
 <% end %>

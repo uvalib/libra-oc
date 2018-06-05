@@ -153,7 +153,7 @@ module StatisticsHelper
   end
 
   def time_now
-    CurationConcerns::TimeService.time_in_utc
+    Hyrax::TimeService.time_in_utc
   end
 
   def save_safely( event )

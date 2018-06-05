@@ -1,8 +1,8 @@
-class LibraRightsAttributeRenderer < CurationConcerns::Renderers::AttributeRenderer
-  # Special treatment for license/rights.  A URL from the Sufia gem's config/sufia.rb is stored in the desctadata of the
+class LibraRightsAttributeRenderer < Hyrax::Renderers::AttributeRenderer
+  # Special treatment for license/rights.  A URL from the Hyrax gem's config/hyrax.rb is stored in the desctadata of the
   # curation_concern.  If that URL is valid in form, then it is used as a link.  If it is not validit is used as plain text.
   def self.rights_attribute_to_html(value)
-    authority = CurationConcerns.config.license_service_class.new.authority
+    authority = Hyrax.config.license_service_class.new.authority
     license = authority.find(value)
     license = {'term' => value} unless license.present?
 

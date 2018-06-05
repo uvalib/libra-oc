@@ -1,8 +1,8 @@
 <div class="btn-group">
 
   <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" id="dropdownMenu_<%= document.id %>" aria-haspopup="true">
-    <span class="sr-only"><%= t("sufia.dashboard.my.sr.press_to") %> </span>
-    <%= t("sufia.dashboard.my.action.select") %>
+    <span class="sr-only"><%= t("hyrax.dashboard.my.sr.press_to") %> </span>
+    <%= t("hyrax.dashboard.my.action.select") %>
     <span class="caret" aria-hidden="true"></span>
   </button>
 
@@ -11,7 +11,7 @@
     <li role="menuitem" tabindex="-1">
       <%= link_to [:edit, document] do %>
         <i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>
-        <span> <%= t("sufia.dashboard.my.action.edit_work") %> </span>
+        <span> <%= t("hyrax.dashboard.my.action.edit_work") %> </span>
       <% end %>
     </li>
 
@@ -26,9 +26,9 @@
       <%= link_to document,
                   method: :delete,
                   data: { 
-                    confirm: t("sufia.dashboard.my.action.work_confirmation", application_name: application_name) } do %>
+                    confirm: t("hyrax.dashboard.my.action.work_confirmation", application_name: application_name) } do %>
         <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
-        <span> <%= t("sufia.dashboard.my.action.delete_work") %> </span>
+        <span> <%= t("hyrax.dashboard.my.action.delete_work") %> </span>
       <% end %>
     </li>
     <% end %>
@@ -43,9 +43,9 @@
 
     <% if Toggles.expose_ownership_transfer %>
     <li role="menuitem" tabindex="-1">
-      <%= link_to(sufia.new_work_transfer_path(document.id), class: 'itemicon itemtransfer', title: t("sufia.dashboard.my.action.transfer")) do %>
+      <%= link_to(hyrax.new_work_transfer_path(document.id), class: 'itemicon itemtransfer', title: t("hyrax.dashboard.my.action.transfer")) do %>
         <i aria-hidden="true" class='glyphicon glyphicon-transfer'></i>
-        <span> <%= t("sufia.dashboard.my.action.transfer") %> </span>
+        <span> <%= t("hyrax.dashboard.my.action.transfer") %> </span>
       <% end %>
     </li>
     <% end %>

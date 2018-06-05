@@ -1,6 +1,6 @@
-module CurationConcerns
+module Hyrax
   class SingleUseLinksViewerController < ApplicationController
-    include CurationConcerns::SingleUseLinksViewerControllerBehavior
+    include Hyrax::SingleUseLinksViewerControllerBehavior
 
 
 

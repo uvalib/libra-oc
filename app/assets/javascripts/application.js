@@ -30,9 +30,9 @@
 //= require save_work_panel
 //= require export
 
-// require sufia last
-//= require sufia
+// require hyrax last
+//= require hyrax
 
-// overrides for sufia come very last
+// overrides for hyrax come very last
 //= require repeating_fields
 

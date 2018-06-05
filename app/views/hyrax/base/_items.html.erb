@@ -1,7 +1,7 @@
 <h2><%= t('.header') %></h2>
 <% if presenter.member_presenters.present? %>
   <% if flash[:has_new_files] %>
-    <div class="alert alert-success" role="alert"><%= t('sufia.works.create.after_create_html',
+    <div class="alert alert-success" role="alert"><%= t('hyrax.works.create.after_create_html',
                                                         application_name: application_name ) %></div>
   <%end%>
   <table class="table table-striped related-files">
@@ -19,7 +19,7 @@
   </table>
 <% elsif can? :edit, presenter.id %>
   <% if flash[:has_new_files] %>
-    <div class="alert alert-success" role="alert"><%= t('sufia.works.create.after_create_html',
+    <div class="alert alert-success" role="alert"><%= t('hyrax.works.create.after_create_html',
                                                         application_name: application_name ) %></div>
   <%else%>
     <div class="alert alert-warning" role="alert"><%= t('.empty', type: presenter.human_readable_type) %></div>

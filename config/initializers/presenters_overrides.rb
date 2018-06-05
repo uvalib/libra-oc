@@ -1,4 +1,4 @@
-CurationConcerns::PermissionBadge.class_eval do
+Hyrax::PermissionBadge.class_eval do
 
   private
 

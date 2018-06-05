@@ -59,7 +59,7 @@ module OrcidHelper
 
    #
    # normalize an ORCID URL to the ORCID environment
-   # Necessary because sufia *assumes* we are in the orcid.org domain
+   # Necessary because hyrax *assumes* we are in the orcid.org domain
    # when we might be in the sandbox.orcid.org domain
    #
    def normalize_orcid_url( orcid_url )

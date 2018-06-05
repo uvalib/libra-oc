@@ -1,4 +1,4 @@
-module CurationConcerns
+module Hyrax
   class LicenseService < QaSelectService
 
     def initialize

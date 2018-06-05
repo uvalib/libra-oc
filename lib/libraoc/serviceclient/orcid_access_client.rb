@@ -166,7 +166,7 @@ module ServiceClient
      end
 
      #
-     # map the sufia resource type to the ORCID resource type
+     # map the hyrax resource type to the ORCID resource type
      #
      def map_to_orcid_type( resource_type )
 

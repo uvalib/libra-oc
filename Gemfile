@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'mysql2'
@@ -32,7 +31,7 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'solr_wrapper', '>= 0.3'
+  gem 'solr_wrapper'
   gem 'fcrepo_wrapper'
   gem 'rspec-rails'
 end
@@ -46,21 +45,19 @@ group :development do
 #  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-# Sufia Related
-gem 'sufia', '~> 7.4.1'
-gem 'curation_concerns', '~> 1.7.6', github: 'uvalib/curation_concerns', branch: '1.7.6'
+# Hyrax
+gem 'hyrax', '~> 1.0.5'
+
 gem 'blacklight_advanced_search'
 gem 'devise'
 gem 'devise-guests'
 
-gem 'kaminari', '< 1.0'
-gem 'simple_form', '3.5.0'
 
 # sidekiq worker support
 gem 'sidekiq'
 gem 'sidekiq-failures'
 
-gem 'rsolr', '~> 1.1.2'
+gem 'rsolr'
 
 gem 'rest-client'
 

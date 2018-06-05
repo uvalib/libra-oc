@@ -33,7 +33,6 @@ Rails.application.routes.draw do
   get '/uva-only-license' => redirect('http://www.library.virginia.edu/libra/open-access/libra-uva-only-deposit-license/')
   get '/agreement' => redirect('http://www.library.virginia.edu/libra/open-access/libra-deposit-license/')
 
-  Hydra::BatchEdit.add_routes(self)
   mount Qa::Engine => '/authorities'
 
   mount Blacklight::Engine => '/'
@@ -62,12 +61,10 @@ Rails.application.routes.draw do
     delete :destroy
   end
 
-  mount CurationConcerns::Engine, at: '/'
   resources :welcome, only: 'index'
   root 'dashboard#index'
-  curation_concerns_collections
-  curation_concerns_basic_routes
-  curation_concerns_embargo_management
+  hyrax_basic_routes
+  hyrax_embargo_management
   concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
@@ -85,7 +82,7 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
-  mount Sufia::Engine, at: '/'
+  mount Hyrax::Engine, at: '/'
 
 
 end

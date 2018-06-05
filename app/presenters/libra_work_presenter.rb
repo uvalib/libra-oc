@@ -1,6 +1,6 @@
 require_dependency 'app/helpers/permissions_helper'
 
-class LibraWorkPresenter < Sufia::WorkShowPresenter
+class LibraWorkPresenter < Hyrax::WorkShowPresenter
   include ActionView::Helpers::TagHelper
   include PermissionsHelper
 

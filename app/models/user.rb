@@ -1,11 +1,7 @@
 class User < ApplicationRecord
-  # Connects this user object to Hydra behaviors.
-  include Hydra::User
-  # Connects this user object to Curation Concerns behaviors.
-  include CurationConcerns::User
-  # Connects this user object to Sufia behaviors.
-  include Sufia::User
-  include Sufia::UserUsageStats
+  # Connects this user object to Hyrax behaviors.
+  include Hyrax::User
+  include Hyrax::UserUsageStats
 
   # helpers, etc for libraoc users
   include Libraoc::UserAttributes
@@ -33,7 +29,7 @@ class User < ApplicationRecord
   end
 
   #
-  # use the existing sufia role mapper to determine who is an admin
+  # use the existing hyrax role mapper to determine who is an admin
   #
   def admin?
     groups.include?( 'admin' )

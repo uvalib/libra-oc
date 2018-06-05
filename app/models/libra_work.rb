@@ -2,10 +2,10 @@ require_dependency 'app/helpers/ordered_string_helper'
 include OrderedStringHelper
 
 class LibraWork < ActiveFedora::Base
-  include ::CurationConcerns::WorkBehavior
+  include ::Hyrax::WorkBehavior
   include Libraoc::BasicMetadata
   include Libraoc::OrcidBehavior
-  include Sufia::WorkBehavior
+  include Hyrax::WorkBehavior
   include UrlHelper
 
   # first time create behavior
@@ -241,7 +241,7 @@ class LibraWork < ActiveFedora::Base
 
   def rights_display
     value = self.rights.first
-    authority = CurationConcerns.config.license_service_class.new.authority
+    authority = Hyrax.config.license_service_class.new.authority
     license = authority.find(value)
     license = authority.search(value) unless license.present?
     license = {'term' => value} unless license.present?

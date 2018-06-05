@@ -1,4 +1,4 @@
-class ReverseSortedListRenderer < CurationConcerns::Renderers::AttributeRenderer
+class ReverseSortedListRenderer < Hyrax::Renderers::AttributeRenderer
   def initialize(field, values, options = {})
 
     # if this is sortable

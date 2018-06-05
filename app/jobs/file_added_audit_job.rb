@@ -35,7 +35,7 @@ class FileAddedAuditJob < ActiveJob::Base
 
     file_ids.each do |id|
       begin
-        upload = Sufia::UploadedFile.find( id )
+        upload = Hyrax::UploadedFile.find( id )
         Audit.audit( work_id, user_id, 'files', '', File.basename( upload.file.file.file ) )
       rescue => ex
         puts "ERROR #{ex}, no file add audit"

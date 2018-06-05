@@ -16,7 +16,7 @@ module Libraoc::PublishBehavior
 
       # dont set the published date on private works or legacy works
       if is_private? == false && is_legacy_content? == false
-         self.published_date = CurationConcerns::TimeService.time_in_utc.to_s
+         self.published_date = Hyrax::TimeService.time_in_utc.to_s
       end
 
     end

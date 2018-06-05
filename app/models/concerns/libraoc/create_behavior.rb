@@ -10,7 +10,7 @@ module Libraoc::CreateBehavior
 
     def create_behavior
 
-      self.date_created = CurationConcerns::TimeService.time_in_utc.to_s if self.date_created.blank?
+      self.date_created = Hyrax::TimeService.time_in_utc.to_s if self.date_created.blank?
 
     end
 

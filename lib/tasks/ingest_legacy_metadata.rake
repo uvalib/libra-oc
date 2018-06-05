@@ -800,7 +800,7 @@ namespace :libraoc do
           original_create_date = payload[ :create_date ]
           dt = datetime_from_string( original_create_date )
           original_create_date = dt.strftime( "%Y-%m-%d %H:%M:%S" ) if dt.nil? == false
-          time_now = CurationConcerns::TimeService.time_in_utc.strftime( "%Y-%m-%d %H:%M:%S" )
+          time_now = Hyrax::TimeService.time_in_utc.strftime( "%Y-%m-%d %H:%M:%S" )
           new_notes = "#{v.gsub( 'LIBRA1_CREATE_DATE', original_create_date ).gsub( 'CURRENT_DATE', time_now )}"
           payload[ k ] = [ new_notes ]
 

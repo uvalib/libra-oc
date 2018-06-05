@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  include Sufia::DashboardControllerBehavior
+  include Hyrax::DashboardControllerBehavior
   include Blacklight::SearchHelper
 
   def index

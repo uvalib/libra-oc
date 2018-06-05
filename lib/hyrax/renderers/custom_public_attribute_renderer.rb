@@ -1,4 +1,4 @@
-module CurationConcerns
+module Hyrax
   module Renderers
     class CustomPublicAttributeRenderer < AttributeRenderer
 

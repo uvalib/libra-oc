@@ -1,6 +1,6 @@
 <% content_for(:twitter_meta) do %>
   <meta name="twitter:card" content="product">
-  <meta name="twitter:site" content="<%= t('sufia.product_twitter_handle') %>"/>
+  <meta name="twitter:site" content="<%= t('hyrax.product_twitter_handle') %>"/>
   <meta name="twitter:creator" content="<%= @presenter.tweeter %>"/>
   <meta property="og:site_name" content="<%= application_name %>"/>
   <meta property="og:type" content="object"/>
@@ -21,7 +21,7 @@
   <% end %>
   <meta name="citation_publication_date" content="<%= @presenter.date_created %>"/>
   <meta name="citation_pdf_url" content="<%= main_app.download_url(@presenter) %>"/>
-  <!-- Sufia does not yet support these metadata -->
+  <!-- Hyrax does not yet support these metadata -->
   <!--
     <meta name="citation_journal_title" content=""/>
     <meta name="citation_volume" content=""/>

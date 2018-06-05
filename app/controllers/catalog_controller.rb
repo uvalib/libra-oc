@@ -2,7 +2,7 @@ class CatalogController < ApplicationController
   include BlacklightAdvancedSearch::Controller
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
-  include Sufia::Catalog
+  include Hyrax::Catalog
 
   # This filter applies the hydra access controls
   before_action :enforce_show_permissions, only: :show
@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
     config.advanced_search[:query_parser] ||= 'dismax'
     config.advanced_search[:form_solr_parameters] ||= {}
 
-    config.search_builder_class = Sufia::SearchBuilder
+    config.search_builder_class = Hyrax::SearchBuilder
 
     # Show gallery view
     config.view.gallery.partials = [:index_header, :index]
@@ -266,7 +266,7 @@ class CatalogController < ApplicationController
   end
 
   # disable the bookmark control from displaying in gallery view
-  # Sufia doesn't show any of the default controls on the list view, so
+  # Hyrax doesn't show any of the default controls on the list view, so
   # this method is not called in that context.
   def render_bookmarks_control?
     false

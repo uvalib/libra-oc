@@ -1,4 +1,4 @@
-class PersonAttributeRenderer < CurationConcerns::Renderers::AttributeRenderer
+class PersonAttributeRenderer < Hyrax::Renderers::AttributeRenderer
   def attribute_value_to_html person_json
     person = {}
     begin
