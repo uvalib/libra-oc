@@ -11,10 +11,8 @@ class ApplicationController < ActionController::Base
   include Hydra::Controller::ControllerBehavior
 
 
-  # Adds Hyrax behaviors to the application controller.
-  include Hyrax::ApplicationControllerBehavior
   # Adds Hyrax behaviors into the application controller
-  include Hyrax::Controller
+  #include Hyrax::Controller
 
   include Hyrax::ThemedLayoutController
   with_themed_layout '1_column'

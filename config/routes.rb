@@ -63,8 +63,6 @@ Rails.application.routes.draw do
 
   resources :welcome, only: 'index'
   root 'dashboard#index'
-  hyrax_basic_routes
-  hyrax_embargo_management
   concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do

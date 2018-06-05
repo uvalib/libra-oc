@@ -215,7 +215,6 @@ Hyrax.config do |config|
   # config.whitelisted_ingest_dirs = []
 
 
-  config.user_key_field = Devise.authentication_keys.first
 
 end
 
