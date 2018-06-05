@@ -60,3 +60,46 @@ en:
         person_fields: "Enter a UVA Computing ID to automatically fill the remaining fields for this person."
         authors: "The main researchers involved in producing the work, or the authors of the publication, in priority order"
         contributors: "The person(s) responsible for contributing to the development of the resource, such as editor or producer (not an author)."
+ blacklight:
+    search:
+      fields:
+        facet:
+          based_near_sim: Location
+          creator_sim: Creator
+          file_format_sim: Format
+          generic_type_sim: Type
+          keyword_sim: Keyword
+          language_sim: Language
+          publisher_sim: Publisher
+          subject_sim: Subject
+        index:
+          based_near_tesim: Location
+          contributor_tesim: Contributor
+          creator_tesim: Creator
+          date_created_tesim: Date Created
+          date_modified_dtsi: Date Modified
+          date_uploaded_dtsi: Date Uploaded
+          description_tesim: Description
+          file_format_tesim: File Format
+          identifier_tesim: Identifier
+          keyword_tesim: Keyword
+          language_tesim: Language
+          publisher_tesim: Publisher
+          rights_tesim: Rights
+          subject_tesim: Subject
+        show:
+          based_near_tesim: Location
+          contributor_tesim: Contributor
+          creator_tesim: Creator
+          date_created_tesim: Date Created
+          date_modified_dtsi: Date Modified
+          date_uploaded_dtsi: Date Uploaded
+          description_tesim: Description
+          file_format_tesim: File Format
+          identifier_tesim: Identifier
+          keyword_tesim: Keyword
+          language_tesim: Language
+          publisher_tesim: Publisher
+          rights_tesim: Rights
+          subject_tesim: Subject
+          title_tesim: Title
