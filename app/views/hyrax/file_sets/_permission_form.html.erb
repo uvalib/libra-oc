@@ -13,14 +13,14 @@
   <span id="permissions_error_text"></span>
 </div>
 
-<%= render 'curation_concerns/base/form_permission', f: f %>
+<%= render 'hyrax/base/form_permission', f: f %>
 
 <% if Toggles.expose_work_share %>
 <!-- Share With -->
 <div class="row">
   <h3 class="col-sm-12">Share With <small>(optional)</small>
     <span id="share_with_tooltip" class="h5">
-      <%= help_text('curation_concerns/base/share_with') %>
+      <%= help_text('hyrax/base/share_with') %>
     </span>
   </h3>
 </div>

@@ -1,9 +1,10 @@
 # Generated via
-#  `rails generate curation_concerns:work LibraWork`
+#  `rails generate hyrax:work LibraWork`
 require 'rails_helper'
 include Warden::Test::Helpers
 
-RSpec.feature 'Create a LibraWork' do
+# NOTE: If you generated more than one work, you have to set "js: true"
+RSpec.feature 'Create a LibraWork', js: false do
   context 'a logged in user' do
     let(:user_attributes) do
       { email: 'test@example.com' }
@@ -13,14 +14,20 @@ RSpec.feature 'Create a LibraWork' do
     end
 
     before do
+      AdminSet.find_or_create_default_admin_set_id
       login_as user
     end
 
     scenario do
-      visit new_curation_concerns_libra_work_path
-      fill_in 'Title', with: 'Test LibraWork'
-      click_button 'Create LibraWork'
-      expect(page).to have_content 'Test LibraWork'
+      visit '/dashboard'
+      click_link "Works"
+      click_link "Add new work"
+
+      # If you generate more than one work uncomment these lines
+      # choose "payload_concern", option: "LibraWork"
+      # click_button "Create work"
+
+      expect(page).to have_content "Add New Libra work"
     end
   end
 end

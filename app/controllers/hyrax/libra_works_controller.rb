@@ -4,7 +4,9 @@
 module Hyrax
   class LibraWorksController < ApplicationController
 
+    # Adds Hyrax behaviors to the controller.
     include Hyrax::WorksControllerBehavior
+    include Hyrax::BreadcrumbsForWorks
     include WorkHelper
 
     self.curation_concern_type = LibraWork

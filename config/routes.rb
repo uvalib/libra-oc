@@ -33,10 +33,12 @@ Rails.application.routes.draw do
   get '/uva-only-license' => redirect('http://www.library.virginia.edu/libra/open-access/libra-uva-only-deposit-license/')
   get '/agreement' => redirect('http://www.library.virginia.edu/libra/open-access/libra-deposit-license/')
 
-  mount Qa::Engine => '/authorities'
-
+  root 'hyrax/dashboard#index'
+  mount Hyrax::Engine, at: '/'
   mount Blacklight::Engine => '/'
   mount BlacklightAdvancedSearch::Engine => '/'
+  mount Qa::Engine => '/authorities'
+
   concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
@@ -62,8 +64,10 @@ Rails.application.routes.draw do
   end
 
   resources :welcome, only: 'index'
-  root 'dashboard#index'
   concern :exportable, Blacklight::Routes::Exportable.new
+
+  curation_concerns_basic_routes
+  curation_concerns_embargo_management
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
     concerns :exportable
@@ -80,7 +84,6 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
-  mount Hyrax::Engine, at: '/'
 
 
 end

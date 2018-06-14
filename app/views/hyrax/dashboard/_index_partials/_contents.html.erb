@@ -3,7 +3,7 @@
     <h3 class="panel-title ">My Works</h3>
   </div>
   <div class="panel-body">
-    <%= render 'dashboard/_index_partials/my_works', locals: {docs: @docs} %>
+    <%= render 'hyrax/dashboard/_index_partials/my_works', locals: {docs: @docs} %>
   </div>
 </div>
 
@@ -34,7 +34,7 @@
     <h3 class="panel-title "><%= t("hyrax.dashboard.manage_proxies") %></h3>
   </div>
   <div class="panel-body">
-    <%= render 'dashboard/_index_partials/proxy_rights', user: current_user %>
+    <%= render 'hyrax/dashboard/_index_partials/proxy_rights', user: current_user %>
   </div>
 </div>
 <%end%>
@@ -45,7 +45,7 @@
     <h3 class="panel-title "><%= t("hyrax.dashboard.transfer_of_ownership") %></h3>
   </div>
   <div class="panel-body">
-    <%= render partial: 'dashboard/_index_partials/transfers' %>
+    <%= render partial: 'hyrax/dashboard/_index_partials/transfers' %>
   </div>
 </div>
 <% end %>

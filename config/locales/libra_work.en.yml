@@ -1,0 +1,8 @@
+en:
+  hyrax:
+    icons:
+      libra_work:     'fa fa-file-text-o'
+    select_type:
+      libra_work:
+        name:               "Libra Work"
+        description:        "Libra work works"

@@ -16,7 +16,7 @@ module Hyrax
     delegate :admin_notes, to: :model
     attr_reader :has_existing_files, :is_admin
 
-    def initialize(model, current_ability)
+    def initialize(model, current_ability, controller)
       super
       @agreement_accepted = !model.new_record? && !(model.visibility == 'restricted' && model.doi.nil?)
     end

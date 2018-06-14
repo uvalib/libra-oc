@@ -1,8 +1,10 @@
+# commented out for now. breaks on rails startup
 #
-# override so we can generate a download event whenever a file is downloaded
-# standard hyrax uses google analytics for this and this approach was easier
-# than integrating with piwik
 #
+## override so we can generate a download event whenever a file is downloaded
+## standard hyrax uses google analytics for this and this approach was easier
+## than integrating with piwik
+##
 Hyrax::DownloadsController.class_eval do
 
   include StatisticsHelper
@@ -103,3 +105,14 @@ Hyrax::FileSetsController.class_eval do
   end
 end
 
+Hyrax::DashboardController.class_eval do
+
+   include Blacklight::SearchHelper
+   def index
+     @response, @docs = search_results( q: "#{Solrizer.solr_name( 'depositor' )}:#{current_user.email}",
+                                       sort: "#{Solrizer.solr_name('system_create', :stored_sortable, type: :date)} desc",                                    rows: 999 )
+
+     super
+   end
+
+end
