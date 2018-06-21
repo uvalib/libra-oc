@@ -4,7 +4,7 @@ include OrderedStringHelper
 class LibraWork < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
   # This was generated
-  #include ::Hyrax::BasicMetadata
+  include ::Hyrax::BasicMetadata
   include Libraoc::BasicMetadata
   include Libraoc::OrcidBehavior
   include Hyrax::WorkBehavior

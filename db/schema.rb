@@ -437,7 +437,7 @@ ActiveRecord::Schema.define(version: 20180605182060) do
     t.boolean  "allows_access_grant"
     t.integer  "permission_template_id"
     t.boolean  "active"
-    t.index ["name"], name: "index_sipity_workflows_on_permission_template_and_name", unique: true, using: :btree
+    t.index ["permission_template_id", "name"], name: "index_sipity_workflows_on_permission_template_and_name", unique: true, using: :btree
   end
 
   create_table "subject_local_authority_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
