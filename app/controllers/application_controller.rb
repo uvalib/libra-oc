@@ -16,9 +16,9 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  rescue_from CanCan::AccessDenied, :with => :render404
-  rescue_from ActionController::RoutingError, :with => :render404
-  rescue_from ActionView::MissingTemplate, :with => :render404
+#  rescue_from CanCan::AccessDenied, :with => :render404
+#  rescue_from ActionController::RoutingError, :with => :render404
+#  rescue_from ActionView::MissingTemplate, :with => :render404
 
   #rescue_from Exception do |exception|
   #  puts "======> #{exception.class}"

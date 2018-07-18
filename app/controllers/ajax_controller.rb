@@ -52,7 +52,7 @@ class AjaxController < ApplicationController
         @next_page = nil if @orcid_profiles.count < per_page
         @prev_page = nil if @prev_page < 0
 
-        render 'users/orcid_results', layout: false
+        render 'hyrax/users/orcid_results', layout: false
       }
     end
   end
