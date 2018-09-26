@@ -49,14 +49,14 @@ WORKDIR $APP_HOME
 # copy the application
 ADD . $APP_HOME
 
-# generate the assets
-RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile
-
 # Update permissions
 RUN chown -R webservice $APP_HOME /home/webservice && chgrp -R webservice $APP_HOME /home/webservice
 
 # freshen the antivirus definitions and update permissions so we can do this again
 RUN freshclam && chmod -R o+w /var/lib/clamav
+
+# generate the assets
+RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile
 
 # Specify the user
 USER webservice
