@@ -17,10 +17,10 @@ RUN yum -y install clamav clamav-update clamav-devel
 RUN rpm -ivh https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm && yum -y install nodejs
 
 # install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/5.4.5/rpm/x86_64/LibreOffice_5.4.5_Linux_x86-64_rpm.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_5.4.5_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_5.4.5.1_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/6.1.1/rpm/x86_64/LibreOffice_6.1.1_Linux_x86-64_rpm.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_6.1.1_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_6.1.1.2_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
 RUN ln -s /opt/libreoffice5.4/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_5.4.5.1_Linux_x86-64_rpm && rm /tmp/LibreOffice_5.4.5_Linux_x86-64_rpm.tar.gz
+RUN rm -fr /tmp/LibreOffice_6.1.1.2_Linux_x86-64_rpm && rm /tmp/LibreOffice_6.1.1_Linux_x86-64_rpm.tar.gz
 
 # Create the run user and group
 RUN groupadd -r webservice && useradd -r -g webservice webservice && mkdir /home/webservice
