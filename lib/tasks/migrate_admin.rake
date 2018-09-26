@@ -57,6 +57,16 @@ namespace :migrate do
             work = LibraWork.find( w['id'] )
             work.save!
 
+            if work.file_sets.empty? == false
+              begin
+                work.file_sets.each do |fs|
+                  fs.save!
+                end
+              rescue => ex
+                puts "EXCEPTION: #{ex}"
+              end
+            end
+
             successes += 1
           rescue => ex
             puts "EXCEPTION: #{ex}"
@@ -85,6 +95,16 @@ namespace :migrate do
          work = LibraWork.find( work_id )
          work.save!
 
+         if work.file_sets.empty? == false
+           begin
+             work.file_sets.each do |fs|
+               fs.save!
+             end
+           rescue => ex
+             puts "EXCEPTION: #{ex}"
+           end
+         end
+
          puts "done"
       rescue => ex
          puts "EXCEPTION: #{ex}"
@@ -112,6 +132,16 @@ namespace :migrate do
             print "."
             work = LibraWork.find( line.strip )
             work.save!
+
+            if work.file_sets.empty? == false
+              begin
+                work.file_sets.each do |fs|
+                  fs.save!
+                end
+              rescue => ex
+                puts "EXCEPTION: #{ex}"
+              end
+            end
 
             successes += 1
          rescue => ex
