@@ -1,5 +1,7 @@
+require 'ruby-progressbar'
+
 namespace :libraoc do
-  
+
   namespace :index do
 
     desc "Reindex SOLR from a Fedora repo"
