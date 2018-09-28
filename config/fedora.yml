@@ -3,17 +3,17 @@ development:
   password: <%= ENV['FEDORA_PASSWD'] %>
   url: <%= ENV['FEDORA_URL'] %>
   base_path: /libraopen/dev
-  request: { timeout: -1, open_timeout: 30}
+  request: { timeout: 99999, open_timeout: 30}
 test:
   user: <%= ENV['FEDORA_USER'] %>
   password: <%= ENV['FEDORA_PASSWD'] %>
   url: <%= ENV['FEDORA_URL'] %>
   base_path: /libraopen/test
-  request: { timeout: -1, open_timeout: 30}
+  request: { timeout: 99999, open_timeout: 30}
 production:
   user: <%= ENV['FEDORA_USER'] %>
   password: <%= ENV['FEDORA_PASSWD'] %>
   url: <%= ENV['FEDORA_URL'] %>
   base_path: /libraopen/prod
-  request: { timeout: -1, open_timeout: 30}
+  request: { timeout: 99999, open_timeout: 30}
 
