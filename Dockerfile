@@ -23,7 +23,7 @@ RUN ln -s /opt/libreoffice5.4/program/soffice /usr/local/bin/soffice
 RUN rm -fr /tmp/LibreOffice_6.1.1.2_Linux_x86-64_rpm && rm /tmp/LibreOffice_6.1.1_Linux_x86-64_rpm.tar.gz
 
 # Create the run user and group
-RUN groupadd -r webservice && useradd -r -g webservice webservice && mkdir /home/webservice
+RUN groupadd -r --gid 18570 sse && useradd --uid 1984 -r -g sse docker && mkdir /home/docker
 
 # set the timezone appropriatly
 ENV TZ=UTC
@@ -50,7 +50,7 @@ WORKDIR $APP_HOME
 ADD . $APP_HOME
 
 # Update permissions
-RUN chown -R webservice $APP_HOME /home/webservice && chgrp -R webservice $APP_HOME /home/webservice
+RUN chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docker
 
 # freshen the antivirus definitions and update permissions so we can do this again
 RUN freshclam && chmod -R o+w /var/lib/clamav
@@ -59,14 +59,14 @@ RUN freshclam && chmod -R o+w /var/lib/clamav
 RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile
 
 # Specify the user
-USER webservice
+USER docker
 
 # Define port and startup script
 EXPOSE 3000
 CMD scripts/entry.sh
 
 # Move in other assets
-COPY data/container_bash_profile /home/webservice/.profile
+COPY data/container_bash_profile /home/docker/.profile
 
 #
 # end of file
