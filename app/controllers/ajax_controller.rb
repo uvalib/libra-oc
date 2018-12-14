@@ -8,7 +8,7 @@ class AjaxController < ApplicationController
     respond_to do |wants|
       wants.json {
         status, resp = ServiceClient::UserInfoClient.instance.get_by_id( params[:id] )
-        if ServiceClient::UserInfoClient.instance.ok?( status )
+        if ServiceClient::UserInfoClient.instance.ok?( status ) && resp['private'] != 'true'
           resp[:institution] = LibraWork::DEFAULT_INSTITUTION if resp[:institution].blank?
           resp[:index] = params[:index]
         else
