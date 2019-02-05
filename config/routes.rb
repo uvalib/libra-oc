@@ -29,9 +29,9 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/uva-public-license' => redirect('http://www.library.virginia.edu/libra/open-access/libra-public-deposit-license/')
-  get '/uva-only-license' => redirect('http://www.library.virginia.edu/libra/open-access/libra-uva-only-deposit-license/')
-  get '/agreement' => redirect('http://www.library.virginia.edu/libra/open-access/libra-deposit-license/')
+  get '/uva-public-license' => redirect('https://www.library.virginia.edu/libra/open/libra-public-deposit-license/')
+  get '/uva-only-license' => redirect('https://www.library.virginia.edu/libra/open/libra-uva-only-deposit-license/')
+  get '/agreement' => redirect('https://www.library.virginia.edu/libra/open/libra-deposit-license/')
 
   Hydra::BatchEdit.add_routes(self)
   mount Qa::Engine => '/authorities'
