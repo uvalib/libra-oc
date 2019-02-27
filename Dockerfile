@@ -14,7 +14,12 @@ RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
 
 # install application dependancies
 RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel #&&
-RUN yum -y install clamav clamav-update clamav-devel
+
+# add rpm for old, working version of clamav from atomic
+RUN rpm -Uvh http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-0.100.2-5671.el7.art.x86_64.rpm http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-devel-0.100.2-5671.el7.art.x86_64.rpm http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-db-0.100.2-5671.el7.art.x86_64.rpm
+
+RUN yum -y install clamav-0.100.2 clamav-devel-0.100.2
+
 #&& yum -y install nodejs
 # temp workaround until centos 7.4 (https://bugs.centos.org/view.php?id=13669&nbn=1)
 RUN rpm -ivh https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm && yum -y install nodejs
@@ -53,7 +58,7 @@ ADD . $APP_HOME
 RUN chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docker
 
 # freshen the antivirus definitions and update permissions so we can do this again
-#RUN freshclam && chmod -R o+w /var/lib/clamav
+RUN freshclam && chmod -R o+w /var/lib/clamav
 
 # generate the assets
 RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile

@@ -75,8 +75,8 @@ gem 'sitemap_generator'
 
 gem 'prometheus-client'
 
-#group :production do
-#   gem 'clamav'
-#end
+group :production do
+   gem 'clamav'
+end
 
 gem 'active-fedora', '~> 11.5.2', github: 'uvalib/active_fedora', branch: '11-5-stable'
