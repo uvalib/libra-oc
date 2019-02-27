@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   get '/computing_id' => 'ajax#computing_id'
   get '/test_email' => 'test_email#test_email'
 
-  get 'help' => redirect('http://www.library.virginia.edu/askalibrarian/')
-  get 'oc_checklist' => redirect('http://www.library.virginia.edu/libra/open-access/oc-checklist/')
+  get 'help' => redirect('https://www.library.virginia.edu/askalibrarian/')
+  get 'oc_checklist' => redirect('https://www.library.virginia.edu/libra/open/oc-checklist/')
 
   resources :public_view, only: [:show]
 
