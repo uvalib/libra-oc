@@ -1,6 +1,9 @@
 <div class="panel panel-default" id="activity">
   <div class="panel-heading dashboard-panel">
-    <h3 class="panel-title ">My Works</h3>
+    <div class="panel-title row">
+      <h4 class="col-xs-6">My Works</h4>
+      <p class="col-xs-6 text-right help-text">View <%= link_to "LibraOpen Checklist", oc_checklist_path, target: '_blank' %> for help.</h4>
+    </div>
   </div>
   <div class="panel-body">
     <%= render 'dashboard/_index_partials/my_works', locals: {docs: @docs} %>
