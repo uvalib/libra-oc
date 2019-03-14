@@ -15,7 +15,7 @@
           // The computing id was found if the object returned is not empty.
           elFirstName.val(resp.first_name);
           elLastName.val(resp.last_name);
-          elDepartment.val(resp.department);
+          elDepartment.val(resp.department[0]);
           elInstitution.val(resp.institution);
         } else {
           elFirstName.val("");

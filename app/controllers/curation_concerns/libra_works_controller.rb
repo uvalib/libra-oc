@@ -25,7 +25,7 @@ module CurationConcerns
           computing_id: current_user.computing_id,
           first_name: resp['first_name'],
           last_name: resp['last_name'],
-          department: resp['department'],
+          department: resp['department'] ? resp['department'].first : '',
           institution: resp['institution'].blank? ? LibraWork::DEFAULT_INSTITUTION : resp['institution']
         )
       end
