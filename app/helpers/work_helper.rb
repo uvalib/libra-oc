@@ -8,7 +8,7 @@ module WorkHelper
     begin
        work = LibraWork.find( id )
        return work
-    rescue ActiveFedora::ObjectNotFoundError, Ldp::Gone, URI::InvalidURIError => ex
+    rescue ActiveFedora::ObjectNotFoundError, Ldp::Gone, Ldp::HttpError, URI::InvalidURIError => ex
        puts "==> get_work_item exception: #{ex}"
        return nil
     end
