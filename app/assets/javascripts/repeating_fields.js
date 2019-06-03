@@ -117,8 +117,13 @@ var HydraEditor = (function($) {
         $(this).attr('name', newName);
 
         $(this).val('');
+        $(this).attr('placeholder', '');
+
       });
-      $newField.find('input.index').val(newIndex)
+      $newField.find('input.index').val(newIndex);
+
+      // Clear any department options
+      $newField.find('.department-options').empty();
 
       $newChildren.first().focus();
       return $newField;

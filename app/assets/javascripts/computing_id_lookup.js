@@ -10,12 +10,27 @@
         var elFirstName = outerForm.find(".libra_work_" + personType + "_first_name input");
         var elLastName = outerForm.find(".libra_work_" + personType + "_last_name input");
         var elDepartment = outerForm.find(".libra_work_" + personType + "_department input");
+        var elDepartmentOptions = elDepartment.parent().siblings('.department-options')
         var elInstitution = outerForm.find(".libra_work_" + personType + "_institution input");
+        elDepartment.attr('placeholder', '')
+        elDepartmentOptions.empty();
+
+
         if (resp.cid) {
           // The computing id was found if the object returned is not empty.
           elFirstName.val(resp.first_name);
           elLastName.val(resp.last_name);
-          elDepartment.val(resp.department[0]);
+
+           if(resp.department && resp.department.length > 1){
+             elDepartment.attr('placeholder', 'Copy from below')
+             var departments = "Departmental Affiliations:</br>" +
+               resp.department.join('</br>')
+             elDepartmentOptions.html( departments );
+           } else {
+             elDepartment.val(resp.department[0]);
+           }
+
+
           elInstitution.val(resp.institution);
         } else {
           elFirstName.val("");
