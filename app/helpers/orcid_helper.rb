@@ -67,6 +67,7 @@ module OrcidHelper
      return "#{ENV['ORCID_BASE_URL']}/#{bare_orcid}"
    end
 
+
    private
 
    #
