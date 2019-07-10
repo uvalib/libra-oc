@@ -22,9 +22,8 @@
           elLastName.val(resp.last_name);
 
            if(resp.department && resp.department.length > 1){
-             elDepartment.attr('placeholder', 'Copy from below')
-             var departments = "Departmental Affiliations:</br>" +
-               resp.department.join('</br>')
+             elDepartment.attr('placeholder', 'Enter or copy from below')
+             var departments = resp.department.join('</br>')
              elDepartmentOptions.html( departments );
            } else {
              elDepartment.val(resp.department[0]);
