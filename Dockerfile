@@ -16,9 +16,9 @@ RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
 RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel #&&
 
 # add rpm for old, working version of clamav from atomic
-RUN rpm -Uvh http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-0.100.2-5671.el7.art.x86_64.rpm http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-devel-0.100.2-5671.el7.art.x86_64.rpm http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-db-0.100.2-5671.el7.art.x86_64.rpm http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64//clamav-update-0.100.2-2.sdl7.x86_64.rpm
+RUN rpm -Uvh http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-0.101.4-8677.el7.art.x86_64.rpm http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-devel-0.101.4-8677.el7.art.x86_64.rpm http://www6.atomicorp.com/channels/atomic/centos/7/x86_64/RPMS/clamav-db-0.101.4-8677.el7.art.x86_64.rpm http://springdale.math.ias.edu/data/puias/unsupported/7/x86_64/clamav-update-0.100.2-2.sdl7.x86_64.rpm
 
-RUN yum -y install clamav-0.100.2 clamav-devel-0.100.2 clamav-update-0.100.2
+RUN yum -y install clamav-0.101.4 clamav-devel-0.101.4 clamav-update-0.100.2
 
 #&& yum -y install nodejs
 # temp workaround until centos 7.4 (https://bugs.centos.org/view.php?id=13669&nbn=1)
