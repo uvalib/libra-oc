@@ -1,0 +1,4 @@
+<% if @current_user.admin? %>
+  <%= f.input :depositor, input_html: { name: 'libra_work[depositor]'} %>
+  <%= f.input :is_admin, as: :hidden, input_html: {value: true} %>
+<%end%>

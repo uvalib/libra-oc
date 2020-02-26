@@ -7,6 +7,7 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
   # add our custom fields to the presenter
   delegate :notes,
            :admin_notes,
+           :depositor,
            :sponsoring_agency,
            :license,
            :doi,

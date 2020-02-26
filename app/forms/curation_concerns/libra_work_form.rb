@@ -8,7 +8,7 @@ module CurationConcerns
                    :related_url, :source ]
     self.terms += [ :resource_type, :abstract, :authors,
                     :keyword, :contributors, :source_citation, :publisher, :published_date,
-                    :related_url, :sponsoring_agency, :notes, :admin_notes
+                    :related_url, :sponsoring_agency, :notes, :admin_notes, :depositor
     ]
     self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
     delegate :authors, to: :model
@@ -83,6 +83,7 @@ module CurationConcerns
       permitted << :language
       permitted << :resource_type
       permitted << :admin_notes
+      permitted << :depositor
       permitted
     end
 

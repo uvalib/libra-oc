@@ -6,6 +6,7 @@ class WorkAuditJob < ActiveJob::Base
     AUDIT_FIELDS ||= {
         'abstract'           => :string,
         'admin_notes'        => :string_array,
+        'depositor'          => :string_array,
         'authors'            => :person_array,
         'contributors'       => :person_array,
         'keyword'            => :string_array,
