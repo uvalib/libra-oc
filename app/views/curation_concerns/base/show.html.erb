@@ -1,4 +1,9 @@
 <% provide :page_title, @presenter.page_title %>
+<% if flash[:has_new_files] %>
+  <div class="alert alert-success" role="alert"><%= t('sufia.works.create.after_create_html',
+                                                      application_name: application_name ) %>
+  </div>
+<%end%>
 <div itemscope itemtype="http://schema.org/CreativeWork" class="row">
   <div class="col-xs-12">
     <header>
