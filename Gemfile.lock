@@ -559,7 +559,7 @@ GEM
       ansi
       ast
     ruby-progressbar (1.9.0)
-    rubyzip (1.2.1)
+    rubyzip (2.2.0)
     sass (3.5.3)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
