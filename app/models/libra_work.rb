@@ -100,10 +100,6 @@ class LibraWork < ActiveFedora::Base
     index.type :text
     index.as :stored_searchable
   end
-  property :depositor, predicate: ::RDF::URI('http://example.org/terms/depositor'), multiple: false do |index|
-    index.type :text
-    index.as :stored_searchable
-  end
 
   property :orcid_status, predicate: ::RDF::URI('http://example.org/terms/orcid_status'), multiple: false do |index|
     index.as :stored_searchable
