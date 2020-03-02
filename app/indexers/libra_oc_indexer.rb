@@ -12,6 +12,7 @@ class LibraOcIndexer < CurationConcerns::WorkIndexer
       solr_doc[Solrizer.solr_name('rights_url', :displayable)] = rights_urls(object)
       solr_doc[Solrizer.solr_name('orcid_status', :searchable)] = object.orcid_status
       solr_doc[Solrizer.solr_name('orcid_put_code', :searchable)] = object.orcid_put_code
+      solr_doc[Solrizer.solr_name('author_orcid_url', :searchable)] = object.author_orcid_url
 
     end
   end

@@ -132,6 +132,10 @@ class SolrDocument
     self[Solrizer.solr_name('orcid_put_code')]
   end
 
+  def author_orcid_url
+    self[Solrizer.solr_name('author_orcid_url')]
+  end
+
   #
   # is this work publicly visible?
   #
