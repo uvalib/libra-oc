@@ -47,9 +47,13 @@ class OrcidSyncJob < ApplicationJob
       puts "RETRYING: OrcidSyncJob for #{work_id}"
       retry_job wait: 5.minutes
 
+    elsif ServiceClient::OrcidAccessClient.instance.not_found?( status )
+      puts "NOT FOUND: (#{status}) OrcidSyncJob for #{work_id}. Clearing PUT code and retrying."
+      work.update orcid_put_code: nil
+      retry_job wait: 10.seconds
     else
       # fail on other errors
-      puts "ERROR: OrcidSyncJob for #{work_id}"
+      puts "ERROR: (#{status}) OrcidSyncJob for #{work_id}."
       work.update orcid_status: LibraWork.error_orcid_status
       return
     end

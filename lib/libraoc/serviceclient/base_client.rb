@@ -21,6 +21,10 @@ module ServiceClient
        status == 408
      end
 
+     def not_found?(status)
+      status == 404
+     end
+
      #
      # configuration helper
      #
