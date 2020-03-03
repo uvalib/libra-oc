@@ -24,6 +24,9 @@ en:
         q:
           placeholder_my_scope: 'Search my works'
           placeholder_all_scope: 'Search all works'
+    works:
+      create:
+        after_create_html: "Your files are being processed by Libra OC in the background. The metadata and access controls you specified are being applied. Before you click edit, refresh this page to see these updates."
 
     dashboard:
       my:

@@ -107,6 +107,7 @@ class LibraWork < ActiveFedora::Base
   property :orcid_put_code, predicate: ::RDF::URI('http://example.org/terms/orcid_put_code'), multiple: false do |index|
     index.as :stored_searchable
   end
+
   property :author_orcid_url, predicate: ::RDF::URI('http://example.org/terms/author_orcid_url'), multiple: false do |index|
     index.as :stored_searchable
   end

@@ -44,4 +44,8 @@ en:
       sponsoring_agency:
          <<: *default
          property: "sponsoring_agency"
+  activemodel:
+    errors:
+      messages:
+        conflict: "Your files are still being processed by Libra OC in the background. Please wait a moment before making more changes."
 
