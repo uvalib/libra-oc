@@ -1,7 +1,4 @@
 FROM centos:7
-#FROM centos:7.5.1804
-#FROM centos:7.4.1708
-#FROM centos:7.3.1611
 
 # ruby dependancies
 RUN yum -y update && yum -y install which tar wget make gcc-c++ zlib-devel libyaml-devel autoconf patch readline-devel libffi-devel openssl-devel bzip2 automake libtool bison sqlite-devel
@@ -41,7 +38,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 # install bundler
-RUN gem install bundler -v 1.17.3 --no-ri --no-rdoc
+RUN gem install bundler -v 1.17.3 --no-document
 
 # create work directory
 ENV APP_HOME /libra-oc
@@ -57,7 +54,6 @@ ADD . $APP_HOME
 # Update permissions
 RUN chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docker
 
-
 # Temporarily needed for the old clamav
 RUN sed -i 's/Example/#Example/' /etc/freshclam.conf
 RUN freshclam && chmod -R o+w /var/clamav
@@ -68,15 +64,22 @@ RUN freshclam && chmod -R o+w /var/clamav
 # generate the assets
 RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile
 
-# Specify the user
-USER docker
-
 # Define port and startup script
-EXPOSE 3000
+EXPOSE 8080
 CMD scripts/entry.sh
 
 # Move in other assets
 COPY data/container_bash_profile /home/docker/.profile
+
+# Ensure permissions are correct
+RUN chown docker:sse /home/docker/.profile $APP_HOME/scripts/entry.sh && chmod 755 /home/docker/.profile $APP_HOME/scripts/entry.sh
+
+# Add the build tag
+ARG BUILD_TAG
+RUN test -n "$BUILD_TAG" && touch $APP_HOME/buildtag.build-$BUILD_TAG || touch $APP_HOME/buildtag.build-0
+
+# Specify the user
+USER docker
 
 #
 # end of file
