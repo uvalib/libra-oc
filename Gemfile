@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'mysql2'
+#gem 'mysql2', '~> 0.4.0'
+
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -80,3 +82,6 @@ group :production do
 end
 
 gem 'active-fedora', '~> 11.5.2', github: 'uvalib/active_fedora', branch: '11-5-stable'
+
+# service auth
+gem 'jwt'

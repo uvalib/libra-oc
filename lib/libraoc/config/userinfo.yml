@@ -1,12 +1,12 @@
 development:
-  authtoken: <%= ENV['API_TOKEN'] %>
+  secret: <%= ENV['AUTH_SHARED_SECRET'] %>
   url: <%= ENV['USERINFO_URL'] %>
   timeout: 10
 test:
-  authtoken: <%= ENV['API_TOKEN'] %>
+  secret: <%= ENV['AUTH_SHARED_SECRET'] %>
   url: <%= ENV['USERINFO_URL'] %>
   timeout: 10
 production:
-  authtoken: <%= ENV['API_TOKEN'] %>
+  secret: <%= ENV['AUTH_SHARED_SECRET'] %>
   url: <%= ENV['USERINFO_URL'] %>
   timeout: 10

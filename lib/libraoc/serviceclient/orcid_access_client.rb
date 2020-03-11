@@ -137,10 +137,6 @@ module ServiceClient
        return h.to_json
      end
 
-     def authtoken
-       configuration[ :authtoken ]
-     end
-
      def url
        configuration[ :url ]
      end

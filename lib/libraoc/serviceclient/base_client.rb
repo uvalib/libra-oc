@@ -26,10 +26,14 @@ module ServiceClient
      end
 
      #
-     # configuration helper
+     # configuration helpers
      #
      def timeout
        configuration[ :timeout ]
+     end
+
+     def authtoken
+       jwt_auth_token( configuration[ :secret ] )
      end
 
      #
@@ -100,6 +104,19 @@ module ServiceClient
        return 408
      end
 
+     # create a time limited JWT for service authentication
+     def jwt_auth_token( secret )
+
+       # expire in 5 minutes
+       exp = Time.now.to_i + 5 * 60
+
+       # just a standard claim
+       exp_payload = { exp: exp }
+
+       return JWT.encode exp_payload, secret, 'HS256'
+
+     end
+     
      private
 
      #
