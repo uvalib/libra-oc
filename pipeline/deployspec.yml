@@ -33,7 +33,7 @@ phases:
       - cd $CODEBUILD_SRC_DIR/terraform-infrastructure/libraopen.lib.virginia.edu/staging
       - terraform init
       - terraform apply -auto-approve -var container_tag=$latest_build
-      - cd $CODEBUILD_SRC_DIR/terraform-infrastructure/wlibraopen.lib.virginia.edu/staging/ansible
+      - cd $CODEBUILD_SRC_DIR/terraform-infrastructure/libraopen.lib.virginia.edu/staging/ansible
       - export PATH="$PATH:$(python3 -c 'import site; print(site.USER_BASE)')/bin"
       - ansible-playbook deploy_backend.yml
       - ansible-playbook deploy_workerpool.yml
