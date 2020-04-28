@@ -22,10 +22,10 @@ RUN yum -y install clamav-0.100.2 clamav-devel-0.100.2 clamav-update-0.100.2
 RUN rpm -ivh https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm && yum -y install nodejs
 
 # install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/6.4.2/rpm/x86_64/LibreOffice_6.4.2_Linux_x86-64_rpm.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_6.4.2_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_6.4.2.2_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/6.4.3/rpm/x86_64/LibreOffice_6.4.3_Linux_x86-64_rpm.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_6.4.3_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_6.4.3.2_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
 RUN ln -s /opt/libreoffice6.4/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_6.4.2.2_Linux_x86-64_rpm && rm /tmp/LibreOffice_6.4.2_Linux_x86-64_rpm.tar.gz
+RUN rm -fr /tmp/LibreOffice_6.4.3.2_Linux_x86-64_rpm && rm /tmp/LibreOffice_6.4.3_Linux_x86-64_rpm.tar.gz
 
 # Create the run user and group
 RUN groupadd -r --gid 18570 sse && useradd --uid 1984 -r -g sse docker && mkdir /home/docker
