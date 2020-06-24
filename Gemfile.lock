@@ -453,7 +453,7 @@ GEM
       nokogiri (~> 1.6)
       rails (>= 4.2.0, < 6.0)
     quantile (0.2.0)
-    rack (2.0.3)
+    rack (2.2.3)
     rack-protection (2.0.0)
       rack
     rack-test (0.6.3)
