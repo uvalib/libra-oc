@@ -157,7 +157,7 @@ module ServiceClient
            return DC_GENERAL_TYPE_IMAGE
          when 'Journal'
            return DC_GENERAL_TYPE_COLLECTION
-         when 'Map', 'Poster', 'Other'
+         when 'Map', 'Poster', 'Other', 'Educational Resource'
            return DC_GENERAL_TYPE_OTHER
          when 'Presentation'
            return DC_GENERAL_TYPE_EVENT
