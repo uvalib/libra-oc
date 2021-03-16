@@ -77,24 +77,12 @@ module Libraoc::DoiBehavior
 
       if is_private? == false
 
-         puts "Allocating a new DOI..."
+         puts "Allocating a new DOI with metadata..."
 
          status, id = ServiceClient::EntityIdClient.instance.newid( self )
          if ServiceClient::EntityIdClient.instance.ok?( status )
-
            self.doi = id
-
-           puts "Sending DOI metadata for #{id}..."
-
-           # update the service metadata
-           status = ServiceClient::EntityIdClient.instance.metadatasync( self )
-           if ServiceClient::EntityIdClient.instance.ok?( status )
-             # save our new DOI
-             self.save!
-           else
-             # note the error
-             puts "ERROR: DOI metadata send returns #{status}"
-           end
+           self.save!
          else
            puts "ERROR: DOI create returns #{status}"
          end
