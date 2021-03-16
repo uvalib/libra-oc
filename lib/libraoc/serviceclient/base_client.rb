@@ -2,39 +2,51 @@ require 'rest_client'
 
 module ServiceClient
 
-   class BaseClient
+  class BaseClient
 
-     DEFAULT_RETRIES ||= 3
+    DEFAULT_RETRIES ||= 3
 
-     def configuration
-       @configuration
-     end
+    def configuration
+      @configuration
+    end
 
-     #
-     # basic helper
-     #
-     def ok?( status )
-       return( status == 200 || status == 201 )
-     end
+    #
+    # basic helper
+    #
+    def ok?( status )
+      return( status == 200 || status == 201 )
+    end
 
-     def retry?( status )
-       status == 408
-     end
+    def retry?( status )
+      status == 408
+    end
 
-     def not_found?(status)
-      status == 404
-     end
+    def not_found?(status)
+     status == 404
+    end
 
-     #
-     # configuration helpers
-     #
-     def timeout
-       configuration[ :timeout ]
-     end
+    #
+    # configuration helpers
+    #
+    def timeout
+      configuration[ :timeout ]
+    end
 
-     def authtoken
-       jwt_auth_token( configuration[ :secret ] )
-     end
+    def authtoken
+      jwt_auth_token( configuration[ :secret ] )
+    end
+
+    def basic_auth
+      if configuration[:basic_auth_user] && configuration[:basic_auth_password]
+        return {user: configuration[:basic_auth_user], password: configuration[:basic_auth_password]}
+      else
+        return nil
+      end
+    end
+
+    def mime_type
+      configuration[:mime_type]
+    end
 
      #
      # REST get with default retry behavior
@@ -116,7 +128,7 @@ module ServiceClient
        return JWT.encode exp_payload, secret, 'HS256'
 
      end
-     
+
      private
 
      #
@@ -124,181 +136,191 @@ module ServiceClient
      #
      def rest_send_internal( url, method, payload )
        begin
-         response = RestClient::Request.execute( method: method,
-                                                 url: URI.escape( url ),
-                                                 payload: payload,
-                                                 content_type: :json,
-                                                 accept: :json,
-                                                 open_timeout: self.timeout,
-                                                 read_timeout: self.timeout / 2 )
+        send_options = {
+          method: method,
+          url: URI.escape( url ),
+          payload: payload,
+          headers: {content_type: :json, accept: :json},
+          open_timeout: self.timeout,
+          read_timeout: self.timeout / 2
+        }
+        send_options.merge!(basic_auth) if basic_auth.present?
+        send_options[:headers][:content_type] =  mime_type if mime_type.present?
 
-         if ok?( response.code ) && response.empty? == false && response != ' '
-           return response.code, JSON.parse( response )
-         end
-         return response.code, {}
-       rescue RestClient::BadRequest => ex
-         log_error( method, url, ex, payload )
-         return 400, {}
-       rescue RestClient::Unauthorized => ex
-         log_error( method, url, ex, payload )
-         return 401, {}
-       rescue RestClient::ResourceNotFound => ex
-         #log_error( method, url, ex, payload )
-         return 404, {}
-       rescue RestClient::RequestTimeout => ex
-         #log_error( method, url, ex, payload )
-         return 408, {}
-       rescue RestClient::Conflict => ex
-         log_error( method, url, ex, payload )
-         return 409, {}
-       rescue RestClient::Exception, SocketError, Exception => ex
-         log_error( method, url, ex, payload )
-         return 500, {}
-       end
-     end
+        response = RestClient::Request.execute(send_options)
 
-     def rest_get_internal( url )
-       begin
-         response = RestClient::Request.execute( method: :get,
-                                                 url: URI.escape( url ),
-                                                 accept: :json,
-                                                 open_timeout: self.timeout,
-                                                 read_timeout: self.timeout / 2 )
+        if ok?( response.code ) && response.empty? == false && response != ' '
+          return response.code, JSON.parse( response )
+        end
+        return response.code, {}
+      rescue RestClient::BadRequest => ex
+        log_error( method, url, ex, payload )
+        return 400, {}
+      rescue RestClient::Unauthorized => ex
+        log_error( method, url, ex, payload )
+        return 401, {}
+      rescue RestClient::ResourceNotFound => ex
+        #log_error( method, url, ex, payload )
+        return 404, {}
+      rescue RestClient::RequestTimeout => ex
+        #log_error( method, url, ex, payload )
+        return 408, {}
+      rescue RestClient::Conflict => ex
+        log_error( method, url, ex, payload )
+        return 409, {}
+      rescue RestClient::Exception, SocketError, Exception => ex
+        log_error( method, url, ex, payload )
+        return 500, {}
+      end
+    end
 
-         if ok?( response.code ) && response.empty? == false && response != ' '
-           return response.code, JSON.parse( response )
-         end
-         return response.code, {}
-       rescue RestClient::BadRequest => ex
-         log_error( :get, url, ex )
-         return 400, {}
-       rescue RestClient::Unauthorized => ex
-         log_error( :get, url, ex, payload )
-         return 401, {}
-       rescue RestClient::ResourceNotFound => ex
-         #log_error( :get, url, ex )
-         return 404, {}
-       rescue RestClient::RequestTimeout => ex
-         #log_error( :get, url, ex )
-         return 408, {}
-       rescue RestClient::Conflict => ex
-         log_error( :get, url, ex, payload )
-         return 409, {}
-       rescue RestClient::Exception, SocketError, Exception => ex
-         log_error( :get, url, ex )
-         return 500, {}
-       end
-     end
+    def rest_get_internal( url )
+      begin
+        get_options = {
+          method: :get,
+          url: URI.escape( url ),
+          headers: {accept: :json},
+          open_timeout: self.timeout,
+          read_timeout: self.timeout / 2
+        }
+        get_options.merge!(basic_auth) if basic_auth.present?
+        get_options[:headers][:accept] =  mime_type if mime_type.present?
+        response = RestClient::Request.execute( get_options )
 
-     def rest_delete_internal( url )
-       begin
-         response = RestClient::Request.execute( method: :delete,
-                                                 url: URI.escape( url ),
-                                                 open_timeout: self.timeout,
-                                                 read_timeout: self.timeout / 2 )
+        if ok?( response.code ) && response.empty? == false && response != ' ' && response.headers[:content_type].include?('json')
+          return response.code, JSON.parse( response )
+        end
+        return response.code, {}
+      rescue RestClient::BadRequest => ex
+        log_error( :get, url, ex )
+        return 400, {}
+      rescue RestClient::Unauthorized => ex
+        log_error( :get, url, ex, payload )
+        return 401, {}
+      rescue RestClient::ResourceNotFound => ex
+        #log_error( :get, url, ex )
+        return 404, {}
+      rescue RestClient::RequestTimeout => ex
+        #log_error( :get, url, ex )
+        return 408, {}
+      rescue RestClient::Conflict => ex
+        log_error( :get, url, ex, payload )
+        return 409, {}
+      rescue RestClient::Exception, SocketError, Exception => ex
+        log_error( :get, url, ex )
+        return 500, {}
+      end
+    end
 
-         return response.code
-       rescue RestClient::BadRequest => ex
-         log_error( :delete, url, ex )
-         return 400
-       rescue RestClient::Unauthorized => ex
-         log_error( :delete, url, ex, payload )
-         return 401, {}
-       rescue RestClient::ResourceNotFound => ex
-         #log_error( :delete, url, ex )
-         return 404
-       rescue RestClient::RequestTimeout => ex
-         #log_error( :delete, url, ex )
-         return 408
-       rescue RestClient::Conflict => ex
-         log_error( :delete, url, ex, payload )
-         return 409, {}
-       rescue RestClient::Exception, SocketError, Exception => ex
-         log_error( :delete, url, ex )
-         return 500
-       end
-     end
+    def rest_delete_internal( url )
+      begin
+        response = RestClient::Request.execute( method: :delete,
+                                                url: URI.escape( url ),
+                                                open_timeout: self.timeout,
+                                                read_timeout: self.timeout / 2 )
 
-     #
-     # load the supplied configuration file
-     #
-     def load_config( filename )
+        return response.code
+      rescue RestClient::BadRequest => ex
+        log_error( :delete, url, ex )
+        return 400
+      rescue RestClient::Unauthorized => ex
+        log_error( :delete, url, ex, payload )
+        return 401, {}
+      rescue RestClient::ResourceNotFound => ex
+        #log_error( :delete, url, ex )
+        return 404
+      rescue RestClient::RequestTimeout => ex
+        #log_error( :delete, url, ex )
+        return 408
+      rescue RestClient::Conflict => ex
+        log_error( :delete, url, ex, payload )
+        return 409, {}
+      rescue RestClient::Exception, SocketError, Exception => ex
+        log_error( :delete, url, ex )
+        return 500
+      end
+    end
 
-       fullname = "#{Rails.application.root}/lib/libraoc/config/#{filename}"
-       begin
-         config_erb = ERB.new( IO.read( fullname ) ).result( binding )
-       rescue StandardError => ex
-         raise( "#{filename} could not be parsed with ERB. \n#{ex.inspect}" )
-       end
+    #
+    # load the supplied configuration file
+    #
+    def load_config( filename )
 
-       begin
-         yml = YAML.load( config_erb )
-       rescue Psych::SyntaxError => ex
-         raise "#{filename} could not be parsed as YAML. \nError #{ex.message}"
-       end
+      fullname = "#{Rails.application.root}/lib/libraoc/config/#{filename}"
+      begin
+        config_erb = ERB.new( IO.read( fullname ) ).result( binding )
+      rescue StandardError => ex
+        raise( "#{filename} could not be parsed with ERB. \n#{ex.inspect}" )
+      end
 
-       config = yml.symbolize_keys
-       @configuration = config[ Rails.env.to_sym ].symbolize_keys || {}
-     end
+      begin
+        yml = YAML.load( config_erb )
+      rescue Psych::SyntaxError => ex
+        raise "#{filename} could not be parsed as YAML. \nError #{ex.message}"
+      end
 
-     #
-     # error log helper
-     #
-     def log_error( method, url, ex = nil, payload = nil )
+      config = yml.symbolize_keys
+      @configuration = config[ Rails.env.to_sym ].symbolize_keys || {}
+    end
 
-       verb = 'GET'
-       verb = 'POST' if method == :post
-       verb = 'PUT' if method == :put
-       verb = 'DELETE' if method == :delete
+    #
+    # error log helper
+    #
+    def log_error( method, url, ex = nil, payload = nil )
 
-       puts "ERROR: #{verb} url; #{url}"
-       puts "ERROR: #{verb} payload; #{payload}" if payload.nil? == false
-       puts "ERROR: #{ex.class}; #{ex}" if ex.nil? == false
+      verb = 'GET'
+      verb = 'POST' if method == :post
+      verb = 'PUT' if method == :put
+      verb = 'DELETE' if method == :delete
 
-     end
-   end
+      puts "ERROR: #{verb} url; #{url}"
+      puts "ERROR: #{verb} payload; #{payload}" if payload.nil? == false
+      puts "ERROR: #{ex.class}; #{ex}" if ex.nil? == false
 
-   #
-   # attempt to extract YYYY-MM-DD from a date string
-   #
-   def self.extract_yyyymmdd_from_datestring( date )
+    end
+  end
 
-     return nil if date.blank?
+  #
+  # attempt to extract YYYY-MM-DD from a date string
+  #
+  def self.extract_yyyymmdd_from_datestring( date )
 
-     #puts "==> DATE IN [#{date}]"
-     begin
+    return nil if date.blank?
 
-       # try yyyy-mm-dd (at the start of the string)
-       dts = date.match( /^(\d{4}-\d{1,2}-\d{1,2})/ )
-       return dts[ 0 ] if dts
+    #puts "==> DATE IN [#{date}]"
+    begin
 
-       # try yyyy/mm/dd (at the start of the string)
-       dts = date.match( /^(\d{4}\/\d{1,2}\/\d{1,2})/ )
-       return dts[ 0 ].gsub( '/', '-' ) if dts
+      # try yyyy-mm-dd (at the start of the string)
+      dts = date.match( /^(\d{4}-\d{1,2}-\d{1,2})/ )
+      return dts[ 0 ] if dts
 
-       # try yyyy-mm (at the start of the string)
-       dts = date.match( /^(\d{4}-\d{1,2})/ )
-       return dts[ 0 ] if dts
+      # try yyyy/mm/dd (at the start of the string)
+      dts = date.match( /^(\d{4}\/\d{1,2}\/\d{1,2})/ )
+      return dts[ 0 ].gsub( '/', '-' ) if dts
 
-       # try yyyy/mm (at the start of the string)
-       dts = date.match( /^(\d{4}\/\d{1,2})/ )
-       return dts[ 0 ].gsub( '/', '-' ) if dts
+      # try yyyy-mm (at the start of the string)
+      dts = date.match( /^(\d{4}-\d{1,2})/ )
+      return dts[ 0 ] if dts
 
-       # try mm/dd/yyyy (at the start of the string)
-       dts = date.match( /^(\d{1,2}\/\d{1,2}\/\d{4})/ )
-       return DateTime.strptime( dts[ 0 ], "%m/%d/%Y" ).strftime( "%Y-%m-%d" ) if dts
+      # try yyyy/mm (at the start of the string)
+      dts = date.match( /^(\d{4}\/\d{1,2})/ )
+      return dts[ 0 ].gsub( '/', '-' ) if dts
 
-       # try yyyy (anywhere in the string)
-       dts = date.match( /(\d{4})/ )
-       return dts[ 0 ] if dts
+      # try mm/dd/yyyy (at the start of the string)
+      dts = date.match( /^(\d{1,2}\/\d{1,2}\/\d{4})/ )
+      return DateTime.strptime( dts[ 0 ], "%m/%d/%Y" ).strftime( "%Y-%m-%d" ) if dts
 
-     rescue => ex
-       #puts "==> EXCEPTION: #{ex}"
-       # do nothing...
-     end
+      # try yyyy (anywhere in the string)
+      dts = date.match( /(\d{4})/ )
+      return dts[ 0 ] if dts
 
-     # not sure what format
-     return nil
-   end
+    rescue => ex
+      #puts "==> EXCEPTION: #{ex}"
+      # do nothing...
+    end
+
+    # not sure what format
+    return nil
+  end
 
 end

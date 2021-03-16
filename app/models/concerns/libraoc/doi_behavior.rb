@@ -20,6 +20,11 @@ module Libraoc::DoiBehavior
       return "#{ENV['DOI_BASE_URL']}/#{self.doi.gsub('doi:', '')}"
     end
 
+    def bare_doi
+      return '' if self.doi.nil?
+      return self.doi.gsub 'doi:', ''
+    end
+
     private
 
     def doi_unassigned?
