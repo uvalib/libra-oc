@@ -275,6 +275,7 @@ module ServiceClient
 
       puts "ERROR: #{verb} url; #{url}"
       puts "ERROR: #{verb} payload; #{payload}" if payload.nil? == false
+      puts "ERROR: #{verb} response; #{ex.response.body}" if ex.present? && ex.try(:response)
       puts "ERROR: #{ex.class}; #{ex}" if ex.nil? == false
 
     end

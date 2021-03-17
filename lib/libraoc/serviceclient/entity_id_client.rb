@@ -46,13 +46,15 @@ module ServiceClient
 
     #
     # create a new DOI and associate any metadata we can determine from the supplied work
+    # It is still in the draft state after this and needs metadatasync to publish
     #
     def newid( work )
       url = "#{self.url}/dois"
-      payload =  self.construct_payload( work , {event: 'publish'})
+      payload =  self.construct_payload( work )
       status, response = rest_post( url, payload )
       #puts "==> #{status}: #{response}"
-      return status, response['details']['id'] if ok?( status ) && response['details'] && response['details']['id']
+      new_doi = response.dig('data', 'id')
+      return status, "doi:#{new_doi}" if ok?( status ) && new_doi
       return status, ''
     end
 
@@ -62,7 +64,7 @@ module ServiceClient
     def metadatasync( work )
       #puts "=====> metadatasync #{work.doi}"
       url = "#{self.url}/dois/#{work.bare_doi}"
-      payload =  self.construct_payload( work )
+      payload =  self.construct_payload( work, {event: 'publish'})
       status, _ = rest_put( url, payload )
       return status
     end
@@ -122,12 +124,16 @@ module ServiceClient
       attributes[:subjects] = work.keyword.map{|k| {subject: k}} if work.keyword.present?
       attributes[:rightsList] = [{rights: work.rights_display}] if work.rights_display.present?
       attributes[:fundingReferences] = work.sponsoring_agency.map{|f| {funderName: f}} if work.sponsoring_agency.present?
-      attributes[:resourceTypeGeneral] = dc_general_type(work.resource_type)
-      attributes[:resourceType] = work.resource_type
+      #attributes[:resourceTypeGeneral] = dc_general_type(work.resource_type)
+      #attributes[:resourceType] = work.resource_type
+      attributes[:types] = {resourceTypeGeneral: dc_general_type(work.resource_type), resourceType: work.resource_type}
 
       yyyymmdd = ServiceClient.extract_yyyymmdd_from_datestring( work.published_date )
-      yyyymmdd = ServiceClient.extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.nil?
-      attributes[:dates] = [{date: yyyymmdd, dateType: 'Issued'}] if yyyymmdd
+      # published date cannot be only a year
+      yyyymmdd = ServiceClient.extract_yyyymmdd_from_datestring( work.date_created ) if yyyymmdd.blank?
+      attributes[:dates] = [{date: yyyymmdd, dateType: 'Issued'}] if yyyymmdd.present?
+      attributes[:publicationYear] = yyyymmdd.first(4) if yyyymmdd.present?
+
       attributes[:url] = fully_qualified_work_url( work.id ) # 'http://google.com'
       attributes[:publisher] = work.publisher if work.publisher.present?
 
@@ -138,7 +144,7 @@ module ServiceClient
           attributes: attributes
         }
       }
-      puts payload
+      puts "#{payload.to_json}"
       return payload.to_json
     end
 
