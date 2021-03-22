@@ -56,18 +56,16 @@ module Libraoc::DoiBehavior
 
     def authors_changed?
 
-      #changed = self.authors.any? { |a| a.changed? }
+      changed = self.authors.any? { |a| a.changed? || a.new_record? }
       #puts "==> AUTHORS CHANGED: #{changed}"
-      # TODO: DPG: this is not reliable, assume they have not changed
-      return false
+      return changed
     end
 
     def contributors_changed?
 
-      #changed = self.contributors.any? { |a| a.changed? }
+      changed = self.contributors.any? { |a| a.changed? || a.new_record? }
       #puts "==> CONTRIBUTORS CHANGED: #{changed}"
-      # TODO: DPG: this is not reliable, assume they have not changed
-      return false
+      return changed
     end
 
     #
