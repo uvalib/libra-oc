@@ -16,6 +16,13 @@ module ServiceClient
     DC_GENERAL_TYPE_AUDIOVISUAL ||= 'Audiovisual'
     DC_GENERAL_TYPE_OTHER ||= 'Other'
 
+    UVA_AFFILIATION = {
+      name: "University of Virginia",
+      schemeUri: "https://ror.org",
+      affiliationIdentifier: "https://ror.org/0153tk833",
+      affiliationIdentifierScheme: "ROR"
+    }
+
     #
     # configure with the appropriate configuration file
     #
@@ -195,12 +202,12 @@ module ServiceClient
       res = []
       return people_list.to_a
         .uniq { |p| p.index }
-        .sort{|a,b| a.index <=> b.index}
+        .sort{|a,b| a.index.to_i <=> b.index.to_i}
         .map { | p |
           person = { givenName: p.first_name,
               familyName: p.last_name,
-              affiliation: [p.department, p.institution].reject(&:blank?).join(', '),
           }
+          person[:affiliation] = UVA_AFFILIATION if p.computing_id.present?
           person[:contributorType] = type if type.present?
           person
         }

@@ -7,10 +7,10 @@ module Libraoc::DoiBehavior
   included do
 
     # create the DOI if required
-    after_save :allocate_doi, :if => :doi_unassigned?
+    after_save :allocate_doi, :unless => :doi_assigned?
 
     # update the associated metadata if required
-    before_update :update_doi, :if => :doi_update_required?
+    before_update :update_doi, :if => :doi_assigned?
 
     # revoke the DOI if required
     before_destroy :revoke_doi, :if => :doi_assigned?
@@ -27,32 +27,10 @@ module Libraoc::DoiBehavior
 
     private
 
-    def doi_unassigned?
-      return self.doi.blank?
-    end
-
     def doi_assigned?
       return self.doi.present?
     end
 
-    def doi_update_required?
-
-      return false if doi_unassigned?
-
-      changed = self.abstract_changed? ||
-                authors_changed? ||
-                contributors_changed? ||
-                self.keyword_changed? ||
-                self.rights_changed? ||
-                self.sponsoring_agency_changed? ||
-                self.resource_type_changed? ||
-                self.published_date_changed? ||
-                self.date_created_changed? ||
-                self.title_changed? ||
-                self.publisher_changed?
-      #puts "==> DOI METADATA CHANGED: #{changed}"
-      return changed
-    end
 
     def authors_changed?
 
