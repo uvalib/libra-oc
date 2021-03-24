@@ -53,7 +53,7 @@ module UpdateOrcidBehavior
           user.orcid_access_token,
           user.orcid_refresh_token,
           user.orcid_scope,
-          user_types
+          user_types.join(';')
         )
 
       if ServiceClient::OrcidAccessClient.instance.ok?( status ) == false
