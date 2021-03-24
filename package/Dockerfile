@@ -13,9 +13,9 @@ RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
 RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel #&&
 
 # add rpm for old, working version of clamav from atomic
-RUN rpm -Uvh http://mirrors.hosting.in.th/atomic/centos/7/x86_64/RPMS/clamav-0.102.3-13905.el7.art.x86_64.rpm http://mirrors.hosting.in.th/atomic/centos/7/x86_64/RPMS/clamav-db-0.102.3-13905.el7.art.x86_64.rpm http://mirrors.hosting.in.th/atomic/centos/7/x86_64/RPMS/clamav-devel-0.102.3-13905.el7.art.x86_64.rpm https://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/c/clamav-update-0.103.1-3.el7.x86_64.rpm
+RUN rpm -Uvh https://updates.atomicorp.com/channels/atomic/centos/8/x86_64/RPMS/clamav-0.102.4-14050.el8.art.x86_64.rpm https://updates.atomicorp.com/channels/atomic/centos/8/x86_64/RPMS/clamav-db-0.102.4-14050.el8.art.x86_64.rpm https://updates.atomicorp.com/channels/atomic/centos/8/x86_64/RPMS/clamav-devel-0.102.4-14050.el8.art.x86_64.rpm https://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/c/clamav-update-0.103.1-3.el7.x86_64.rpm
 
-RUN yum -y install clamav-0.102.3 clamav-devel-0.102.3 clamav-update-0.103.1
+RUN yum -y install clamav-0.102.4 clamav-devel-0.102.4 clamav-update-0.103.1
 
 
 #&& yum -y install nodejs
