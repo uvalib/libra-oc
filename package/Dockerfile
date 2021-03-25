@@ -12,10 +12,10 @@ RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
 # install application dependancies
 RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel #&&
 
-# add rpm for old, working version of clamav from atomic
-RUN rpm -Uvh https://updates.atomicorp.com/channels/atomic/centos/8/x86_64/RPMS/clamav-0.102.4-14050.el8.art.x86_64.rpm https://updates.atomicorp.com/channels/atomic/centos/8/x86_64/RPMS/clamav-db-0.102.4-14050.el8.art.x86_64.rpm https://updates.atomicorp.com/channels/atomic/centos/8/x86_64/RPMS/clamav-devel-0.102.4-14050.el8.art.x86_64.rpm https://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/c/clamav-update-0.103.1-3.el7.x86_64.rpm
+# add local rpm for old, working version of clamav
+ADD lib/clamav /tmp/clamav
 
-RUN yum -y install clamav-0.102.4 clamav-devel-0.102.4 clamav-update-0.103.1
+RUN yum -y localinstall /tmp/clamav/*.rpm
 
 
 #&& yum -y install nodejs
@@ -57,7 +57,7 @@ RUN chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docke
 
 # Temporarily needed for the old clamav
 RUN sed -i 's/Example/#Example/' /etc/freshclam.conf
-RUN freshclam && chmod -R o+w /var/clamav
+RUN freshclam && chmod -R o+w /var/lib/clamav
 
 # freshen the antivirus definitions and update permissions so we can do this again
 #original RUN freshclam && chmod -R o+w /var/lib/clamav
