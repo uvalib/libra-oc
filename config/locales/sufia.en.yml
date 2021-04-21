@@ -63,3 +63,4 @@ en:
         person_fields: "Enter a UVA Computing ID to automatically fill the remaining fields for this person."
         authors: "The main researchers involved in producing the work, or the authors of the publication, in priority order"
         contributors: "The person(s) responsible for contributing to the development of the resource, such as editor or producer (not an author)."
+        publisher: "The original publisher of the work. If there is no original publisher, leave "University of Virginia" in this field."

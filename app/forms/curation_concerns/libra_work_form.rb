@@ -10,7 +10,7 @@ module CurationConcerns
                     :keyword, :contributors, :source_citation, :publisher, :published_date,
                     :related_url, :sponsoring_agency, :notes, :admin_notes, :depositor
     ]
-    self.required_fields = [:resource_type, :title, :authors, :abstract, :rights]
+    self.required_fields = [:resource_type, :title, :authors, :abstract, :rights, :publisher]
     delegate :authors, to: :model
     delegate :contributors, to: :model
     delegate :admin_notes, to: :model
