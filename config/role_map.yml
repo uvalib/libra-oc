@@ -5,6 +5,7 @@ default: &default
     - lsc6v@virginia.edu
     - naw4t@virginia.edu
     - sah@virginia.edu
+    - wkb5j@virginia.edu
 
 development:
   <<: *default
