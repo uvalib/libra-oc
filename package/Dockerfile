@@ -10,8 +10,8 @@ RUN cd /tmp/ruby-2.4.3 && ./configure && make && make install
 RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
 
 # install application dependancies
-RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel clamav clamav-update clamd
-
+RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel
+RUN yum -y install clamav clamav-update clamd
 RUN yum -y install nodejs
 
 # install libreoffice
@@ -46,6 +46,10 @@ ADD . $APP_HOME
 
 # Update permissions
 RUN chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docker
+
+# freshen the antivirus definitions and update permissions so we can do this again
+RUN sed -i 's/Example/#Example/' /etc/freshclam.conf
+RUN freshclam && chmod -R o+rw /var/lib/clamav /etc/freshclam.conf
 
 # generate the assets
 RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile
