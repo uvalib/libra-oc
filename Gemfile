@@ -63,6 +63,8 @@ gem 'rsolr', '~> 1.1.2'
 
 gem 'rest-client'
 
+gem 'simple_form', '3.5.0'
+
 # email interceptor
 gem 'exception_notification'
 
