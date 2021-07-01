@@ -17,7 +17,7 @@ module CitationHelpers
         citation = render_template( payload, 'book' )
       when 'Part of Book'
         citation = render_template( payload, 'book_part' )
-      when 'Conference Proceeding', 'Poster', 'Presentation'
+      when 'Conference Paper', 'Poster', 'Presentation'
         citation = render_template( payload, 'conference_paper' )
       else
         puts "ERROR: unknown work type; no citation will be generated"

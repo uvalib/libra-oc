@@ -172,7 +172,7 @@ module ServiceClient
            return 'journal-article'
          when 'Book'
            return 'book'
-         when 'Conference Proceeding'
+         when 'Conference Paper'
            return 'conference-paper'
          when 'Part of Book'
            return 'book-chapter'
