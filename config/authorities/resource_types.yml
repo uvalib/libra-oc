@@ -5,8 +5,8 @@ terms:
     term: Audio
   - id: Book
     term: Book
-  - id: Conference Proceeding
-    term: Conference Proceeding
+  - id: Conference Paper
+    term: Conference Paper
   - id: Educational Resource
     term: Educational Resource
   - id: Image
