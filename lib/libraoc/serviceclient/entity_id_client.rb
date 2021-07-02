@@ -8,13 +8,6 @@ module ServiceClient
     # get the helpers
     include UrlHelper
 
-    DC_GENERAL_TYPE_TEXT ||= 'Text'
-    DC_GENERAL_TYPE_SOUND ||= 'Sound'
-    DC_GENERAL_TYPE_IMAGE ||= 'Image'
-    DC_GENERAL_TYPE_COLLECTION ||= 'Collection'
-    DC_GENERAL_TYPE_EVENT ||= 'Event'
-    DC_GENERAL_TYPE_AUDIOVISUAL ||= 'Audiovisual'
-    DC_GENERAL_TYPE_OTHER ||= 'Other'
 
     UVA_AFFILIATION = {
       name: "University of Virginia",
@@ -131,9 +124,7 @@ module ServiceClient
       attributes[:subjects] = work.keyword.map{|k| {subject: k}} if work.keyword.present?
       attributes[:rightsList] = [{rights: work.rights_display}] if work.rights_display.present?
       attributes[:fundingReferences] = work.sponsoring_agency.map{|f| {funderName: f}} if work.sponsoring_agency.present?
-      #attributes[:resourceTypeGeneral] = dc_general_type(work.resource_type)
-      #attributes[:resourceType] = work.resource_type
-      attributes[:types] = {resourceTypeGeneral: dc_general_type(work.resource_type), resourceType: work.resource_type}
+      attributes[:types] = datacite_resource_type(work.resource_type)
 
       yyyymmdd = ServiceClient.extract_yyyymmdd_from_datestring( work.published_date )
       # published date cannot be only a year
@@ -167,30 +158,20 @@ module ServiceClient
       configuration[ :url ]
     end
 
-    private
+    def datacite_resource_type resource_type
+      datacite_format = {resourceTypeGeneral: 'Other', resourceType: 'Other'}
 
-    #
-    # general type definition based on the work resource type
-    #
-    def dc_general_type( resource_type )
+      # Lookup type in config/resource_types.yml
+      authority_type = ResourceTypesService.authority.find(resource_type)
+      # Resource type not found
+      return datacite_format if authority_type.empty?
 
-      return DC_GENERAL_TYPE_TEXT if resource_type.blank?
-      case resource_type
-        when 'Audio'
-          return DC_GENERAL_TYPE_SOUND
-        when 'Image'
-          return DC_GENERAL_TYPE_IMAGE
-        when 'Journal'
-          return DC_GENERAL_TYPE_COLLECTION
-        when 'Map', 'Poster', 'Other', 'Educational Resource'
-          return DC_GENERAL_TYPE_OTHER
-        when 'Presentation'
-          return DC_GENERAL_TYPE_EVENT
-        when 'Video'
-          return DC_GENERAL_TYPE_AUDIOVISUAL
-        else
-          return DC_GENERAL_TYPE_TEXT
-      end
+      general_type = authority_type['dataCiteGeneral'] if authority_type['dataCiteGeneral'].present?
+
+      datacite_format[:resourceTypeGeneral] = general_type
+      datacite_format[:resourceType] = resource_type
+
+      return datacite_format
     end
 
     #

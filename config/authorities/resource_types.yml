@@ -1,33 +1,49 @@
 terms:
   - id: Article
     term: Article
+    dataCiteGeneral: JournalArticle
   - id: Audio
     term: Audio
+    dataCiteGeneral: Sound
   - id: Book
     term: Book
+    dataCiteGeneral: Book
   - id: Conference Paper
     term: Conference Paper
+    dataCtieGeneral: ConferencePaper
   - id: Educational Resource
     term: Educational Resource
+    dataCiteGeneral: Other
   - id: Image
     term: Image
+    dataCiteGeneral: Image
   - id: Journal
     term: Journal
+    dataCiteGeneral: Journal
   - id: Map or Cartographic Material
     term: Map or Cartographic Material
+    dataCiteGeneral: Other
   - id: Part of Book
     term: Part of Book
+    dataCiteGeneral: BookChapter
   - id: Poster
     term: Poster
+    dataCiteGeneral: Other
   - id: Presentation
     term: Presentation
+    dataCiteGeneral: Event
   - id: Project
     term: Project
+    dataCiteGeneral: Project
   - id: Report
     term: Report
+    dataCiteGeneral: Report
   - id: Research Paper
     term: Research Paper
+    dataCiteGeneral: Text
   - id: Video
     term: Video
+    dataCiteGeneral: Audiovisual
   - id: Other
     term: Other
+    dataCiteGeneral: Other
