@@ -10,7 +10,7 @@ terms:
     dataCiteGeneral: Book
   - id: Conference Paper
     term: Conference Paper
-    dataCtieGeneral: ConferencePaper
+    dataCiteGeneral: ConferencePaper
   - id: Educational Resource
     term: Educational Resource
     dataCiteGeneral: Other
