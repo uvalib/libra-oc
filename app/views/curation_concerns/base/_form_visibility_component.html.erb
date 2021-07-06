@@ -42,7 +42,9 @@
         <li class="radio">
           <label>
             <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO, data: { 'target': '#collapseEmbargo' } %>
-            <%= t('curation_concerns.visibility.embargo.label_html') %>
+            <span class="label label-warning">
+              <%= t('curation_concerns.visibility.embargo.label_html') %>
+            </span>
             <div class="collapse" id="collapseEmbargo">
               <div class="form-inline">
                 <%= f.input :visibility_during_embargo, wrapper: :inline, collection: visibility_options(:restrict), include_blank: false %>

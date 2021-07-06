@@ -50,8 +50,11 @@ en:
     visibility:
       open:
         label_html: "Visible Worldwide"
+        text: "Visible Worldwide"
       authenticated:
         label_html: "Restricted to UVa Only"
+        text: "UVa Only"
+
 
   simple_form:
     hints:
