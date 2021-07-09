@@ -1,5 +1,6 @@
 
 <%= show_line(presenter, :resource_type, 'Resource Type', true, include_empty: true, catalog_search_link: false ) %>
+<%= show_line(presenter, :embargo, 'Embargo', true, render_as: :embargo, include_empty: false) %>
 <%= presenter.attribute_to_html :authors, render_as: :person, include_empty: true  %>
 <%= show_line(presenter, :abstract, 'Abstract', true, include_empty: true, catalog_search_link: false ) %>
 <%= show_line(presenter, :keyword, 'Keywords', true, include_empty: true, catalog_search_link: false ) %>

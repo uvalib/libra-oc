@@ -29,7 +29,18 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
   end
 
   def libra_permission_badge
-    permission_label( self.solr_document )
+    permission_label( self.solr_document.visibility )
+  end
+
+  def embargo
+    doc = self.solr_document
+    if doc.embargo_release_date.present?
+      release_date = Date.parse(doc.embargo_release_date).to_s
+      visibility_after = permission_label(self.solr_document['visibility_after_embargo_ssim'])
+      return "Files are embargoed until #{release_date} and then #{visibility_after}."
+    else
+      return nil
+    end
   end
 
   private
