@@ -150,7 +150,8 @@ export default class SaveWorkControl {
   }
 
   validateAgreement(filesValid) {
-    var optionalAgreement = this.form.find('input[value=restricted]')[0].checked
+    var optionalAgreement = this.form.find('input[value=restricted]')[0]
+    optionalAgreement = optionalAgreement && optionalAgreement.checked
     if (filesValid && this.uploads.hasNewFiles && this.depositAgreement.mustAgreeAgain && !optionalAgreement) {
       // Force the user to agree again
       this.depositAgreement.setNotAccepted()

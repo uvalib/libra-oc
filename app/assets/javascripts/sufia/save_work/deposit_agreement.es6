@@ -35,6 +35,6 @@ export class DepositAgreement {
    * return true if it's a passive agreement or if the checkbox has been checked
    */
   get isAccepted() {
-    return !this.isActiveAgreement || this.agreementCheckbox[0].checked || this.privateCheckbox[0].checked
+    return !this.isActiveAgreement || this.agreementCheckbox[0].checked || (this.privateCheckbox[0] && this.privateCheckbox[0].checked)
   }
 }
