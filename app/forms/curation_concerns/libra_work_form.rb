@@ -14,6 +14,7 @@ module CurationConcerns
     delegate :authors, to: :model
     delegate :contributors, to: :model
     delegate :admin_notes, to: :model
+    delegate :embargo_release_date, :visibility_after_embargo, :visibility_during_embargo, to: :model
     attr_reader :has_existing_files, :is_admin
 
     def initialize(model, current_ability)

@@ -12,6 +12,12 @@ module PermissionsHelper
     content_tag(:span, title, title: title, class: "label #{klass}")
   end
 
+  # Displays the button to select/deselect items for your batch.  Call this in the index partial that's rendered for each search result.
+  # @param [Hash] document the Hash (aka Solr hit) for one Solr document
+  def button_for_add_to_batch(document)
+    render partial: '/batch_select/add_button', locals: { document: document }
+  end
+
   private
 
   def get_title_and_class( visibility )
