@@ -1,6 +1,10 @@
 class EmbargoesController < ApplicationController
   include CurationConcerns::EmbargoesControllerBehavior
 
+  def index
+    redirect_to action: :index, controller: :dashboard
+  end
+
   # Removes a single embargo
   def destroy
     CurationConcerns::Actors::EmbargoActor.new(curation_concern).destroy
