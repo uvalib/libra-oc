@@ -5,7 +5,7 @@ class LibraFileSetPresenter < Sufia::FileSetPresenter
   include PermissionsHelper
 
   def libra_permission_badge
-    permission_label( self.solr_document.visibility )
+    permission_label( self.solr_document )
   end
 
 end

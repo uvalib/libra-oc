@@ -7,10 +7,6 @@
 
   <h2>Files</h2>
 
-  <% if @work.file_sets.empty? %>
-      <p class="file-notice"><%= t("sufia.public.files.none") %></p>
-  <% else %>
-
     <% if can_download_files?( @work ) %>
       <div id="uploads">
         <% filesets_sort( @work.file_sets ).each do |fs| %>
@@ -26,8 +22,11 @@
         <% end %>
 
       </div>
+    <% elsif @work.is_under_embargo? %>
+      <p class="file-notice"><%= embargo_notice(@work) %></p>
+    <% elsif @work.file_sets.empty? %>
+      <p class="file-notice"><%= t("sufia.public.files.none") %></p>
     <% else %>
-         <p class="file-notice"><%= t("sufia.public.files.restricted") %></p>
+      <p class="file-notice"><%= t("sufia.public.files.restricted") %></p>
     <% end %>
-  <% end %>
 </div>

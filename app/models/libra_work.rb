@@ -180,6 +180,10 @@ class LibraWork < ActiveFedora::Base
     return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE )
   end
 
+  def is_under_embargo?
+    return self.embargo.present? && self.embargo.active?
+  end
+
   #
   # is this content mine according to the depositor?
   #

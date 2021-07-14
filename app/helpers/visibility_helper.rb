@@ -92,6 +92,12 @@ module VisibilityHelper
       return false
     end
 
+    # Check embargo status
+    if work.embargo.present? && work.embargo.active?
+      puts "==> work is embargoed; Download access is DENIED"
+      return false
+    end
+
     # no other reason to restrict (we know they can view the metadata) so they can download the files too
     puts "==> no reason to restrict; download access is GRANTED"
     return true
@@ -138,5 +144,10 @@ module VisibilityHelper
     return content_tag(:input, ' ' + label, attr)
   end
 
+  def embargo_notice(work)
+    return "" if work.embargo.present? && !work.embargo.active?
+
+    return "This item is embargoed and not available until #{date_formatter(work.embargo_release_date)}."
+  end
 
 end
