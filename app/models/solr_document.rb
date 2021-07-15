@@ -160,6 +160,31 @@ class SolrDocument
     return( self.visibility == 'restricted' )
   end
 
+  def has_embargo?
+    self.embargo_release_date.present?
+  end
+
+  def visibility_with_embargo
+    emb_visibility = self.visibility
+    if self.embargo_release_date.present?
+      emb = CurationConcerns::EmbargoPresenter.new(self)
+      embargo_date = Date.parse(emb.embargo_release_date)
+
+      if embargo_date <= Date.today && emb.visibility != emb.visibility_after_embargo
+        # embargo_expired, update the record
+        w = LibraWork.find(self.id)
+        emb_visibility = w.embargo_visibility!
+        w.save!
+      elsif embargo_date > Date.today
+        # embargo in effect
+        emb_visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO
+      end
+      # otherwise use existing document visibility
+    end
+    return emb_visibility
+
+  end
+
   private
 
   def person_display solr_name

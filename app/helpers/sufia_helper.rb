@@ -22,7 +22,7 @@ module SufiaHelper
   private
 
   def render_visibility_label(document)
-    if document.embargo_release_date.present?
+    if document.visibility_with_embargo == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO
       content_tag :span, t('curation_concerns.visibility.embargo.label_html'),
         class: "label label-info", title: 'Embargo'
 

@@ -13,9 +13,22 @@ module VisibilityHelper
   # can we download files from the work
   #
   def can_download_files?( work )
+    check_embargo(work)
     can_download = can_download?( work )
     puts "==> can_download_files = #{can_download}"
     return( can_download )
+  end
+
+  def check_embargo(work)
+    # if the embargo is expired
+    if work.embargo.present? && !work.embargo.active?
+      #check for visibility updates
+      if work.embargo.visibility_after_embargo != work.visibility
+        puts "Updating embargo visibility"
+        work.embargo_visibility!
+        work.save!
+      end
+    end
   end
 
   #

@@ -34,7 +34,7 @@ class LibraWorkPresenter < Sufia::WorkShowPresenter
 
   def embargo
     doc = self.solr_document
-    if doc.embargo_release_date.present?
+    if doc.has_embargo?
       release_date = Date.parse(doc.embargo_release_date).to_s
       visibility_after = label_for_visibility(self.solr_document['visibility_after_embargo_ssim'])
       visibility_before = label_for_visibility(self.solr_document['visibility_during_embargo_ssim'])

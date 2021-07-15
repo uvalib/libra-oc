@@ -7,10 +7,8 @@ module PermissionsHelper
   # make a nice label for the presenter classes
   #
   def permission_label( document )
-    visibility = document.visibility.first if visibility.is_a? Array
-    if document.embargo_release_date
-      visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO
-    end
+    visibility = document.visibility_with_embargo
+
     title, klass = get_title_and_class( visibility )
     content_tag(:span, title, title: title, class: "label #{klass}")
   end
