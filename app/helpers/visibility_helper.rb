@@ -66,6 +66,12 @@ module VisibilityHelper
        return true
     end
 
+    # Check embargo status
+    if work.embargo.present? && work.embargo.active?
+      puts "==> work is embargoed; view access is GRANTED"
+      return true
+    end
+
     # if the work is private, we have already checked for an admin
     if work.is_private?
        puts "==> work is private; view access is DENIED"
@@ -161,6 +167,11 @@ module VisibilityHelper
     return "" if work.embargo.present? && !work.embargo.active?
 
     return "This item is embargoed and not available until #{date_formatter(work.embargo_release_date)}."
+  end
+
+  def show_proof_embargo_notice(work)
+    return work.embargo.present? && work.embargo.active? &&
+      (current_user.admin? || work.depositor == current_user.email)
   end
 
 end

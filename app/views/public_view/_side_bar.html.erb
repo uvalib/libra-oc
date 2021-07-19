@@ -8,6 +8,16 @@
   <h2>Files</h2>
 
     <% if can_download_files?( @work ) %>
+      <% if show_proof_embargo_notice(@work) %>
+        <div class="proof-file-notice">
+          <p class="preview-warning">
+              The files listed below will NOT be available to anyone until the embargo date has passed.
+              <p>Embargo end date:</br>
+              <%= date_formatter(@work.embargo_release_date) %>
+              </p>
+          </p>
+        </div>
+      <% end %>
       <div id="uploads">
         <% filesets_sort( @work.file_sets ).each do |fs| %>
           <div class="file_asset_record">

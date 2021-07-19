@@ -177,7 +177,7 @@ class LibraWork < ActiveFedora::Base
   #
   def is_private?
     return true if visibility.nil?
-    return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE )
+    return( visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE && !is_under_embargo?)
   end
 
   def is_under_embargo?
