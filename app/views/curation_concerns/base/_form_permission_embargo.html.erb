@@ -1,6 +1,6 @@
 <div class="form-inline">
   <%# Limit Embargo to private %>
-  <%= f.input :visibility_during_embargo, wrapper: :inline, collection: [visibility_options(:restrict).first], include_blank: false %>
+  <%= f.input :visibility_during_embargo, wrapper: :inline, collection: [visibility_options(:restrict).first], include_blank: false, label: "File(s) restricted to" %>
   <span class="form-group inline">
     until this date
     <%= f.date_field :embargo_release_date, wrapper: :inline, value: f.object.embargo_release_date.try(:to_date) || Date.tomorrow, class: 'datepicker form-control' %>
