@@ -157,7 +157,7 @@ class SolrDocument
   #
   def is_private?
     return true if visibility.nil?
-    return( self.visibility == 'restricted' )
+    return( self.visibility_with_embargo == 'restricted')
   end
 
   def has_embargo?
