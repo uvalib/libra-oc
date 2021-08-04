@@ -18,7 +18,7 @@ RUN yum -y install nodejs
 RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.1.5/rpm/x86_64/LibreOffice_7.1.5_Linux_x86-64_rpm.tar.gz
 RUN cd /tmp && tar xzfv LibreOffice_7.1.5_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_7.1.5.2_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
 RUN ln -s /opt/libreoffice7.1/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_7.1.5.2_Linux_x86-64_rpm && rm /tmp/LibreOffice_7.1.5.2_Linux_x86-64_rpm.tar.gz
+RUN rm -fr /tmp/LibreOffice_7.1.5.2_Linux_x86-64_rpm && rm /tmp/LibreOffice_7.1.5_Linux_x86-64_rpm.tar.gz
 
 # Create the run user and group
 RUN groupadd -r --gid 18570 sse && useradd --uid 1984 -r -g sse docker && mkdir /home/docker
