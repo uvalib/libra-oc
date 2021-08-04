@@ -1,16 +1,20 @@
 <fieldset class="set-access-controls">
-<legend>
-  Visibility
-  <small>For file downloads</small>
-</legend>
+  <legend>
+    Visibility
+    <small>For file downloads</small>
+  </legend>
 
-<section class="help-block">
-  <p>
-    <strong>This work is under embargo.</strong>  You can change the settings of the embargo here, or you can visit the <%= link_to 'Embargo Management Page', main_app.edit_embargo_path(f.object) %> to deactivate it.
-  </p>
-</section>
+  <section class="help-block">
+    <p>
+      <strong>This work is under embargo.</strong>
+    </p>
+  </section>
 
   <input type="hidden" name="<%= f.object_name %>[visibility]" value="<%= Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO %>" />
   <%= render "form_permission_embargo", f: f %>
+
+  <h4 class="list-group-item text-center">
+      <%= link_to "Deactivate Embargo", main_app.embargo_path(f.object), method: :delete, class: 'btn btn-danger', 'data-confirm' => "Are you sure you want to remove the embargo? \n\nAny unsaved changes on this form will be lost." %>
+  </h4>
 
 </fieldset>
