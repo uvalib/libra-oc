@@ -1,4 +1,4 @@
-<% if f.object.embargo_release_date %>
+<% if f.object.is_under_embargo? %>
   <%= render 'form_permission_under_embargo', f: f %>
 <% elsif f.object.lease_expiration_date %>
   <%= render 'form_permission_under_lease', f: f %>
