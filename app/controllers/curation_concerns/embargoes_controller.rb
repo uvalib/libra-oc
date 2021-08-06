@@ -7,6 +7,9 @@ class EmbargoesController < ApplicationController
 
   # Removes a single embargo
   def destroy
+    # Apply after embargo visibility
+    curation_concern.visibility = curation_concern.visibility_after_embargo if curation_concern.embargo
+
     CurationConcerns::Actors::EmbargoActor.new(curation_concern).destroy
 
     # Removed the file permission confirmation screen since files always have the same permissions.
