@@ -14,7 +14,7 @@
   <%= render "form_permission_embargo", f: f %>
 
   <h4 class="list-group-item text-center">
-      <%= link_to "Deactivate Embargo", main_app.embargo_path(f.object), method: :delete, class: 'btn btn-danger', 'data-confirm' => "Are you sure you want to remove the embargo? \n\nAny unsaved changes on this form will be lost." %>
+      <%= link_to "Lift Embargo", main_app.embargo_path(f.object), method: :delete, class: 'btn btn-danger', 'data-confirm' => "Are you sure you want to remove the embargo? \n\nAny unsaved changes on this form will be lost." %>
   </h4>
 
 </fieldset>
