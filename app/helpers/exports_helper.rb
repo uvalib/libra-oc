@@ -1,9 +1,10 @@
 module ExportsHelper
 
   def format_visibility( rec )
-    return 'private' if rec.is_private?
+    return 'Private' if rec.is_private?
     return 'UVa only' if rec.is_institution_visible?
-    return 'public' if rec.is_publicly_visible?
+    return 'Public' if rec.is_publicly_visible?
+    return 'Embargoed' if rec.is_under_embargo?
     return 'unknown'
   end
 
