@@ -59,7 +59,8 @@ class ExportsController < ApplicationController
 
     constraints += " AND read_access_group_ssim:public" if the_type == 'public'
     constraints += " AND read_access_group_ssim:registered" if the_type == 'uva'
-    constraints += " AND -read_access_group_ssim:[* TO *]" if the_type == 'private'
+    constraints += " AND -read_access_group_ssim:[* TO *] AND -embargo_release_date_dtsi:[* TO *]" if the_type == 'private'
+    constraints += " AND embargo_release_date_dtsi:[NOW TO *]" if the_type == 'embargo'
     return( constraints )
   end
 
@@ -103,7 +104,7 @@ class ExportsController < ApplicationController
 
     return 'public' if the_type.nil?
     case the_type
-      when 'all', 'public', 'uva', 'private'
+      when 'all', 'public', 'uva', 'private', 'embargo'
         return( the_type )
       else
         return( 'public' )

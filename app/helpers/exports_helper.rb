@@ -4,7 +4,7 @@ module ExportsHelper
     return 'Private' if rec.is_private?
     return 'UVa only' if rec.is_institution_visible?
     return 'Public' if rec.is_publicly_visible?
-    return 'Embargoed' if rec.is_under_embargo?
+    return 'Embargoed' if rec.has_embargo?
     return 'unknown'
   end
 
