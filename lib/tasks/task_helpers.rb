@@ -16,7 +16,7 @@ module TaskHelpers
   DOCUMENT_XML_FILE ||= 'data.xml'
 
   # general definitions
-  DEFAULT_USER ||= 'dpg3k'
+  DEFAULT_USER ||= 'naw4t'
   DEFAULT_DOMAIN ||= 'virginia.edu'
 
   #
@@ -27,6 +27,7 @@ module TaskHelpers
 
     # disable the allocate DOI callback
     LibraWork.skip_callback( :save, :after, :allocate_doi )
+    LibraWork.skip_callback( :update, :before, :update_doi )
 
     # disable the email send callback
     LibraWork.skip_callback( :save, :after, :determine_email_behavior )

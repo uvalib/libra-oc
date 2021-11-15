@@ -158,9 +158,9 @@ module IngestHelpers
     # other required attributes
     errors << 'missing rights' if payload[ :rights ].nil?
     #errors << 'missing institution' if payload[ :institution ].nil?
-    errors << 'missing work source' if payload[ :work_source ].nil?
-    #errors << 'missing license' if payload[ :license ].nil?
-    errors << 'missing embargo' if payload[ :embargo_type ].nil?
+    #errors << 'missing work source' if payload[ :work_source ].nil?
+    errors << 'missing visibility' if payload[ :visibility ].nil?
+    #errors << 'missing embargo' if payload[ :embargo_type ].nil?
     errors << 'missing resource_type' if payload[ :resource_type ].nil?
 
     # check for an abstract that exceeds the maximum size
@@ -215,24 +215,26 @@ module IngestHelpers
 
       # authors
       payload[:authors].each do |a|
-        w.authors << Author.new( index: a[:index],
-                                 computing_id: a[:computing_id],
-                                 first_name: a[:first_name],
-                                 last_name: a[:last_name],
-                                 department: a[:department],
-                                 institution: a[:institution] )
+        author = Author.new( index: a[:index],
+          computing_id: a[:computing_id],
+          first_name: a[:first_name],
+          last_name: a[:last_name],
+          department: a[:department],
+          institution: a[:institution] )
+        w.authors << author
 
       end
 
       # advisors
       payload[:contributors].each do |c|
-        w.contributors << Contributor.new( index: c[:index],
-                                           computing_id: c[:computing_id],
-                                           first_name: c[:first_name],
-                                           last_name: c[:last_name],
-                                           department: c[:department],
-                                           institution: c[:institution] )
 
+        contrib = Contributor.new( index: c[:index],
+                 computing_id: c[:computing_id],
+                 first_name: c[:first_name],
+                 last_name: c[:last_name],
+                 department: c[:department],
+                 institution: c[:institution] )
+        w.contributors << contrib
       end
 
       w.abstract = payload[ :abstract ]
@@ -248,7 +250,7 @@ module IngestHelpers
       w.published_date = payload[ :publish_date ] if payload[ :publish_date ]
 
       # embargo attributes
-      w.visibility = visibility_lookup( payload[ :embargo_type ] )
+      w.visibility = visibility_lookup( payload[ :visibility ] )
       #w.embargo_end_date = payload[ :embargo_release_date ] if payload[ :embargo_release_date ]
 
       w.publisher = payload[ :publisher ] if payload[ :publisher ]
@@ -264,10 +266,14 @@ module IngestHelpers
       w.resource_type = payload[ :resource_type ] if payload[ :resource_type ]
 
       w.related_url = payload[ :related_url ] if payload[ :related_url ]
-      w.sponsoring_agency = payload[ :sponsoring_agency ] if payload[ :sponsoring_agency ]
-      w.source_citation = payload[ :citation ] if payload[ :citation ]    end
+      w.sponsoring_agency = payload[ :sponsoring_agency ] if payload[ :sponsoring_agency ].present?
+      w.source_citation = payload[ :citation ] if payload[ :citation ]
 
-    return ok, work
+      w.email_status = 1
+
+    end
+
+    return work.valid?, work
   end
 
   #
