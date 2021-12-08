@@ -142,7 +142,7 @@ module ServiceClient
           attributes: attributes
         }
       }
-      puts "#{payload.to_json}"
+      #puts "#{payload.to_json}"
       return payload.to_json
     end
 
