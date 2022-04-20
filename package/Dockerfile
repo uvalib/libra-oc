@@ -4,7 +4,7 @@
 FROM public.ecr.aws/docker/library/ruby:2.6.10-slim-buster
 
 # install application dependancies
-RUN apt-get update -qq && apt-get install -y file git imagemagick build-essential nodejs libmariadb-dev clamav clamdscan wget
+RUN apt-get update -qq && apt-get install -y file git imagemagick build-essential nodejs libmariadb-dev clamav clamdscan wget curl
 
 # install libreoffice
 RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.2.6/deb/x86_64/LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz
