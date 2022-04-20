@@ -1,27 +1,19 @@
-FROM centos:7
-
-# ruby dependancies
-RUN yum -y update && yum -y install which tar wget make gcc-c++ zlib-devel libyaml-devel autoconf patch readline-devel libffi-devel openssl-devel bzip2 automake libtool bison sqlite-devel
-
-# install ruby
-RUN cd /tmp && wget https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.3.tar.gz
-RUN cd /tmp && tar xzvf ruby-2.4.3.tar.gz
-RUN cd /tmp/ruby-2.4.3 && ./configure && make && make install
-RUN rm -fr /tmp/ruby-2.4.3 && rm /tmp/ruby-2.4.3.tar.gz
+#
+#
+#
+FROM public.ecr.aws/docker/library/ruby:2.6.10-slim-buster
 
 # install application dependancies
-RUN yum -y install file git epel-release java-1.8.0-openjdk-devel ImageMagick mysql-devel
-RUN yum -y install clamav clamav-update clamd
-RUN yum -y install nodejs
+RUN apt-get update -qq && apt-get install -y file git imagemagick build-essential nodejs libmariadb-dev clamav clamdscan wget
 
 # install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.2.4/rpm/x86_64/LibreOffice_7.2.4_Linux_x86-64_rpm.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_7.2.4_Linux_x86-64_rpm.tar.gz && cd /tmp/LibreOffice_7.2.4.1_Linux_x86-64_rpm/RPMS && yum -y localinstall *.rpm
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.2.6/deb/x86_64/LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.2.6.2_Linux_x86-64_deb/DEBS && dpkg -i *.deb
 RUN ln -s /opt/libreoffice7.1/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_7.2.4.1_Linux_x86-64_rpm && rm /tmp/LibreOffice_7.2.4_Linux_x86-64_rpm.tar.gz
+RUN rm -fr /tmp/LibreOffice_7.2.6.2_Linux_x86-64_deb && rm /tmp/LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz
 
 # Create the run user and group
-RUN groupadd -r --gid 18570 sse && useradd --uid 1984 -r -g sse docker && mkdir /home/docker
+RUN groupadd --gid 18570 sse && useradd --uid 1984 -g sse docker
 
 # set the timezone appropriatly
 ENV TZ=UTC
@@ -45,11 +37,11 @@ RUN bundle install --jobs=4 --without=["development" "test"] --no-cache
 ADD . $APP_HOME
 
 # Update permissions
-RUN chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docker
+RUN mkdir /home/docker && chown -R docker $APP_HOME /home/docker && chgrp -R sse $APP_HOME /home/docker
 
 # freshen the antivirus definitions and update permissions so we can do this again
-RUN sed -i 's/Example/#Example/' /etc/freshclam.conf
-RUN freshclam && chmod -R o+rw /var/lib/clamav /etc/freshclam.conf
+RUN sed -i 's/Example/#Example/' /etc/clamav/freshclam.conf
+RUN freshclam && chmod -R o+rw /var/lib/clamav /etc/clamav/freshclam.conf
 
 # generate the assets
 RUN RAILS_ENV=production SECRET_KEY_BASE=x rake assets:precompile
