@@ -9,10 +9,13 @@ RUN apt-get update -qq && apt-get install -y file git imagemagick build-essentia
 RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' && apt-get update -y
 RUN apt-get -y install openjdk-8-jre
 
+# see https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
+RUN cat /etc/ImageMagick-6/policy.xml | egrep -v '"PS"|"PS2"|"PS3"|"EPS"|"PDF"|"XPS"' > /tmp/policy.xml && mv /tmp/policy.xml /etc/ImageMagick-6/policy.xml
+
 # install libreoffice
 RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.2.6/deb/x86_64/LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz
 RUN cd /tmp && tar xzfv LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.2.6.2_Linux_x86-64_deb/DEBS && dpkg -i *.deb
-RUN ln -s /opt/libreoffice7.1/program/soffice /usr/local/bin/soffice
+RUN ln -s /opt/libreoffice7.2/program/soffice /usr/local/bin/soffice
 RUN rm -fr /tmp/LibreOffice_7.2.6.2_Linux_x86-64_deb && rm /tmp/LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz
 
 # Create the run user and group
