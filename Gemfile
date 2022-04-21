@@ -72,7 +72,7 @@ gem 'exception_notification'
 gem 'hash_at_path'
 gem 'oga'
 
-gem 'sentry-raven'
+#gem 'sentry-raven'
 
 gem 'meta-tags'
 gem 'sitemap_generator'

@@ -4,7 +4,10 @@
 FROM public.ecr.aws/docker/library/ruby:2.6.10-slim-buster
 
 # install application dependancies
-RUN apt-get update -qq && apt-get install -y file git imagemagick build-essential nodejs libmariadb-dev clamav clamdscan wget curl
+RUN apt-get update -qq && apt-get install -y file git imagemagick build-essential nodejs libmariadb-dev clamav clamdscan wget curl software-properties-common
+
+RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' && apt-get update -y
+RUN apt-get -y install openjdk-8-jre
 
 # install libreoffice
 RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.2.6/deb/x86_64/LibreOffice_7.2.6_Linux_x86-64_deb.tar.gz
@@ -61,7 +64,7 @@ ARG BUILD_TAG
 RUN test -n "$BUILD_TAG" && touch $APP_HOME/buildtag.build-$BUILD_TAG || touch $APP_HOME/buildtag.build-0
 
 # Specify the user
-USER docker
+#USER docker
 
 #
 # end of file
