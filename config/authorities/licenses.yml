@@ -31,3 +31,7 @@ terms:
       url:
       term: All rights reserved (no additional license for public reuse)
       active: true
+    - id: '8'
+      url: https://creativecommons.org/licenses/by/2.0/
+      term: Attribution 2.0 Generic (CC BY)
+      active: true
