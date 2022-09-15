@@ -17,9 +17,10 @@ terms:
   - id: Image
     term: Image
     dataCiteGeneral: Image
-  - id: Journal
-    term: Journal
-    dataCiteGeneral: Journal
+  # Journal has been removed LIBRAOC-633
+  #- id: Journal
+  #  term: Journal
+  #  dataCiteGeneral: Journal
   - id: Map or Cartographic Material
     term: Map or Cartographic Material
     dataCiteGeneral: Other
