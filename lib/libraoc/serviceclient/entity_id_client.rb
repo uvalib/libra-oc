@@ -1,4 +1,5 @@
 require_dependency 'libraoc/serviceclient/base_client'
+require_dependency 'libraoc/serviceclient/orcid_access_client'
 require_dependency 'app/helpers/url_helper'
 
 module ServiceClient
@@ -185,11 +186,27 @@ module ServiceClient
         .uniq { |p| p.index }
         .sort{|a,b| a.index.to_i <=> b.index.to_i}
         .map { | p |
-          person = { givenName: p.first_name,
+          person = {
+            givenName: p.first_name,
               familyName: p.last_name,
+              nameType: 'Personal'
           }
           person[:affiliation] = UVA_AFFILIATION if p.computing_id.present?
           person[:contributorType] = type if type.present?
+
+          # if person has a ORCID account
+          orcid_status, orcid_attribs = ServiceClient::OrcidAccessClient.instance.
+            get_attribs_by_cid(p.computing_id)
+
+          if orcid_attribs['uri'].present?
+            person[:nameIdentifiers] = {
+              schemeUri: URI(orcid_attribs['uri']),
+              nameIdentifier: orcid_attribs['uri'],
+              nameIdentifierScheme: "ORCID"
+            }
+          elsif orcid_status > 300
+            Rails.logger.error "ORCID Error during DataCite payload #{orcid_attribs}\n#{person}"
+          end
           person
         }
     end
