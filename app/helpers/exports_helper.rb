@@ -23,6 +23,14 @@ module ExportsHelper
     return transform_newlines( format_array( rec.admin_notes, ', ' ).gsub( LibraWork::ADMIN_NOTE_DATE_MARKER, '-' ) )
   end
 
+  def format_people( people )
+    return '' if people.blank?
+    return people.map do |p|
+      j = JSON.parse(p)
+      j.without('id').values.join('|')
+    end
+  end
+
   def format_array( array, delimiter )
     return '' if array.blank?
     return array.sort.join( delimiter )
