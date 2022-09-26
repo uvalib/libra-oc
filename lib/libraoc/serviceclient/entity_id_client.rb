@@ -192,6 +192,9 @@ module ServiceClient
               nameType: 'Personal'
           }
           person[:contributorType] = type if type.present?
+          if p.institution.present?
+            person[:affiliation] = {name: p.institution}
+          end
 
           if p.computing_id.present?
             person[:affiliation] = UVA_AFFILIATION
@@ -201,13 +204,14 @@ module ServiceClient
               get_attribs_by_cid(p.computing_id)
 
             if orcid_attribs['uri'].present?
+              orcid_uri = URI(orcid_attribs['uri'])
               person[:nameIdentifiers] = {
-                schemeUri: URI(orcid_attribs['uri']),
+                schemeUri: "https://#{orcid_uri.host}",
                 nameIdentifier: orcid_attribs['uri'],
                 nameIdentifierScheme: "ORCID"
               }
             elsif orcid_status > 300
-              Rails.logger.error "ORCID Error during DataCite payload #{orcid_attribs}\n#{person}"
+              Rails.logger.warn "#{orcid_status} ORCID response during DataCite payload #{orcid_attribs}"
             end
           end
           person
