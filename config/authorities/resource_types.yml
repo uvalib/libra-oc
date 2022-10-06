@@ -35,7 +35,7 @@ terms:
     dataCiteGeneral: Event
   - id: Project
     term: Project
-    dataCiteGeneral: Project
+    dataCiteGeneral: Text
   - id: Report
     term: Report
     dataCiteGeneral: Report
