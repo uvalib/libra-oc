@@ -1,7 +1,4 @@
-#
-#
-#
-FROM public.ecr.aws/docker/library/ruby:2.6.10-slim-buster
+FROM public.ecr.aws/docker/library/ruby:2.6.10-slim-bullseye
 
 # install application dependancies
 RUN apt-get update -qq && apt-get install -y file git imagemagick build-essential nodejs libmariadb-dev clamav clamdscan wget curl software-properties-common
@@ -13,10 +10,10 @@ RUN apt-get -y install openjdk-8-jre
 RUN cat /etc/ImageMagick-6/policy.xml | egrep -v '"PS"|"PS2"|"PS3"|"EPS"|"PDF"|"XPS"' > /tmp/policy.xml && mv /tmp/policy.xml /etc/ImageMagick-6/policy.xml
 
 # install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.4.0/deb/x86_64/LibreOffice_7.4.0_Linux_x86-64_deb.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_7.4.0_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.4.0.3_Linux_x86-64_deb/DEBS && dpkg -i *.deb
-RUN ln -s /opt/libreoffice7.2/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_7.4.0.3_Linux_x86-64_deb && rm /tmp/LibreOffice_7.4.0_Linux_x86-64_deb.tar.gz
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.5.0/deb/x86_64/LibreOffice_7.5.0_Linux_x86-64_deb.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_7.5.0_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.5.0.3_Linux_x86-64_deb/DEBS && dpkg -i *.deb
+RUN ln -s /opt/libreoffice7.5/program/soffice /usr/local/bin/soffice
+RUN rm -fr /tmp/LibreOffice_7.5.0.3_Linux_x86-64_deb && rm /tmp/LibreOffice_7.5.0_Linux_x86-64_deb.tar.gz
 
 # Create the run user and group
 RUN groupadd --gid 18570 sse && useradd --uid 1984 -g sse docker
@@ -67,7 +64,7 @@ ARG BUILD_TAG
 RUN test -n "$BUILD_TAG" && touch $APP_HOME/buildtag.build-$BUILD_TAG || touch $APP_HOME/buildtag.build-0
 
 # Specify the user
-#USER docker
+USER docker
 
 #
 # end of file
