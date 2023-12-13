@@ -11,11 +11,12 @@ RUN apt-get update -y && apt-get install -y temurin-8-jdk
 # see https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
 RUN cat /etc/ImageMagick-6/policy.xml | egrep -v '"PS"|"PS2"|"PS3"|"EPS"|"PDF"|"XPS"' > /tmp/policy.xml && mv /tmp/policy.xml /etc/ImageMagick-6/policy.xml
 
-# install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.6.4/deb/x86_64/LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.6.4.1_Linux_x86-64_deb/DEBS && dpkg -i *.deb
-RUN ln -s /opt/libreoffice7.6/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_7.6.4.1_Linux_x86-64_deb && rm /tmp/LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz
+# install libreoffice (set as appropriate, see: https://download.documentfoundation.org/libreoffice/stable)
+ENV OFFICE_RELEASE=7.5.7.1
+RUN cd /tmp && wget https://downloadarchive.documentfoundation.org/libreoffice/old/${OFFICE_RELEASE}/deb/x86_64//LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb/DEBS && dpkg -i *.deb
+RUN ln -s /opt/libreoffice*/program/soffice /usr/local/bin/soffice
+RUN rm -fr /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb && rm /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz
 
 # Create the run user and group
 RUN groupadd --gid 18570 sse && useradd --uid 1984 -g sse docker
