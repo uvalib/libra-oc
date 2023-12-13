@@ -17,6 +17,8 @@ RUN cd /tmp && wget https://downloadarchive.documentfoundation.org/libreoffice/o
 RUN cd /tmp && tar xzfv LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb/DEBS && dpkg -i *.deb
 RUN ln -s /opt/libreoffice*/program/soffice /usr/local/bin/soffice
 RUN rm -fr /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb && rm /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz
+# need these for LibraOffice
+RUN apt-get install -y libxinerama1 libnss3
 
 # Create the run user and group
 RUN groupadd --gid 18570 sse && useradd --uid 1984 -g sse docker
