@@ -14,7 +14,7 @@ RUN cat /etc/ImageMagick-6/policy.xml | egrep -v '"PS"|"PS2"|"PS3"|"EPS"|"PDF"|"
 # install libreoffice
 RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.6.4/deb/x86_64/LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz
 RUN cd /tmp && tar xzfv LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.6.4.1_Linux_x86-64_deb/DEBS && dpkg -i *.deb
-RUN ln -s /opt/libreoffice7.5/program/soffice /usr/local/bin/soffice
+RUN ln -s /opt/libreoffice7.6/program/soffice /usr/local/bin/soffice
 RUN rm -fr /tmp/LibreOffice_7.6.4.1_Linux_x86-64_deb && rm /tmp/LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz
 
 # Create the run user and group
