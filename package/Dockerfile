@@ -12,10 +12,10 @@ RUN apt-get update -y && apt-get install -y temurin-8-jdk
 RUN cat /etc/ImageMagick-6/policy.xml | egrep -v '"PS"|"PS2"|"PS3"|"EPS"|"PDF"|"XPS"' > /tmp/policy.xml && mv /tmp/policy.xml /etc/ImageMagick-6/policy.xml
 
 # install libreoffice
-RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.5.7/deb/x86_64/LibreOffice_7.5.7_Linux_x86-64_deb.tar.gz
-RUN cd /tmp && tar xzfv LibreOffice_7.5.7_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.5.7.1_Linux_x86-64_deb/DEBS && dpkg -i *.deb
+RUN cd /tmp && wget https://download.documentfoundation.org/libreoffice/stable/7.6.4/deb/x86_64/LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz
+RUN cd /tmp && tar xzfv LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_7.6.4.1_Linux_x86-64_deb/DEBS && dpkg -i *.deb
 RUN ln -s /opt/libreoffice7.5/program/soffice /usr/local/bin/soffice
-RUN rm -fr /tmp/LibreOffice_7.5.7.1_Linux_x86-64_deb && rm /tmp/LibreOffice_7.5.7_Linux_x86-64_deb.tar.gz
+RUN rm -fr /tmp/LibreOffice_7.6.4.1_Linux_x86-64_deb && rm /tmp/LibreOffice_7.6.4_Linux_x86-64_deb.tar.gz
 
 # Create the run user and group
 RUN groupadd --gid 18570 sse && useradd --uid 1984 -g sse docker
