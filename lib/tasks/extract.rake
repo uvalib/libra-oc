@@ -123,6 +123,11 @@ namespace :export do
       end
     end
 
+    f = File.join( dir, "visibility.json" )
+    File.open( f, 'w') do |file|
+      file.write( "{\"visibility\":#{work.visibility.to_json}}" )
+    end
+
     if work.authors
       author_number = 0
       work.authors.each do |author|
