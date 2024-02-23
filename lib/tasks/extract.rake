@@ -115,17 +115,45 @@ namespace :export do
       file.write( work_json )
     end
 
-    #em = work.embargo
-    #f = File.join( dir, "embargo.json" )
-    #File.open( f, 'w') do |file|
-    #  file.write( em.to_json )
-    #end
+    if work.embargo
+      em = work.embargo
+      f = File.join( dir, "embargo.json" )
+      File.open( f, 'w') do |file|
+        file.write( em.to_json )
+      end
+    end
+
+    if work.authors
+      author_number = 0
+      work.authors.each do |author|
+        author_number += 1
+        #puts "  ==> dumping author #{author_number} (id: #{author.id})"
+        author_json = author.to_json
+        f = File.join( dir, "author-#{author_number}.json" )
+        File.open( f, 'w') do |file|
+          file.write( author_json )
+        end
+      end
+    end
+
+    if work.contributors
+      contributor_number = 0
+      work.contributors.each do |contributor|
+        contributor_number += 1
+        #puts "  ==> dumping contributor #{contributor_number} (id: #{contributor.id})"
+        contributor_json = contributor.to_json
+        f = File.join( dir, "contributor-#{contributor_number}.json" )
+        File.open( f, 'w') do |file|
+          file.write( contributor_json )
+        end
+      end
+    end
 
     if work.file_sets
       fileset_number = 0
       work.file_sets.each do |file_set|
         fileset_number += 1
-        puts "  ==> dumping fileset #{fileset_number} (id: #{file_set.id})"
+        #puts "  ==> dumping fileset #{fileset_number} (id: #{file_set.id})"
         fs_json= file_set.to_json
         f = File.join( dir, "fileset-#{fileset_number}.json" )
         File.open( f, 'w') do |file|
