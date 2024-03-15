@@ -128,6 +128,11 @@ namespace :export do
       file.write( "{\"visibility\":#{work.visibility.to_json}}" )
     end
 
+    f = File.join( dir, "rights.json" )
+    File.open( f, 'w') do |file|
+      file.write( "{\"rights\":#{work.rights_display.to_json}}" )
+    end
+
     if work.authors
       author_number = 0
       work.authors.each do |author|
