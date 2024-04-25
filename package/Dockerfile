@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get install -y temurin-8-jdk
 RUN cat /etc/ImageMagick-6/policy.xml | egrep -v '"PS"|"PS2"|"PS3"|"EPS"|"PDF"|"XPS"' > /tmp/policy.xml && mv /tmp/policy.xml /etc/ImageMagick-6/policy.xml
 
 # install libreoffice (set as appropriate, see: https://download.documentfoundation.org/libreoffice/stable)
-ENV OFFICE_RELEASE=7.5.7.1
+ENV OFFICE_RELEASE=7.5.9.2
 RUN cd /tmp && wget https://downloadarchive.documentfoundation.org/libreoffice/old/${OFFICE_RELEASE}/deb/x86_64//LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz
 RUN cd /tmp && tar xzfv LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb.tar.gz && cd /tmp/LibreOffice_${OFFICE_RELEASE}_Linux_x86-64_deb/DEBS && dpkg -i *.deb
 RUN ln -s /opt/libreoffice*/program/soffice /usr/local/bin/soffice
