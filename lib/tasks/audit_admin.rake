@@ -17,6 +17,17 @@ namespace :audit do
 
     end
 
+    desc "Export the full audit history"
+    task export: :environment do |t, args|
+
+      audits = Audit.all.order( created_at: :asc )
+      audits.each do |a|
+        puts a.to_psv
+      end
+      puts "Exported #{audits.length} audit record(s)"
+
+    end
+
     desc "Show audit history for a specified user; must provide the user id"
     task by_user: :environment do |t, args|
 
