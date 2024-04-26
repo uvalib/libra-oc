@@ -14,8 +14,8 @@ class Audit < ActiveRecord::Base
     return "#{Audit.localtime( created_at )}: #{user_id} updated #{work_id} #{field_activity}"
   end
 
-  def to_psv
-    return "#{Audit.localtime( created_at )}|#{user_id}|#{work_id}|#{field_psv}"
+  def to_tsv
+    return "#{Audit.localtime( created_at )}\t#{user_id}\t#{work_id}\t#{field_tsv}"
   end
 
   def by_user
@@ -56,21 +56,21 @@ class Audit < ActiveRecord::Base
     end
   end
 
-  def field_psv
+  def field_tsv
     if field == 'files'
       if before.blank?
-        return "file|empty|#{after}"
+        return "file\tempty\t#{after}"
       elsif after.blank?
-        return "file|#{before}|empty"
+        return "file\t#{before}\tempty"
       else
-        return "file|#{before}|#{after}"
+        return "file\t#{before}\t#{after}"
       end
     else
       bf = 'empty'
       af = 'empty'
       bf = "#{before.squish}" unless before.blank?
       af = "#{after.squish}" unless after.blank?
-      return "#{field}|#{bf}|#{af}"
+      return "#{field}\t#{bf}\t#{af}"
     end
   end
 
