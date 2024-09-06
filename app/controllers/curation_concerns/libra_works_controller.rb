@@ -49,7 +49,10 @@ module CurationConcerns
 
     protected
     def after_update_response
-      if permissions_changed? && curation_concern.file_sets.present?
+      # edit_users needs to be updated because Libra doesn't use the built-in permission pages.
+      # depositor owns the work and access needs to be updated when that changes
+      if curation_concern.depositor.changed?
+        curation_concern.edit_users = [curation_concern.depositor]
         # Taken from CurationConcerns::PermissionsController
         # copy visibility
         VisibilityCopyJob.perform_later(curation_concern)
