@@ -36,6 +36,8 @@ module CurationConcerns
       # snapshot of the work before updating
       work_before = WorkAuditJob.serialize_work( get_work_item( params['id'] ) )
 
+      @depositorBefore = curation_concern.depositor
+
       # call base class for actual update behavior
       super
 
@@ -51,7 +53,7 @@ module CurationConcerns
     def after_update_response
       # edit_users needs to be updated because Libra doesn't use the built-in permission pages.
       # depositor owns the work and access needs to be updated when that changes
-      if curation_concern.depositor.changed?
+      if @depositorBefore != curation_concern.depositor
         curation_concern.edit_users = [curation_concern.depositor]
         # Taken from CurationConcerns::PermissionsController
         # copy visibility
