@@ -6,7 +6,7 @@ SitemapGenerator::Sitemap.create do
   constraints = "published_date_tesim:[* TO *]"
   LibraWork.search_in_batches( constraints ) do |group|
     group.each do |work|
-      modified_at = Date.parse(work['date_modified_dtsi'])
+      modified_at = Date.parse(work['date_modified_dtsi'] || work['system_modified_dtsi'])
       add public_view_path(work['id']), lastmod: modified_at
     end
   end
