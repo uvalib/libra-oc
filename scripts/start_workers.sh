@@ -9,7 +9,7 @@ DIR=$(dirname $0)
 . $DIR/common.sh
 
 # define the number of workers
-WORKER_COUNT=10
+WORKER_COUNT=5
 WORKERS_OPT="-c $WORKER_COUNT"
 
 # define the sleep time in the event of a crash
