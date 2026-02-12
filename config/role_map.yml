@@ -5,6 +5,9 @@ default: &default
     - wkb5j@virginia.edu
     - bew9gq@virginia.edu
     - rpa5wa@virginia.edu
+    - rmg6f@virginia.edu
+    - krp5t@virginia.edu
+    - npm2ce@virginia.edu
 
 development:
   <<: *default
