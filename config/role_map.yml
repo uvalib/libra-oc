@@ -8,6 +8,7 @@ default: &default
     - rmg6f@virginia.edu
     - krp5t@virginia.edu
     - npm2ce@virginia.edu
+    - tss6n@virginia.edu
 
 development:
   <<: *default
